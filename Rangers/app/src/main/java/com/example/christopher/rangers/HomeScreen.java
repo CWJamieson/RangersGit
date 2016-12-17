@@ -1,5 +1,6 @@
 package com.example.christopher.rangers;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -100,6 +101,7 @@ public class HomeScreen extends AppCompatActivity
     }
     private void getInput()
     {
-        
+        Intent intent = new Intent(this, EnterSchedule.class);
+        startActivity(intent);
     }
 }

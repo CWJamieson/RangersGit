@@ -18,6 +18,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".EnterSchedule"
+            android:label="@string/title_activity_enter_schedule"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SaveScreen"
+            android:label="@string/title_activity_save_screen"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
