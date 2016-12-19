@@ -1,5 +1,6 @@
 package com.example.christopher.rangers;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -24,6 +25,16 @@ public class group extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+        displayFriends();
+    }
+    protected void displayFriends()
+    {
+        Intent intent = getIntent();
+        String [] friends = intent.getStringArrayExtra("FRIENDS");
+        for(int i=0;i<friends.length;i++)
+        {
+
+        }
     }
 
 }
