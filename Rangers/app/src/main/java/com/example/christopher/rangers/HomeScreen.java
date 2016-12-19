@@ -83,8 +83,8 @@ public class HomeScreen extends AppCompatActivity
 
         if (id == R.id.nav_input) {
             getInput();
-        } else if (id == R.id.nav_gallery) {
-
+        } else if (id == R.id.nav_createGroup) {
+            createGroup();
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
@@ -102,6 +102,11 @@ public class HomeScreen extends AppCompatActivity
     private void getInput()
     {
         Intent intent = new Intent(this, EnterSchedule.class);
+        startActivity(intent);
+    }
+    private void createGroup()
+    {
+        Intent intent = new Intent(this, group.class);
         startActivity(intent);
     }
 }

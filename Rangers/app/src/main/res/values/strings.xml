@@ -8,4 +8,5 @@
     <string name="title_activity_enter_schedule">EnterSchedule</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_save_screen">SaveScreen</string>
+    <string name="title_activity_group">group</string>
 </resources>

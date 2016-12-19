@@ -25,6 +25,10 @@
         <activity
             android:name=".SaveScreen"
             android:label="@string/title_activity_save_screen"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".group"
+            android:label="@string/title_activity_group"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

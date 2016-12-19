@@ -7,9 +7,9 @@
             android:icon="@drawable/ic_menu_camera"
             android:title="Input" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_createGroup"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
+            android:title="Create Group" />
         <item
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_menu_slideshow"
