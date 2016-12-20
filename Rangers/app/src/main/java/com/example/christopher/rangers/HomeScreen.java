@@ -91,7 +91,7 @@ public class HomeScreen extends AppCompatActivity
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
-
+            share();
         } else if (id == R.id.nav_send) {
 
         }
@@ -99,6 +99,11 @@ public class HomeScreen extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+    private void share()
+    {
+        Intent intent = new Intent(this, ShareScreen.class);
+        startActivity(intent);
     }
     private void getInput()
     {
@@ -108,6 +113,8 @@ public class HomeScreen extends AppCompatActivity
     private void createGroup()
     {
         Intent intent = new Intent(this, group.class);
+        String [] fri = {"Chris","Bradley","Kyle"};
+        intent.putExtra("FRIENDS", fri);
         startActivity(intent);
     }
 }

@@ -29,6 +29,10 @@
         <activity
             android:name=".group"
             android:label="@string/title_activity_group"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ShareScreen"
+            android:label="@string/title_activity_share_screen"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

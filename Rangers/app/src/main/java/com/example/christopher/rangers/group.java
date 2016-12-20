@@ -7,6 +7,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
 
 public class group extends AppCompatActivity {
 
@@ -21,11 +23,16 @@ public class group extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                //create group
+                returnToMain();
             }
         });
         displayFriends();
+    }
+    private void returnToMain()
+    {
+        Intent i = new Intent(this, HomeScreen.class);
+        startActivity(i);
     }
     protected void displayFriends()
     {
@@ -33,7 +40,11 @@ public class group extends AppCompatActivity {
         String [] friends = intent.getStringArrayExtra("FRIENDS");
         for(int i=0;i<friends.length;i++)
         {
+            CheckBox chk = new CheckBox(this);
+            chk.setText(friends[i]);
 
+            LinearLayout layout = (LinearLayout) findViewById(R.id.content_group);
+            layout.addView(chk);
         }
     }
 
