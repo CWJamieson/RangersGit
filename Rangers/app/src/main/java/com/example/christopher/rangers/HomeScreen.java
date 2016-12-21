@@ -92,13 +92,18 @@ public class HomeScreen extends AppCompatActivity
 
         } else if (id == R.id.nav_share) {
             share();
-        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.nav_read) {
+            read();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+    private void read()
+    {
+        Intent intent = new Intent(this, ReadScreen.class);
+        startActivity(intent);
     }
     private void share()
     {
