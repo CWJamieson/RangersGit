@@ -159,10 +159,10 @@ public class EnterSchedule extends AppCompatActivity {
             R.id.Button28,
 
     };
-    boolean clicked[] = new boolean[240];
+    boolean clicked[] = new boolean[140];
     public void init(boolean clicked[])
     {
-        for(int i=0;i<240;i++)
+        for(int i=0;i<140;i++)
         {
             clicked[i] = false;
         }

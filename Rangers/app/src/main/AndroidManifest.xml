@@ -37,7 +37,11 @@
         <activity
             android:name=".ReadScreen"
             android:label="@string/title_activity_read_screen"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".DisplayScreen"
+            android:label="@string/title_activity_display_screen"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

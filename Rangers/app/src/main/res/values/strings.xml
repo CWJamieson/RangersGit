@@ -11,4 +11,6 @@
     <string name="title_activity_group">group</string>
     <string name="title_activity_share_screen">ShareScreen</string>
     <string name="title_activity_read_screen">ReadScreen</string>
+    <string name="title_activity_display_screen">DisplayScreen</string>
+    <string name="title_activity_planner_output">PlannerOutput</string>
 </resources>

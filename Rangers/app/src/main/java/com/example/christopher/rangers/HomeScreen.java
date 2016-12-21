@@ -13,6 +13,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.CheckBox;
+import android.widget.GridView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class HomeScreen extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -24,14 +29,35 @@ public class HomeScreen extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        //ToDo:Read in friends/groups to the following string arrays
+        String [] friends = {"Chris", "Brad", "Kyle", "Erik", "Banny", "other losers","Chris", "Brad", "Kyle", "Erik", "Banny","Chris", "Brad", "Kyle", "Erik", "Banny","Chris", "Brad", "Kyle", "Erik", "Banny","Chris", "Brad", "Kyle", "Erik", "Banny","Chris", "Brad", "Kyle", "Erik", "Banny","Chris", "Brad", "Kyle", "Erik", "Banny","Chris", "Brad", "Kyle", "Erik", "Banny","Chris", "Brad", "Kyle", "Erik", "Banny"};
+        String [] planners = {"101010", "100010", "100011001"};
+        for(int i=0;i<friends.length;i++)
+        {
+            FloatingActionButton fab = new  FloatingActionButton(this);
+            TextView text = new TextView(this);
+            text.setText(friends[i]);
+
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    openDisplay("Find a way to make this planners[i]");
+                }
+            });
+            LinearLayout layout;
+            if(i%4==0)
+                layout = (LinearLayout) findViewById(R.id.col1);
+            else if(i%4==1)
+                layout = (LinearLayout) findViewById(R.id.col2);
+            else if(i%4==2)
+                layout = (LinearLayout) findViewById(R.id.col3);
+            else
+                layout = (LinearLayout) findViewById(R.id.col4);
+            layout.addView(fab);
+            layout.addView(text);
+
+        }
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -113,6 +139,13 @@ public class HomeScreen extends AppCompatActivity
     private void getInput()
     {
         Intent intent = new Intent(this, EnterSchedule.class);
+        startActivity(intent);
+    }
+    private void openDisplay(String planner)
+    {
+
+        Intent intent = new Intent(this, DisplayScreen.class);
+        intent.putExtra("PLANNER", planner);
         startActivity(intent);
     }
     private void createGroup()
