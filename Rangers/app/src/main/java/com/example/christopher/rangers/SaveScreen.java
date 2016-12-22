@@ -7,10 +7,13 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -65,10 +68,22 @@ public class SaveScreen extends AppCompatActivity
     {
         //Save to personal file
         FileOutputStream fos = null;
+        String fileName = "saveFile";
+        File file = new File(getApplicationContext().getFilesDir(), fileName);
+        String fileSaveString;
         try
         {
             //String that includes the contents for the whole file (new and old)
-            String fileSaveString = saveString ;//+ getOldContents();
+            Log.d("saveString", saveString);
+            if(file.length() == 0)
+            {
+                fileSaveString = saveString + "\n";
+            }
+            else
+            {
+                fileSaveString = saveString + "\n" + getOldContents();
+            }
+            Log.d("fileSaveString", fileSaveString);
             //Create file
             fos = openFileOutput("saveFile", Context.MODE_PRIVATE);
             //Write to file
@@ -98,16 +113,16 @@ public class SaveScreen extends AppCompatActivity
         }
     }
 
-    /*private String getOldContents()
+    private String getOldContents()
     {
         String oldString = "";
-        File storage = getApplicationInfo().dataDir;
+        String fileName = "saveFile";
+        File file = new File(getApplicationContext().getFilesDir(), fileName);
         FileInputStream fin = null;
         int character;
         try
         {
-            File file = new File(storage, "saveFile");
-            fin = openFileInput(file);
+            fin = new FileInputStream(file);
             while((character = fin.read()) != -1)
             {
                 oldString = oldString + Character.toString((char)character);
@@ -131,6 +146,7 @@ public class SaveScreen extends AppCompatActivity
                 e.printStackTrace();
             }
         }
+        Log.d("oldString", oldString);
         return oldString;
-    }*/
+    }
 }
