@@ -28,8 +28,10 @@ public class SaveScreen extends AppCompatActivity
         setContentView(R.layout.activity_save_screen);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        setTitle("Choose a name");
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setImageResource(R.drawable.ic_add);
         fab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 save();

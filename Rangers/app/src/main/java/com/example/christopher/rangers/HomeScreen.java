@@ -36,8 +36,8 @@ public class HomeScreen extends AppCompatActivity
         setContentView(R.layout.activity_home_screen);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        setTitle("Plannit");
 
-        //ToDo:Read in friends/groups to the following string arrays
         ArrayList<ArrayList<String>> string = readFile();
         String [] friends = string.get(1).toArray(new String[string.get(1).size()]);
         String [] planners = string.get(0).toArray(new String[string.get(0).size()]);
@@ -49,8 +49,10 @@ public class HomeScreen extends AppCompatActivity
         {
             FloatingActionButton fab = new  FloatingActionButton(this);
             TextView text = new TextView(this);
+            text.setMinLines(2);
             text.setText(friends[i]);
-            fabListener list = new fabListener(i, planners, this);
+
+            fabListener list = new fabListener(i, planners, friends, this);
             fab.setOnClickListener(list);
             //Todo: change icon if its a group
             fab.setImageResource(R.drawable.ic_person);

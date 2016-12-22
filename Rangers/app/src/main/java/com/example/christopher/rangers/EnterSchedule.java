@@ -50,6 +50,7 @@ public class EnterSchedule extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        setTitle("Input a planner");
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -92,6 +93,7 @@ public class EnterSchedule extends AppCompatActivity {
                 saveString = saveString + "0";
             }
         }
+        saveString = saveString+"~m";
         intent.putExtra("BUTTON_STATUS", saveString);
         startActivity(intent);
     }

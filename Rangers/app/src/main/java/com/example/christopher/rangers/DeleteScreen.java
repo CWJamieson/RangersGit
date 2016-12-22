@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -16,6 +17,7 @@ public class DeleteScreen extends AppCompatActivity {
         setContentView(R.layout.activity_delete_screen);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setTitle("Delete contacts");
         String [] friends = getIntent().getStringArrayExtra("FRIENDS");
         for(int i=0;i<friends.length;i++)
         {
@@ -26,7 +28,7 @@ public class DeleteScreen extends AppCompatActivity {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    view.setBackgroundColor(Color.GREEN);
+                    ((FloatingActionButton)view).setRippleColor(Color.GREEN);
                     deleteFromFile(view.getId());
                 }
             });
@@ -45,6 +47,15 @@ public class DeleteScreen extends AppCompatActivity {
             layout.addView(text);
 
         }
+    }
+    public boolean onOptionsItemSelected(MenuItem item){
+        int id = item.getItemId();
+
+        if (id==android.R.id.home) {
+            finish();
+        }
+        return true;
+
     }
     private void deleteFromFile(int num)
     {

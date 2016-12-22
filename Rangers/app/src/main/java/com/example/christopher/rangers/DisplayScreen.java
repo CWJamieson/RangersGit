@@ -24,6 +24,7 @@ public class DisplayScreen extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
+        setTitle(getIntent().getStringExtra("NAME"));
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //actionBar.setDisplayHomeAsUpEnabled(true);

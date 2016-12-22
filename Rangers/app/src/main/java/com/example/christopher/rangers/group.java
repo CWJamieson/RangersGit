@@ -20,7 +20,7 @@ public class group extends AppCompatActivity {
         setContentView(R.layout.activity_group);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        setTitle("Create Group");
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,16 +38,16 @@ public class group extends AppCompatActivity {
         String [] friends = intent.getStringArrayExtra("PLANNERS");
         char[] intersection = new char[140];
         for(int i=0;i<140;i++)
-            intersection[i] = '0';
+            intersection[i] = '1';
         for(int i=0;i<friends.length;i++)
         {
             CheckBox chk = (CheckBox)findViewById(i);
             if(chk.isChecked())
             {
-                for(int j=0;i<140;j++)
+                for(int j=0;j<140;j++)
                 {
-                    if(!(intersection[j] == '0' && friends[i].charAt(j) == '0'))
-                        intersection[j] = '1';
+                    if(!(intersection[j] == '1' && friends[i].charAt(j) == '1'))
+                        intersection[j] = '0';
                 }
             }
         }
@@ -56,6 +56,7 @@ public class group extends AppCompatActivity {
         {
             out+=intersection[i];
         }
+        //Todo: check for empty or full
         intent = new Intent(this, SaveScreen.class);
         intent.putExtra("BUTTON_STATUS", out);
         startActivity(intent);
