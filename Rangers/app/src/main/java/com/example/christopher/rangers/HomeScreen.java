@@ -19,6 +19,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+
 import static com.example.christopher.rangers.R.drawable.ic_check;
 
 public class HomeScreen extends AppCompatActivity
@@ -33,8 +38,9 @@ public class HomeScreen extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         //ToDo:Read in friends/groups to the following string arrays
-        String [] friends = {"Chris", "Brad", "Kyle", "Erik", "Banny", "other losers","Chris", "Brad", "Kyle", "Erik", "Banny","Chris", "Brad", "Kyle", "Erik", "Banny","Chris", "Brad", "Kyle", "Erik", "Banny","Chris", "Brad", "Kyle", "Erik", "Banny","Chris", "Brad", "Kyle", "Erik", "Banny","Chris", "Brad", "Kyle", "Erik", "Banny","Chris", "Brad", "Kyle", "Erik", "Banny","Chris", "Brad", "Kyle", "Erik", "Banny"};
-        String [] planners = {"101010", "100010", "100011001"};
+        ArrayList<ArrayList<String>> string = readFile();
+        String [] friends = string.get(1).toArray(new String[string.get(1).size()]);
+        String [] planners = string.get(0).toArray(new String[string.get(0).size()]);
 
 
         this.friends = friends;
@@ -158,5 +164,62 @@ public class HomeScreen extends AppCompatActivity
     {
         Toast.makeText(this, "Test", Toast.LENGTH_LONG).show();
 
+    }
+
+    protected ArrayList<ArrayList<String>> readFile()
+    {
+        //Create double Arraylist (0 for data, 1 for names)
+        ArrayList<ArrayList<String>> string = new ArrayList<>();
+        string.add(new ArrayList<String>());
+        string.add(new ArrayList<String>());
+        String lineString = "";
+        String fileName = "saveFile";
+        File file = new File(getApplicationContext().getFilesDir(), fileName);
+        FileInputStream fin = null;
+        int character;
+        try
+        {
+            fin = new FileInputStream(file);
+            while((character = fin.read()) != -1)
+            {
+                //When it hits end of line flush
+                if(Character.toString((char)character).equals("\n"))
+                {
+                    //Splits line at name and data
+                    String temp[] = lineString.split("~");
+                    //Store data
+                    string.get(0).add(temp[0]);
+                    //Store name
+                    string.get(1).add(temp[1]);
+                    //Reset line
+                    lineString = "";
+                }
+                else
+                {
+                    //Add character to line
+                    lineString = lineString + Character.toString((char)character);
+                }
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            try
+            {
+                if (fin != null)
+                {
+                    fin.close();
+                }
+            }
+            catch(IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        //Return parsed data
+        return string;
     }
 }
