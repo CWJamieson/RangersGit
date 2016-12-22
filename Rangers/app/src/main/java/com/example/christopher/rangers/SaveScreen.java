@@ -23,6 +23,7 @@ public class SaveScreen extends AppCompatActivity {
                 save();
             }
         });
+        fab.setImageResource(R.drawable.ic_check);
     }
     private void save()
     {

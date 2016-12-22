@@ -65,6 +65,7 @@ public class EnterSchedule extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+        fab.setImageResource(R.drawable.ic_check);
 
     }
     public void save()

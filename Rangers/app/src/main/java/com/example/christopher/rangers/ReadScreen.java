@@ -29,6 +29,7 @@ public class ReadScreen extends AppCompatActivity {
                 returnToMain();
             }
         });
+        fab.setImageResource(R.drawable.ic_check);
         IntentIntegrator integrator = new IntentIntegrator(this);
         integrator.initiateScan();
 
@@ -49,6 +50,9 @@ public class ReadScreen extends AppCompatActivity {
                 //ToDo: Change to save data
                 Log.d("MainActivity", "Scanned");
                 Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(this, SaveScreen.class);
+                intent.putExtra("BUTTON_STATUS", result.getContents());
+                startActivity(intent);
             }
         } else {
             // This is important, otherwise the result will not be passed to the fragment

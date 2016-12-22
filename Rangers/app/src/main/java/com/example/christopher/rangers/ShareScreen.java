@@ -39,6 +39,8 @@ public class ShareScreen extends AppCompatActivity {
                 returnToMain();
             }
         });
+        fab.setImageResource(R.drawable.ic_check);
+        //ToDo: get read data
         String qrData = "This is a Test String";
         int qrCodeDimention = 500;
         ImageView imageView = (ImageView) findViewById(R.id.qrCode);
@@ -51,48 +53,6 @@ public class ShareScreen extends AppCompatActivity {
         } catch (WriterException e) {
             e.printStackTrace();
         }
-        /*
-        WindowManager manager = (WindowManager) getSystemService(WINDOW_SERVICE);
-        Display display = manager.getDefaultDisplay();
-        Point point = new Point();
-        display.getSize(point);
-        int width = point.x;
-        int height = point.y;
-        int smallerDimension = width < height ? width : height;
-        smallerDimension = smallerDimension * 3/4;
-        QRCodeEncoder qrCodeEncoder = new QRCodeEncoder("test",
-                null,
-                Contents.Type.TEXT,
-                BarcodeFormat.QR_CODE.toString(),
-                smallerDimension);
-        try {
-            Bitmap bitmap = qrCodeEncoder.encodeAsBitmap();
-            ImageView myImage = (ImageView) findViewById(R.id.qrCode);
-            myImage.setImageBitmap(bitmap);
-
-        } catch (WriterException e) {
-            e.printStackTrace();
-        }
-        /*
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_share_screen);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                returnToMain();
-            }
-        });
-        ImageView imageView = (ImageView) findViewById(R.id.qrCode);
-        try {
-            Bitmap bitmap = encodeAsBitmap("a");
-            imageView.setImageBitmap(bitmap);
-        } catch (WriterException e) {
-            e.printStackTrace();
-        }
-        */
     }
     private void returnToMain()
     {
@@ -100,7 +60,6 @@ public class ShareScreen extends AppCompatActivity {
         startActivity(i);
     }
     Bitmap encodeAsBitmap(String str) throws WriterException {
-        int WIDTH = ((ImageView)findViewById(R.id.qrCode)).getWidth();
         BitMatrix result;
         int size = 250;
         try {

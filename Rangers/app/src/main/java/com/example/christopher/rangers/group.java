@@ -24,15 +24,19 @@ public class group extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //create group
-                returnToMain();
+                createGroup();
             }
         });
+        fab.setImageResource(R.drawable.ic_add);
         displayFriends();
     }
-    private void returnToMain()
+    private void createGroup()
     {
-        Intent i = new Intent(this, HomeScreen.class);
-        startActivity(i);
+        //Todo: generate intersection
+        String intersection = "Temp";
+        Intent intent = new Intent(this, SaveScreen.class);
+        intent.putExtra("BUTTON_STATUS", intersection);
+        startActivity(intent);
     }
     protected void displayFriends()
     {

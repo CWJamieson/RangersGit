@@ -19,6 +19,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import static com.example.christopher.rangers.R.drawable.ic_check;
+
 public class HomeScreen extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -32,6 +34,7 @@ public class HomeScreen extends AppCompatActivity
         //ToDo:Read in friends/groups to the following string arrays
         String [] friends = {"Chris", "Brad", "Kyle", "Erik", "Banny", "other losers","Chris", "Brad", "Kyle", "Erik", "Banny","Chris", "Brad", "Kyle", "Erik", "Banny","Chris", "Brad", "Kyle", "Erik", "Banny","Chris", "Brad", "Kyle", "Erik", "Banny","Chris", "Brad", "Kyle", "Erik", "Banny","Chris", "Brad", "Kyle", "Erik", "Banny","Chris", "Brad", "Kyle", "Erik", "Banny","Chris", "Brad", "Kyle", "Erik", "Banny"};
         String [] planners = {"101010", "100010", "100011001"};
+
         for(int i=0;i<friends.length;i++)
         {
             FloatingActionButton fab = new  FloatingActionButton(this);
@@ -44,6 +47,8 @@ public class HomeScreen extends AppCompatActivity
                     openDisplay("Find a way to make this planners[i]");
                 }
             });
+            //Todo: change icon if its a group
+            fab.setImageResource(R.drawable.ic_person);
             LinearLayout layout;
             if(i%4==0)
                 layout = (LinearLayout) findViewById(R.id.col1);
@@ -112,10 +117,6 @@ public class HomeScreen extends AppCompatActivity
             getInput();
         } else if (id == R.id.nav_createGroup) {
             createGroup();
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
         } else if (id == R.id.nav_share) {
             share();
         } else if (id == R.id.nav_read) {
