@@ -84,6 +84,7 @@ public class DeleteScreen extends AppCompatActivity {
     }
     private void deleteFromFile(int num)
     {
-        //delete numth line from file
+        //Delete line thats passed
+
     }
 }
