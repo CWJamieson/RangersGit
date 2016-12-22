@@ -135,6 +135,10 @@ public class HomeScreen extends AppCompatActivity
             startActivity(intent);
             return true;
         }
+        else if(id==R.id.help)
+        {
+            alert();
+        }
 
         return super.onOptionsItemSelected(item);
     }

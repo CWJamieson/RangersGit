@@ -145,6 +145,10 @@ public class EnterSchedule extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }
+        else if(id == R.id.help)
+        {
+            alert();
+        }
 
         return super.onOptionsItemSelected(item);
     }

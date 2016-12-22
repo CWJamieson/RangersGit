@@ -11,6 +11,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Display;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -61,7 +63,23 @@ public class ShareScreen extends AppCompatActivity {
         } catch (WriterException e) {
             e.printStackTrace();
         }
-    }private void alert()
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.help_menu, menu);
+        return true;
+    }public boolean onOptionsItemSelected(MenuItem item){
+        int id = item.getItemId();
+
+        if (id==R.id.help)
+        {
+            alert();
+        }
+        return true;
+
+    }
+    private void alert()
     {
 
         AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);

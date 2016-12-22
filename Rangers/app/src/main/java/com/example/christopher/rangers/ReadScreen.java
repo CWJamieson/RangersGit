@@ -9,6 +9,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -56,6 +58,21 @@ public class ReadScreen extends AppCompatActivity {
                 });
         dlgAlert.setCancelable(true);
         dlgAlert.create().show();
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.help_menu, menu);
+        return true;
+    }public boolean onOptionsItemSelected(MenuItem item){
+        int id = item.getItemId();
+
+        if (id==R.id.help)
+        {
+            alert();
+        }
+        return true;
+
     }
     private void returnToMain()
     {
