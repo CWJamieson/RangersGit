@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -57,6 +58,8 @@ public class EnterSchedule extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
+        init(clicked);
+        Log.d("This shit jsut happend", "It refreshed");
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -77,7 +80,11 @@ public class EnterSchedule extends AppCompatActivity {
         intent.putExtra("BUTTON_STATUS", clicked);
         startActivity(intent);
     }
+   /* @Override
+    public void onPause()
+    {
 
+    }*/
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -183,6 +190,8 @@ public class EnterSchedule extends AppCompatActivity {
         private static final String ARG_SECTION_NAME = "section_name";
 
         public PlaceholderFragment() {
+
+            setRetainInstance(true);
         }
 
         /**
@@ -207,55 +216,22 @@ public class EnterSchedule extends AppCompatActivity {
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_enter_schedule, container, false);
             count=0;
+
             buttons = new ArrayList<Button>();
-            for(int id : BUTTON_IDS) {
-                button = (Button)rootView.findViewById(id);
+            for(int i=0;i<BUTTON_IDS.length;i++) {
+                button = (Button)rootView.findViewById(BUTTON_IDS[i]);
                 button.setText(BUTTON_TEXTS[count]);
-
                 //Button Listener that handles color change and selection change
-                button.setOnClickListener(new View.OnClickListener()
+                if(getArguments().getBooleanArray((CLICKED))[i + (getArguments().getInt(ARG_SECTION_NUMBER)-1)*28])
                 {
-                    public void onClick(View v)
-                    {
-                        //Switch statement to figure out which button in the array to click based on fragment
-                        //TODO REMOVE BUTTON BUGTEST
-                        if(count>27)
-                        {
-                            count+=0;
-                        }
-                        switch (getArguments().getInt(ARG_SECTION_NUMBER))
-                        {
+                    button.setBackgroundColor(Color.RED);
+                }
+                ButtonListener but = new ButtonListener(i, getArguments().getInt(ARG_SECTION_NUMBER),  getArguments().getBooleanArray((CLICKED)));
+                button.setOnClickListener(but);
 
-                            //Monday
-                            case 1:
-                                getArguments().getBooleanArray((CLICKED))[count + 0] = true;
-                                ((Button) v).setBackgroundColor(Color.RED);
-                                break;
-                            //Tuesday
-                            case 2:
-                                getArguments().getBooleanArray((CLICKED))[count + 28] = true;
-                                ((Button) v).setBackgroundColor(Color.BLACK);
-                                break;
-                            //Wednesday
-                            case 3:
-                                getArguments().getBooleanArray((CLICKED))[count + 56] = true;
-                                ((Button) v).setBackgroundColor(Color.GREEN);
-                                break;
-                            //Thursday
-                            case 4:
-                                getArguments().getBooleanArray((CLICKED))[count + 84] = true;
-                                ((Button) v).setBackgroundColor(Color.BLUE);
-                                break;
-                            //Friday
-                            case 5:
-                                getArguments().getBooleanArray((CLICKED))[count + 112] = true;
-                                ((Button) v).setBackgroundColor(Color.CYAN);
-                                break;
-                        }
                         //Changes color of button
                         //((Button) v).setBackgroundColor(Color.RED);
-                    }
-                });
+
                 buttons.add(button);
                 count++;
             }
@@ -279,7 +255,6 @@ public class EnterSchedule extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            init(clicked);
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
             return PlaceholderFragment.newInstance(position + 1,(String) getPageTitle(position), clicked);
