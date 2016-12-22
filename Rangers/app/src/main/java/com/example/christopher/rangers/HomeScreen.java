@@ -100,6 +100,9 @@ public class HomeScreen extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent intent = new Intent(this, DeleteScreen.class);
+            intent.putExtra("FRIENDS",friends);
+            startActivity(intent);
             return true;
         }
 
@@ -150,5 +153,10 @@ public class HomeScreen extends AppCompatActivity
         intent.putExtra("FRIENDS", friends);
         intent.putExtra("PLANNERS", planners);
         startActivity(intent);
+    }
+    private void deleteContacts()
+    {
+        Toast.makeText(this, "Test", Toast.LENGTH_LONG).show();
+
     }
 }

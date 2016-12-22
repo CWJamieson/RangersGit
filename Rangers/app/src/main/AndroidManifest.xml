@@ -42,6 +42,7 @@
             android:name=".DisplayScreen"
             android:label="@string/title_activity_display_screen"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".DeleteScreen"></activity>
     </application>
 
 </manifest>
