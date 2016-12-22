@@ -207,6 +207,7 @@ public class EnterSchedule extends AppCompatActivity {
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_enter_schedule, container, false);
             count=0;
+            buttons = new ArrayList<Button>();
             for(int id : BUTTON_IDS) {
                 button = (Button)rootView.findViewById(id);
                 button.setText(BUTTON_TEXTS[count]);
@@ -258,6 +259,7 @@ public class EnterSchedule extends AppCompatActivity {
                 buttons.add(button);
                 count++;
             }
+            count=0;
             TextView textView = (TextView) rootView.findViewById(R.id.section_label);
             textView.setText(getArguments().getString(ARG_SECTION_NAME));
 
