@@ -1,6 +1,7 @@
 package com.example.christopher.rangers;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +20,7 @@ import android.view.ViewGroup;
 
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -197,18 +199,62 @@ public class EnterSchedule extends AppCompatActivity {
             return fragment;
         }
 
+        protected Button button;
+        protected List<Button> buttons = new ArrayList<Button>();
+        protected int count;
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_enter_schedule, container, false);
-            List<Button> buttons = new ArrayList<Button>();
-            int count=0;
+            count=0;
             for(int id : BUTTON_IDS) {
-                Button button = (Button)rootView.findViewById(id);
+                button = (Button)rootView.findViewById(id);
                 button.setText(BUTTON_TEXTS[count]);
 
-               // button.setOnClickListener(new NumberedListener(count, getArguments().getInt(ARG_SECTION_NUMBER),getArguments().getBooleanArray((CLICKED))));
+                //Button Listener that handles color change and selection change
+                button.setOnClickListener(new View.OnClickListener()
+                {
+                    public void onClick(View v)
+                    {
+                        //Switch statement to figure out which button in the array to click based on fragment
+                        //TODO REMOVE BUTTON BUGTEST
+                        if(count>27)
+                        {
+                            count+=0;
+                        }
+                        switch (getArguments().getInt(ARG_SECTION_NUMBER))
+                        {
 
+                            //Monday
+                            case 1:
+                                getArguments().getBooleanArray((CLICKED))[count + 0] = true;
+                                ((Button) v).setBackgroundColor(Color.RED);
+                                break;
+                            //Tuesday
+                            case 2:
+                                getArguments().getBooleanArray((CLICKED))[count + 28] = true;
+                                ((Button) v).setBackgroundColor(Color.BLACK);
+                                break;
+                            //Wednesday
+                            case 3:
+                                getArguments().getBooleanArray((CLICKED))[count + 56] = true;
+                                ((Button) v).setBackgroundColor(Color.GREEN);
+                                break;
+                            //Thursday
+                            case 4:
+                                getArguments().getBooleanArray((CLICKED))[count + 84] = true;
+                                ((Button) v).setBackgroundColor(Color.BLUE);
+                                break;
+                            //Friday
+                            case 5:
+                                getArguments().getBooleanArray((CLICKED))[count + 112] = true;
+                                ((Button) v).setBackgroundColor(Color.CYAN);
+                                break;
+                        }
+                        //Changes color of button
+                        //((Button) v).setBackgroundColor(Color.RED);
+                    }
+                });
                 buttons.add(button);
                 count++;
             }
