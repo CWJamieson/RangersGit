@@ -40,8 +40,7 @@ public class ShareScreen extends AppCompatActivity {
             }
         });
         fab.setImageResource(R.drawable.ic_check);
-        //ToDo: get read data
-        String qrData = "This is a Test String";
+        String qrData = getIntent().getStringExtra("PLANNER");
         int qrCodeDimention = 500;
         ImageView imageView = (ImageView) findViewById(R.id.qrCode);
         QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(qrData, null,

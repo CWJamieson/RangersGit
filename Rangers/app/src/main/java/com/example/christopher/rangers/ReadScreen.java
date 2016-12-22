@@ -47,9 +47,6 @@ public class ReadScreen extends AppCompatActivity {
                 Log.d("MainActivity", "Cancelled scan");
                 Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
             } else {
-                //ToDo: Change to save data
-                Log.d("MainActivity", "Scanned");
-                Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(this, SaveScreen.class);
                 intent.putExtra("BUTTON_STATUS", result.getContents());
                 startActivity(intent);

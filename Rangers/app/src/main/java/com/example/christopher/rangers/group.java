@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 
+import static android.R.attr.id;
+
 public class group extends AppCompatActivity {
 
     @Override
@@ -32,10 +34,30 @@ public class group extends AppCompatActivity {
     }
     private void createGroup()
     {
-        //Todo: generate intersection
-        String intersection = "Temp";
-        Intent intent = new Intent(this, SaveScreen.class);
-        intent.putExtra("BUTTON_STATUS", intersection);
+        Intent intent = getIntent();
+        String [] friends = intent.getStringArrayExtra("PLANNERS");
+        char[] intersection = new char[140];
+        for(int i=0;i<140;i++)
+            intersection[i] = '0';
+        for(int i=0;i<friends.length;i++)
+        {
+            CheckBox chk = (CheckBox)findViewById(i);
+            if(chk.isChecked())
+            {
+                for(int j=0;i<140;j++)
+                {
+                    if(!(intersection[j] == '0' && friends[i].charAt(j) == '0'))
+                        intersection[j] = '1';
+                }
+            }
+        }
+        String out = "";
+        for(int i=0;i<140;i++)
+        {
+            out+=intersection[i];
+        }
+        intent = new Intent(this, SaveScreen.class);
+        intent.putExtra("BUTTON_STATUS", out);
         startActivity(intent);
     }
     protected void displayFriends()
@@ -46,7 +68,7 @@ public class group extends AppCompatActivity {
         {
             CheckBox chk = new CheckBox(this);
             chk.setText(friends[i]);
-
+            chk.setId(i);
             LinearLayout layout = (LinearLayout) findViewById(R.id.content_group);
             layout.addView(chk);
         }

@@ -37,23 +37,9 @@ public class SaveScreen extends AppCompatActivity
     }
     private void save()
     {
-        String saveString = "";
         //Fetch boolean array clicked from schedule
-        boolean boolArray[] = this.getIntent().getBooleanArrayExtra("BUTTON_STATUS");
-        //Transform boolean array into a string of data for file saving
-        for(boolean booleans : boolArray)
-        {
-            //Button was clicked
-            if(booleans)
-            {
-                saveString = saveString + "1";
-            }
-            //Button was not clicked
-            else
-            {
-                saveString = saveString + "0";
-            }
-        }
+        String saveString = this.getIntent().getStringExtra("BUTTON_STATUS");
+
         //Retrieve string from input and add to saveString
         EditText nameView = (EditText) findViewById(R.id.edit_message);
         saveString = saveString + " " + nameView.getText().toString();

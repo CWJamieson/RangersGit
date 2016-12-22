@@ -23,7 +23,8 @@ import static com.example.christopher.rangers.R.drawable.ic_check;
 
 public class HomeScreen extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
+    String [] friends;
+    String [] planners;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,18 +36,16 @@ public class HomeScreen extends AppCompatActivity
         String [] friends = {"Chris", "Brad", "Kyle", "Erik", "Banny", "other losers","Chris", "Brad", "Kyle", "Erik", "Banny","Chris", "Brad", "Kyle", "Erik", "Banny","Chris", "Brad", "Kyle", "Erik", "Banny","Chris", "Brad", "Kyle", "Erik", "Banny","Chris", "Brad", "Kyle", "Erik", "Banny","Chris", "Brad", "Kyle", "Erik", "Banny","Chris", "Brad", "Kyle", "Erik", "Banny","Chris", "Brad", "Kyle", "Erik", "Banny"};
         String [] planners = {"101010", "100010", "100011001"};
 
+
+        this.friends = friends;
+        this.planners = planners;
         for(int i=0;i<friends.length;i++)
         {
             FloatingActionButton fab = new  FloatingActionButton(this);
             TextView text = new TextView(this);
             text.setText(friends[i]);
-
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    openDisplay("Find a way to make this planners[i]");
-                }
-            });
+            fabListener list = new fabListener(i, planners, this);
+            fab.setOnClickListener(list);
             //Todo: change icon if its a group
             fab.setImageResource(R.drawable.ic_person);
             LinearLayout layout;
@@ -135,6 +134,7 @@ public class HomeScreen extends AppCompatActivity
     private void share()
     {
         Intent intent = new Intent(this, ShareScreen.class);
+        intent.putExtra("PLANNER", planners[0]);
         startActivity(intent);
     }
     private void getInput()
@@ -142,18 +142,13 @@ public class HomeScreen extends AppCompatActivity
         Intent intent = new Intent(this, EnterSchedule.class);
         startActivity(intent);
     }
-    private void openDisplay(String planner)
-    {
 
-        Intent intent = new Intent(this, DisplayScreen.class);
-        intent.putExtra("PLANNER", planner);
-        startActivity(intent);
-    }
     private void createGroup()
     {
         Intent intent = new Intent(this, group.class);
-        String [] fri = {"Chris","Bradley","Kyle"};
-        intent.putExtra("FRIENDS", fri);
+
+        intent.putExtra("FRIENDS", friends);
+        intent.putExtra("PLANNERS", planners);
         startActivity(intent);
     }
 }

@@ -77,7 +77,22 @@ public class EnterSchedule extends AppCompatActivity {
     {
 
         Intent intent = new Intent(this, SaveScreen.class);
-        intent.putExtra("BUTTON_STATUS", clicked);
+        String saveString = "";
+        //Transform boolean array into a string of data for file saving
+        for(boolean booleans : clicked)
+        {
+            //Button was clicked
+            if(booleans)
+            {
+                saveString = saveString + "1";
+            }
+            //Button was not clicked
+            else
+            {
+                saveString = saveString + "0";
+            }
+        }
+        intent.putExtra("BUTTON_STATUS", saveString);
         startActivity(intent);
     }
    /* @Override

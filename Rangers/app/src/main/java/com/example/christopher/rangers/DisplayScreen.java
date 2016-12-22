@@ -29,7 +29,8 @@ public class DisplayScreen extends AppCompatActivity {
         //actionBar.setDisplayHomeAsUpEnabled(true);
         LinearLayout layout;
         String planner = getIntent().getStringExtra("PLANNER");
-        planner = "10010000011001000001100100000110010000011001000001100100000110010000011001000001100100000110010000011001000001100100000110010000011001000001";
+        while(planner.length()<140)
+            planner = planner+"0";
         TextView text = new TextView(this);
 
         createHeaders();
