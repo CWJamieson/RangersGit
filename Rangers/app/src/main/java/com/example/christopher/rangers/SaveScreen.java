@@ -78,6 +78,7 @@ public class SaveScreen extends AppCompatActivity
     {
         //Save to personal file
         FileOutputStream fos = null;
+        FileIO fileIO = new FileIO(getApplicationContext());
         String fileName = "saveFile";
         File file = new File(getApplicationContext().getFilesDir(), fileName);
         String fileSaveString;
@@ -91,7 +92,7 @@ public class SaveScreen extends AppCompatActivity
             }
             else
             {
-                fileSaveString = saveString + "\n" + getOldContents();
+                fileSaveString = saveString + "\n" + fileIO.getOldContents();
             }
             Log.d("fileSaveString", fileSaveString);
             //Create file

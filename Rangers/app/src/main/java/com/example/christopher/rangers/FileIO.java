@@ -1,5 +1,6 @@
 package com.example.christopher.rangers;
 
+import android.content.Context;
 import android.util.Log;
 
 import java.io.File;
@@ -11,11 +12,17 @@ import java.io.IOException;
  */
 
 public class FileIO {
-    private String getOldContents()
+    Context context;
+
+    public FileIO(Context context)
+    {
+        this.context = context;
+    }
+    protected String getOldContents()
     {
         String oldString = "";
         String fileName = "saveFile";
-        File file = new File(getApplicationContext().getFilesDir(), fileName);
+        File file = new File(context.getFilesDir(), fileName);
         FileInputStream fin = null;
         int character;
         try
