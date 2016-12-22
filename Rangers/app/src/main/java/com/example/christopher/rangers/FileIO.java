@@ -11,13 +11,15 @@ import java.io.IOException;
  * Created by Bradley on 2016-12-22.
  */
 
-public class FileIO {
+public class FileIO
+{
     Context context;
 
     public FileIO(Context context)
     {
         this.context = context;
     }
+
     protected String getOldContents()
     {
         String oldString = "";
@@ -28,6 +30,7 @@ public class FileIO {
         try
         {
             fin = new FileInputStream(file);
+            //Get a string with the contents of the folder
             while((character = fin.read()) != -1)
             {
                 oldString = oldString + Character.toString((char)character);
@@ -53,5 +56,56 @@ public class FileIO {
         }
         Log.d("oldString", oldString);
         return oldString;
+    }
+
+    protected void removeFileLine(int removeLineNum)
+    {
+        int counter = 0;
+        String fileString = "";
+        String fileName = "saveFile";
+        File file = new File(context.getFilesDir(), fileName);
+        FileInputStream fin = null;
+        int character;
+        try
+        {
+            fin = new FileInputStream(file);
+            //Get a string with the contents of the folder
+            while((character = fin.read()) != -1)
+            {
+                //Hits end of line
+                if(Character.toString((char)character).equals("\n"))
+                {
+                    counter++;
+                    if(counter != removeLineNum)
+                    {
+                        fileString = fileString + Character.toString((char)character);
+                    }
+                }
+                //Finds line to remove
+                if(counter != removeLineNum && !Character.toString((char)character).equals("\n"))
+                {
+                    fileString = fileString + Character.toString((char)character);
+                }
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            try
+            {
+                if (fin != null)
+                {
+                    fin.close();
+                }
+            }
+            catch(IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
+
     }
 }
