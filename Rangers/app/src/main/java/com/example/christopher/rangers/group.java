@@ -1,9 +1,11 @@
 package com.example.christopher.rangers;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -20,6 +22,11 @@ public class group extends AppCompatActivity {
         setContentView(R.layout.activity_group);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        boolean displayAlert = true;
+        if(displayAlert)
+            alert();
+
         setTitle("Create Group");
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -60,6 +67,22 @@ public class group extends AppCompatActivity {
         intent = new Intent(this, SaveScreen.class);
         intent.putExtra("BUTTON_STATUS", out);
         startActivity(intent);
+    }
+    private void alert()
+    {
+
+        AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);
+        dlgAlert.setMessage("To create a group, select the contacts or groups you wish to include," +
+                " and press the check when you are finished.");
+        dlgAlert.setTitle("Creating a group");
+        dlgAlert.setPositiveButton("Ok",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        //write to never show again
+                    }
+                });
+        dlgAlert.setCancelable(true);
+        dlgAlert.create().show();
     }
     protected void displayFriends()
     {

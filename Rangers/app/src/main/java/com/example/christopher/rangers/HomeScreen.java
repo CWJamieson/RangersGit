@@ -1,9 +1,11 @@
 package com.example.christopher.rangers;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -42,6 +44,9 @@ public class HomeScreen extends AppCompatActivity
         String [] friends = string.get(1).toArray(new String[string.get(1).size()]);
         String [] planners = string.get(0).toArray(new String[string.get(0).size()]);
 
+        boolean displayAlert = true;
+        if(displayAlert)
+            alert();
 
         this.friends = friends;
         this.planners = planners;
@@ -80,7 +85,24 @@ public class HomeScreen extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
+    private void alert()
+    {
 
+        AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);
+        dlgAlert.setMessage("This is an app for finding free time with friends. You'll want to " +
+                "start by inputting your own schedule, using the \"Input Planner\" option. All help" +
+                " messages will only display once automatically, but can be brought up using the top" +
+                " corner.");
+        dlgAlert.setTitle("Welcome to Plannit!");
+        dlgAlert.setPositiveButton("Ok",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        //write to never show again
+                    }
+                });
+        dlgAlert.setCancelable(true);
+        dlgAlert.create().show();
+    }
     //Back button is pressed
     @Override
     public void onBackPressed() {

@@ -1,11 +1,13 @@
 package com.example.christopher.rangers;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Display;
@@ -33,6 +35,12 @@ public class ShareScreen extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setTitle("Share your planner");
+
+
+        boolean displayAlert = true;
+        if(displayAlert)
+            alert();
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,6 +61,22 @@ public class ShareScreen extends AppCompatActivity {
         } catch (WriterException e) {
             e.printStackTrace();
         }
+    }private void alert()
+    {
+
+        AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);
+        dlgAlert.setMessage("To give your friends a copy of your planner, have them scan this symbol with the " +
+                "\"read\" option on the home screen. It will always share the top left planer in your home screen" +
+                " so ensure that's the correct one.");
+        dlgAlert.setTitle("Sharing Your Schedule");
+        dlgAlert.setPositiveButton("Ok",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        //write to never show again
+                    }
+                });
+        dlgAlert.setCancelable(true);
+        dlgAlert.create().show();
     }
     private void returnToMain()
     {

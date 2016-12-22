@@ -1,10 +1,12 @@
 package com.example.christopher.rangers;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -30,6 +32,10 @@ public class SaveScreen extends AppCompatActivity
         setSupportActionBar(toolbar);
         setTitle("Choose a name");
 
+        boolean displayAlert = true;
+        if(displayAlert)
+            alert();
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setImageResource(R.drawable.ic_add);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -37,7 +43,22 @@ public class SaveScreen extends AppCompatActivity
                 save();
             }
         });
-    }
+    }private void alert()
+{
+
+    AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);
+    dlgAlert.setMessage("You will be brought here whenever creating a contact or inputting your" +
+            " schedule. just choose a name for the planner and press + when you're ready");
+    dlgAlert.setTitle("Adding a contact");
+    dlgAlert.setPositiveButton("Ok",
+            new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    //write to never show again
+                }
+            });
+    dlgAlert.setCancelable(true);
+    dlgAlert.create().show();
+}
     private void save()
     {
         //Fetch boolean array clicked from schedule

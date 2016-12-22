@@ -1,9 +1,11 @@
 package com.example.christopher.rangers;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -22,6 +24,11 @@ public class ReadScreen extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
+        boolean displayAlert = true;
+        if(displayAlert)
+            alert();
+
         setTitle("Scan a plan code");
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -34,6 +41,21 @@ public class ReadScreen extends AppCompatActivity {
         IntentIntegrator integrator = new IntentIntegrator(this);
         integrator.initiateScan();
 
+    }private void alert()
+    {
+
+        AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);
+        dlgAlert.setMessage("To read a friend's planner, simply have them share their planner" +
+                " using the \"share\" option on the home screen and view the qr code with this app");
+        dlgAlert.setTitle("Scanning a code");
+        dlgAlert.setPositiveButton("Ok",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        //write to never show again
+                    }
+                });
+        dlgAlert.setCancelable(true);
+        dlgAlert.create().show();
     }
     private void returnToMain()
     {

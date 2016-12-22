@@ -1,12 +1,14 @@
 package com.example.christopher.rangers;
 
 import android.app.ActionBar;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -27,7 +29,13 @@ public class DisplayScreen extends AppCompatActivity {
         setTitle(getIntent().getStringExtra("NAME"));
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //actionBar.setDisplayHomeAsUpEnabled(true);
+
+
+        boolean displayAlert = true;
+        if(displayAlert)
+            alert();
+
+
         LinearLayout layout;
         String planner = getIntent().getStringExtra("PLANNER");
         while(planner.length()<140)
@@ -110,6 +118,22 @@ public class DisplayScreen extends AppCompatActivity {
     {
         Intent i = new Intent(this, HomeScreen.class);
         startActivity(i);
+    }
+    private void alert()
+    {
+
+        AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);
+        dlgAlert.setMessage("The grid represents all time during the week in half hour increments" +
+                ", available times are shown in green while the rest of the week is shown in white");
+        dlgAlert.setTitle("Planner display");
+        dlgAlert.setPositiveButton("Ok",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        //write to never show again
+                    }
+                });
+        dlgAlert.setCancelable(true);
+        dlgAlert.create().show();
     }
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();

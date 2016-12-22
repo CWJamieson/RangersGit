@@ -2,6 +2,7 @@ package com.example.christopher.rangers;
 
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -28,6 +29,16 @@ public class ButtonListener  implements View.OnClickListener{
 //Switch statement to figure out which button in the array to click based on fragment
         int local = count;
         Log.d("Count", ""+local);
+        if(!clicked[count + ((page-1)*28)]) {
+            clicked[count + ((page - 1) * 28)] = true;
+            ((Button) v).getBackground().setColorFilter(Color.RED, PorterDuff.Mode.MULTIPLY);
+        }
+        else
+        {
+            clicked[count + ((page - 1) * 28)] = false;
+            ((Button) v).getBackground().setColorFilter(Color.RED, PorterDuff.Mode.MULTIPLY);
+        }
+        /*
         switch (page)
         {
 
@@ -57,5 +68,6 @@ public class ButtonListener  implements View.OnClickListener{
                 ((Button) v).setBackgroundColor(Color.CYAN);
                 break;
         }
+        */
     }
 }

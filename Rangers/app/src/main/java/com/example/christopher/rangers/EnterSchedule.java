@@ -1,9 +1,12 @@
 package com.example.christopher.rangers;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -51,6 +54,11 @@ public class EnterSchedule extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setTitle("Input a planner");
+
+
+        boolean displayAlert = true;
+        if(displayAlert)
+            alert();
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -73,6 +81,23 @@ public class EnterSchedule extends AppCompatActivity {
         });
         fab.setImageResource(R.drawable.ic_check);
 
+    }
+    private void alert()
+    {
+
+        AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);
+        dlgAlert.setMessage("This is where you input your own schedule. click the times you are busy, " +
+                "and swipe left and right to view different days of the week. Press the check when" +
+                "you are finished.");
+        dlgAlert.setTitle("Entering your planner");
+        dlgAlert.setPositiveButton("Ok",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        //write to never show again
+                    }
+                });
+        dlgAlert.setCancelable(true);
+        dlgAlert.create().show();
     }
     public void save()
     {
@@ -241,13 +266,11 @@ public class EnterSchedule extends AppCompatActivity {
                 //Button Listener that handles color change and selection change
                 if(getArguments().getBooleanArray((CLICKED))[i + (getArguments().getInt(ARG_SECTION_NUMBER)-1)*28])
                 {
-                    button.setBackgroundColor(Color.RED);
+                    button.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.MULTIPLY);
                 }
                 ButtonListener but = new ButtonListener(i, getArguments().getInt(ARG_SECTION_NUMBER),  getArguments().getBooleanArray((CLICKED)));
                 button.setOnClickListener(but);
 
-                        //Changes color of button
-                        //((Button) v).setBackgroundColor(Color.RED);
 
                 buttons.add(button);
                 count++;

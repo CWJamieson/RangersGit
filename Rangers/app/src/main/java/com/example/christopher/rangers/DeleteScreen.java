@@ -1,7 +1,9 @@
 package com.example.christopher.rangers;
 
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -18,6 +20,12 @@ public class DeleteScreen extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("Delete contacts");
+
+        boolean displayAlert = true;
+        if(displayAlert)
+            alert();
+
+
         String [] friends = getIntent().getStringArrayExtra("FRIENDS");
         for(int i=0;i<friends.length;i++)
         {
@@ -47,6 +55,23 @@ public class DeleteScreen extends AppCompatActivity {
             layout.addView(text);
 
         }
+    }
+    private void alert()
+    {
+
+        AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);
+        dlgAlert.setMessage("To delete contacts, simply click all contacts you wish to remove," +
+                " and press the arrow at the top to pernamently delete them. To cancel, press" +
+                " back on your device.");
+        dlgAlert.setTitle("Deleting contacts");
+        dlgAlert.setPositiveButton("Ok",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        //write to never show again
+                    }
+                });
+        dlgAlert.setCancelable(true);
+        dlgAlert.create().show();
     }
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
