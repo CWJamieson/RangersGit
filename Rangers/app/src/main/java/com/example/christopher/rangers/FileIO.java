@@ -58,7 +58,7 @@ public class FileIO
         return oldString;
     }
 
-    protected void removeFileLine(int removeLineNum)
+    protected String removeFileLine(int removeLineNum)
     {
         int counter = 0;
         String fileString = "";
@@ -73,6 +73,7 @@ public class FileIO
             while((character = fin.read()) != -1)
             {
                 //Hits end of line
+                if((char)character == '\n')
                 if(Character.toString((char)character).equals("\n"))
                 {
                     counter++;
@@ -87,9 +88,13 @@ public class FileIO
                     fileString = fileString + Character.toString((char)character);
                 }
             }
+            Log.d("Debug", "cnt "+counter+" fileString "+fileString);
+
         }
         catch(Exception e)
         {
+
+            Log.d("Debug", "cnt "+counter+" fileString ANHDKJHAOIFJOAERROROROEEROROR"+fileString);
             e.printStackTrace();
         }
         finally
@@ -100,12 +105,15 @@ public class FileIO
                 {
                     fin.close();
                 }
+
             }
             catch(IOException e)
             {
                 e.printStackTrace();
             }
         }
+        return  fileString;
+
 
     }
 }

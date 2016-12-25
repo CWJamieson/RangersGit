@@ -1,15 +1,23 @@
 package com.example.christopher.rangers;
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class DeleteScreen extends AppCompatActivity {
 
@@ -77,7 +85,8 @@ public class DeleteScreen extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id==android.R.id.home) {
-            finish();
+            Intent intent = new Intent(this, HomeScreen.class);
+            startActivity(intent);
         }
         return true;
 
@@ -86,6 +95,41 @@ public class DeleteScreen extends AppCompatActivity {
     {
         //Delete line that's passed
         FileIO fileIO = new FileIO(getApplicationContext());
-        fileIO.removeFileLine(num);
+        String newFileData = fileIO.removeFileLine(num);
+        fileSave(newFileData);
+    }
+    private void fileSave(String saveString) {
+        //Save to personal file
+        FileOutputStream fos = null;
+        FileIO fileIO = new FileIO(getApplicationContext());
+        String fileName = "saveFile";
+        File file = new File(getApplicationContext().getFilesDir(), fileName);
+        String fileSaveString;
+        try {
+            //String that includes the contents for the whole file (new and old)
+            Log.d("saveString", saveString);
+
+            fileSaveString = saveString;
+
+            Log.d("fileSaveString", fileSaveString);
+            //Create file
+            fos = openFileOutput("saveFile", Context.MODE_PRIVATE);
+            //Write to file
+            fos.write(fileSaveString.getBytes());
+            //Show user save was successful
+            Toast toast = Toast.makeText(getBaseContext(), "Schedule Saved", Toast.LENGTH_SHORT);
+            toast.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (fos != null) {
+                    fos.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
