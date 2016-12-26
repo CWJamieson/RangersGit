@@ -80,10 +80,12 @@ public class SaveScreen extends AppCompatActivity
     {
         //Fetch boolean array clicked from schedule
         String saveString = this.getIntent().getStringExtra("BUTTON_STATUS");
+        String flagString = this.getIntent().getStringExtra("FLAG");
 
         //Retrieve string from input and add to saveString
         EditText nameView = (EditText) findViewById(R.id.edit_message);
-        saveString = saveString + "~" + nameView.getText().toString();
+        //Add data, flag and name
+        saveString = saveString + "~" + flagString + "~" + nameView.getText().toString();
         //Save to file
         fileSave(saveString);
         //Return to home screen

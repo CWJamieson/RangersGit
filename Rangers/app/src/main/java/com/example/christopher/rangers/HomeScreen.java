@@ -40,9 +40,15 @@ public class HomeScreen extends AppCompatActivity
         setSupportActionBar(toolbar);
         setTitle("Plannit");
 
+        //Read input from save file
         ArrayList<ArrayList<String>> string = readFile();
-        String [] friends = string.get(1).toArray(new String[string.get(1).size()]);
+        //Parallel arrays for each line
+        //Name
+        String [] friends = string.get(2).toArray(new String[string.get(2).size()]);
+        //Data
         String [] planners = string.get(0).toArray(new String[string.get(0).size()]);
+        //Flag(type)
+        String [] flag = string.get(1).toArray(new String[string.get(1).size()]);
 
         boolean displayAlert = true;
         if(displayAlert)
@@ -200,6 +206,7 @@ public class HomeScreen extends AppCompatActivity
         ArrayList<ArrayList<String>> string = new ArrayList<>();
         string.add(new ArrayList<String>());
         string.add(new ArrayList<String>());
+        string.add(new ArrayList<String>());
         String lineString = "";
         String fileName = "saveFile";
         File file = new File(getApplicationContext().getFilesDir(), fileName);
@@ -217,8 +224,10 @@ public class HomeScreen extends AppCompatActivity
                     String temp[] = lineString.split("~");
                     //Store data
                     string.get(0).add(temp[0]);
-                    //Store name
+                    //Store flag
                     string.get(1).add(temp[1]);
+                    //Store name
+                    string.get(2).add(temp[2]);
                     //Reset line
                     lineString = "";
                 }

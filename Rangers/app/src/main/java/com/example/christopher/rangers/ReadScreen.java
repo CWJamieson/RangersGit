@@ -89,6 +89,7 @@ public class ReadScreen extends AppCompatActivity {
             } else {
                 Intent intent = new Intent(this, SaveScreen.class);
                 intent.putExtra("BUTTON_STATUS", result.getContents());
+                intent.putExtra("FLAG", "f");
                 startActivity(intent);
             }
         } else {

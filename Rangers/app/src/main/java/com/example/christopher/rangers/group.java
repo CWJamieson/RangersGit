@@ -68,6 +68,7 @@ public class group extends AppCompatActivity {
         //Todo: check for empty or full
         intent = new Intent(this, SaveScreen.class);
         intent.putExtra("BUTTON_STATUS", out);
+        intent.putExtra("FLAG", "g");
         startActivity(intent);
     }
     @Override

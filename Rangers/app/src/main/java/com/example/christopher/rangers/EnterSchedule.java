@@ -118,8 +118,9 @@ public class EnterSchedule extends AppCompatActivity {
                 saveString = saveString + "0";
             }
         }
-        saveString = saveString+"~m";
+        saveString = saveString;
         intent.putExtra("BUTTON_STATUS", saveString);
+        intent.putExtra("FLAG", "m");
         startActivity(intent);
     }
    /* @Override
@@ -306,7 +307,7 @@ public class EnterSchedule extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
+            // Show 5 total pages.
             return 5;
         }
 
