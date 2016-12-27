@@ -1,5 +1,6 @@
 package com.example.christopher.rangers;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,8 +18,12 @@ import android.widget.Toast;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-public class ReadScreen extends AppCompatActivity {
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
+public class ReadScreen extends AppCompatActivity {
+    char [] prefs;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,9 +32,13 @@ public class ReadScreen extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
-        boolean displayAlert = true;
-        if(displayAlert)
+        prefs = getIntent().getCharArrayExtra("PREFS");
+        boolean displayAlert = prefs[5]=='0';
+        if(displayAlert) {
             alert();
+            prefs[5]='1';
+            writePrefs(prefs);
+        }
 
         setTitle("Scan a plan code");
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -58,6 +67,47 @@ public class ReadScreen extends AppCompatActivity {
                 });
         dlgAlert.setCancelable(true);
         dlgAlert.create().show();
+    }private void writePrefs(char [] in)
+    {
+        //Save to personal file
+        FileOutputStream fos = null;
+        FileIO fileIO = new FileIO(getApplicationContext());
+        String fileName = "preferences";
+        File file = new File(getApplicationContext().getFilesDir(), fileName);
+        file.delete();
+        String fileSaveString = "";
+        for(int i=0;i<in.length;i++)
+        {
+            fileSaveString +=in[i];
+        }
+        try
+        {
+
+            Log.d("fileSaveString", fileSaveString);
+            //Create file
+            fos = openFileOutput(fileName, Context.MODE_PRIVATE);
+            //Write to file
+            fos.write(fileSaveString.getBytes());
+
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            try
+            {
+                if (fos != null)
+                {
+                    fos.close();
+                }
+            }
+            catch(IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -89,6 +139,7 @@ public class ReadScreen extends AppCompatActivity {
             } else {
                 Intent intent = new Intent(this, SaveScreen.class);
                 intent.putExtra("BUTTON_STATUS", result.getContents());
+                intent.putExtra("PREFS", prefs);
                 intent.putExtra("FLAG", "f");
                 startActivity(intent);
             }

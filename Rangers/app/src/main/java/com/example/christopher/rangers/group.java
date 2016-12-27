@@ -1,5 +1,6 @@
 package com.example.christopher.rangers;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,16 +9,22 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.Toast;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import static android.R.attr.id;
 
 public class group extends AppCompatActivity {
-
+    char [] prefs;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,10 +32,13 @@ public class group extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        boolean displayAlert = true;
-        if(displayAlert)
+        prefs = getIntent().getCharArrayExtra("PREFS");
+        boolean displayAlert = prefs[3]=='0';
+        if(displayAlert) {
             alert();
-
+            prefs[3]='1';
+            writePrefs(prefs);
+        }
         setTitle("Create Group");
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -68,6 +78,7 @@ public class group extends AppCompatActivity {
         //Todo: check for empty or full
         intent = new Intent(this, SaveScreen.class);
         intent.putExtra("BUTTON_STATUS", out);
+        intent.putExtra("PREFS", prefs);
         intent.putExtra("FLAG", "g");
         startActivity(intent);
     }
@@ -85,6 +96,47 @@ public class group extends AppCompatActivity {
         }
         return true;
 
+    }private void writePrefs(char [] in)
+    {
+        //Save to personal file
+        FileOutputStream fos = null;
+        FileIO fileIO = new FileIO(getApplicationContext());
+        String fileName = "preferences";
+        File file = new File(getApplicationContext().getFilesDir(), fileName);
+        file.delete();
+        String fileSaveString = "";
+        for(int i=0;i<in.length;i++)
+        {
+            fileSaveString +=in[i];
+        }
+        try
+        {
+
+            Log.d("fileSaveString", fileSaveString);
+            //Create file
+            fos = openFileOutput(fileName, Context.MODE_PRIVATE);
+            //Write to file
+            fos.write(fileSaveString.getBytes());
+
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            try
+            {
+                if (fos != null)
+                {
+                    fos.close();
+                }
+            }
+            catch(IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
     }
     private void alert()
     {

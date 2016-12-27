@@ -1,11 +1,13 @@
 package com.example.christopher.rangers;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -23,6 +25,7 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -33,6 +36,7 @@ public class HomeScreen extends AppCompatActivity
     String [] friends;
     String [] planners;
     String [] flags;
+    char[] prefs;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +47,7 @@ public class HomeScreen extends AppCompatActivity
 
         //Read input from save file
         ArrayList<ArrayList<String>> string = readFile();
+        prefs = readPrefs();
         //Parallel arrays for each line
         //Name
         String [] friends = string.get(2).toArray(new String[string.get(2).size()]);
@@ -51,9 +56,14 @@ public class HomeScreen extends AppCompatActivity
         //Flag(type)
         String [] flag = string.get(1).toArray(new String[string.get(1).size()]);
 
-        boolean displayAlert = true;
-        if(displayAlert)
+
+
+        boolean displayAlert = prefs[4]=='0';
+        if(displayAlert) {
             alert();
+            prefs[4]='1';
+            writePrefs(prefs);
+        }
 
         this.friends = friends;
         this.planners = planners;
@@ -65,7 +75,7 @@ public class HomeScreen extends AppCompatActivity
             text.setMinLines(2);
             text.setText(friends[i]);
 
-            fabListener list = new fabListener(i, planners, friends, this);
+            fabListener list = new fabListener(i, planners, friends, prefs, this);
             fab.setOnClickListener(list);
             if(flag[i].equals("g"))
                 fab.setImageResource(R.drawable.ic_people);
@@ -144,6 +154,7 @@ public class HomeScreen extends AppCompatActivity
             intent.putExtra("FRIENDS",friends);
             intent.putExtra("FLAGS", flags);
             intent.putExtra("PLANNERS", planners);
+            intent.putExtra("PREFS", prefs);
             startActivity(intent);
             return true;
         }
@@ -178,17 +189,20 @@ public class HomeScreen extends AppCompatActivity
     private void read()
     {
         Intent intent = new Intent(this, ReadScreen.class);
+        intent.putExtra("PREFS", prefs);
         startActivity(intent);
     }
     private void share()
     {
         Intent intent = new Intent(this, ShareScreen.class);
+        intent.putExtra("PREFS", prefs);
         intent.putExtra("PLANNER", planners[0]);
         startActivity(intent);
     }
     private void getInput()
     {
         Intent intent = new Intent(this, EnterSchedule.class);
+        intent.putExtra("PREFS", prefs);
         startActivity(intent);
     }
 
@@ -196,6 +210,7 @@ public class HomeScreen extends AppCompatActivity
     {
         Intent intent = new Intent(this, group.class);
 
+        intent.putExtra("PREFS", prefs);
         intent.putExtra("FRIENDS", friends);
         intent.putExtra("PLANNERS", planners);
         startActivity(intent);
@@ -264,5 +279,131 @@ public class HomeScreen extends AppCompatActivity
         }
         //Return parsed data
         return string;
+    }
+    private char [] readPrefs()
+    {
+        //Create double Arraylist (0 for data, 1 for names)
+        char [] out;
+        String lineString = "";
+        String fileName = "preferences";
+        File file = new File(getApplicationContext().getFilesDir(), fileName);
+        if(!file.exists())
+        {
+            //Save to personal file
+            FileOutputStream fos = null;
+            FileIO fileIO = new FileIO(getApplicationContext());
+            file.delete();
+            String fileSaveString = "";
+            for(int i=0;i<8;i++)
+            {
+                fileSaveString+="0";
+            }
+
+            try
+            {
+
+                Log.d("fileSaveString", fileSaveString);
+                //Create file
+                fos = openFileOutput(fileName, Context.MODE_PRIVATE);
+                //Write to file
+                fos.write(fileSaveString.getBytes());
+                //Show user save was successful
+                Toast toast = Toast.makeText(getBaseContext(),"Schedule Saved",Toast.LENGTH_SHORT);
+                toast.show();
+
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+            }
+            finally
+            {
+                try
+                {
+                    if (fos != null)
+                    {
+                        fos.close();
+                    }
+                }
+                catch(IOException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            return fileSaveString.toCharArray();
+
+        }
+        else {
+            FileInputStream fin = null;
+            int character;
+            try {
+                fin = new FileInputStream(file);
+                while ((character = fin.read()) != -1) {
+                    //When it hits end of line flush
+                    if (Character.toString((char) character).equals("\n")) {
+                        break;
+                    } else {
+                        //Add character to line
+                        lineString = lineString + Character.toString((char) character);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (fin != null) {
+                        fin.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            out = lineString.toCharArray();
+            //Return parsed data
+            return out;
+        }
+    }
+    private void writePrefs(char [] in)
+    {
+        //Save to personal file
+        FileOutputStream fos = null;
+        FileIO fileIO = new FileIO(getApplicationContext());
+        String fileName = "preferences";
+        File file = new File(getApplicationContext().getFilesDir(), fileName);
+        file.delete();
+        String fileSaveString = "";
+        for(int i=0;i<in.length;i++)
+        {
+            fileSaveString +=in[i];
+        }
+
+        try
+        {
+
+            Log.d("fileSaveString", fileSaveString);
+            //Create file
+            fos = openFileOutput(fileName, Context.MODE_PRIVATE);
+            //Write to file
+            fos.write(fileSaveString.getBytes());
+
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            try
+            {
+                if (fos != null)
+                {
+                    fos.close();
+                }
+            }
+            catch(IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
     }
 }

@@ -33,11 +33,13 @@ public class SaveScreen extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setTitle("Choose a name");
-
-        boolean displayAlert = true;
-        if(displayAlert)
+        char [] prefs = getIntent().getCharArrayExtra("PREFS");
+        boolean displayAlert = prefs[6]=='0';
+        if(displayAlert) {
             alert();
-
+            prefs[6]='1';
+            writePrefs(prefs);
+        }
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setImageResource(R.drawable.ic_add);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -141,5 +143,46 @@ public class SaveScreen extends AppCompatActivity
                 e.printStackTrace();
             }
         }
+    }private void writePrefs(char [] in)
+{
+    //Save to personal file
+    FileOutputStream fos = null;
+    FileIO fileIO = new FileIO(getApplicationContext());
+    String fileName = "preferences";
+    File file = new File(getApplicationContext().getFilesDir(), fileName);
+    file.delete();
+    String fileSaveString = "";
+    for(int i=0;i<in.length;i++)
+    {
+        fileSaveString +=in[i];
     }
+    try
+    {
+
+        Log.d("fileSaveString", fileSaveString);
+        //Create file
+        fos = openFileOutput(fileName, Context.MODE_PRIVATE);
+        //Write to file
+        fos.write(fileSaveString.getBytes());
+
+    }
+    catch(Exception e)
+    {
+        e.printStackTrace();
+    }
+    finally
+    {
+        try
+        {
+            if (fos != null)
+            {
+                fos.close();
+            }
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+}
 }

@@ -17,12 +17,14 @@ public class fabListener implements View.OnClickListener {
     String [] planners;
     Context context;
     String [] friends;
-    public fabListener(int loc, String [] planners, String [] friends, Context context)
+    char [] prefs;
+    public fabListener(int loc, String [] planners, String [] friends, char [] prefs, Context context)
     {
         this.loc = loc;
         this.planners = planners;
         this.context = context;
         this.friends = friends;
+        this.prefs = prefs;
     }
     public void onClick(View v)
     {
@@ -30,6 +32,7 @@ public class fabListener implements View.OnClickListener {
             Intent intent = new Intent(context, DisplayScreen.class);
             intent.putExtra("PLANNER", planners[loc]);
             intent.putExtra("NAME", friends[loc]);
+            intent.putExtra("PREFS", prefs);
             context.startActivity(intent);
 
     }

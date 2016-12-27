@@ -1,6 +1,7 @@
 package com.example.christopher.rangers;
 
 import android.app.ActionBar;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -11,12 +12,18 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class DisplayScreen extends AppCompatActivity {
 
@@ -32,10 +39,13 @@ public class DisplayScreen extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-        boolean displayAlert = true;
-        if(displayAlert)
+        char [] prefs = getIntent().getCharArrayExtra("PREFS");
+        boolean displayAlert = prefs[1]=='0';
+        if(displayAlert) {
             alert();
-
+            prefs[1]='1';
+            writePrefs(prefs);
+        }
 
         LinearLayout layout;
         String planner = getIntent().getStringExtra("PLANNER");
@@ -92,6 +102,47 @@ public class DisplayScreen extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.help_menu, menu);
         return true;
+    }private void writePrefs(char [] in)
+    {
+        //Save to personal file
+        FileOutputStream fos = null;
+        FileIO fileIO = new FileIO(getApplicationContext());
+        String fileName = "preferences";
+        File file = new File(getApplicationContext().getFilesDir(), fileName);
+        file.delete();
+        String fileSaveString = "";
+        for(int i=0;i<in.length;i++)
+        {
+            fileSaveString +=in[i];
+        }
+        try
+        {
+
+            Log.d("fileSaveString", fileSaveString);
+            //Create file
+            fos = openFileOutput(fileName, Context.MODE_PRIVATE);
+            //Write to file
+            fos.write(fileSaveString.getBytes());
+
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            try
+            {
+                if (fos != null)
+                {
+                    fos.close();
+                }
+            }
+            catch(IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
     }
     private void createHeaders()
     {

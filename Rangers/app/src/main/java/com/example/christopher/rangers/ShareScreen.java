@@ -1,5 +1,6 @@
 package com.example.christopher.rangers;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -10,18 +11,24 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import static android.R.attr.width;
 import static android.graphics.Color.BLACK;
@@ -39,10 +46,13 @@ public class ShareScreen extends AppCompatActivity {
         setTitle("Share your planner");
 
 
-        boolean displayAlert = true;
-        if(displayAlert)
+        char [] prefs = getIntent().getCharArrayExtra("PREFS");
+        boolean displayAlert = prefs[7]=='0';
+        if(displayAlert) {
             alert();
-
+            prefs[7]='1';
+            writePrefs(prefs);
+        }
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +88,47 @@ public class ShareScreen extends AppCompatActivity {
         }
         return true;
 
+    }private void writePrefs(char [] in)
+    {
+        //Save to personal file
+        FileOutputStream fos = null;
+        FileIO fileIO = new FileIO(getApplicationContext());
+        String fileName = "preferences";
+        File file = new File(getApplicationContext().getFilesDir(), fileName);
+        file.delete();
+        String fileSaveString = "";
+        for(int i=0;i<in.length;i++)
+        {
+            fileSaveString +=in[i];
+        }
+        try
+        {
+
+            Log.d("fileSaveString", fileSaveString);
+            //Create file
+            fos = openFileOutput(fileName, Context.MODE_PRIVATE);
+            //Write to file
+            fos.write(fileSaveString.getBytes());
+
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            try
+            {
+                if (fos != null)
+                {
+                    fos.close();
+                }
+            }
+            catch(IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
     }
     private void alert()
     {
