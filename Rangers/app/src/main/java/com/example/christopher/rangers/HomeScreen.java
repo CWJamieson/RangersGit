@@ -32,6 +32,7 @@ public class HomeScreen extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     String [] friends;
     String [] planners;
+    String [] flags;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +57,7 @@ public class HomeScreen extends AppCompatActivity
 
         this.friends = friends;
         this.planners = planners;
+        this.flags = flag;
         for(int i=0;i<friends.length;i++)
         {
             FloatingActionButton fab = new  FloatingActionButton(this);
@@ -65,8 +67,10 @@ public class HomeScreen extends AppCompatActivity
 
             fabListener list = new fabListener(i, planners, friends, this);
             fab.setOnClickListener(list);
-            //Todo: change icon if its a group
-            fab.setImageResource(R.drawable.ic_person);
+            if(flag[i].equals("g"))
+                fab.setImageResource(R.drawable.ic_people);
+            else
+                fab.setImageResource(R.drawable.ic_person);
             LinearLayout layout;
             if(i%4==0)
                 layout = (LinearLayout) findViewById(R.id.col1);
@@ -138,6 +142,8 @@ public class HomeScreen extends AppCompatActivity
         if (id == R.id.action_settings) {
             Intent intent = new Intent(this, DeleteScreen.class);
             intent.putExtra("FRIENDS",friends);
+            intent.putExtra("FLAGS", flags);
+            intent.putExtra("PLANNERS", planners);
             startActivity(intent);
             return true;
         }

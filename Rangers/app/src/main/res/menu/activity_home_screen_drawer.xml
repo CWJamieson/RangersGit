@@ -4,7 +4,7 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_input"
-            android:icon="@drawable/ic_add"
+            android:icon="@drawable/ic_add_person"
             android:title="Input planner" />
         <item
             android:id="@+id/nav_createGroup"

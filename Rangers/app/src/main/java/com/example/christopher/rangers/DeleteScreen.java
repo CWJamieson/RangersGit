@@ -11,16 +11,25 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class DeleteScreen extends AppCompatActivity {
 
+    ArrayList<TextView> texts = new ArrayList<TextView>();
+    ArrayList<String> names = new ArrayList<String>();
+    ArrayList<String> planners = new ArrayList<String>();
+    ArrayList<String> flags = new ArrayList<String>();
+    String deleted;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,22 +43,40 @@ public class DeleteScreen extends AppCompatActivity {
             alert();
 
 
-        String [] friends = getIntent().getStringArrayExtra("FRIENDS");
+        String [] planners = this.getIntent().getStringArrayExtra("PLANNERS");
+        String [] flags = this.getIntent().getStringArrayExtra("FLAGS");
+        String [] friends = this.getIntent().getStringArrayExtra("FRIENDS");
+        deleted = " ";
         for(int i=0;i<friends.length;i++)
+        {
+            names.add(friends[i]);
+            this.planners.add(planners[i]);
+            this.flags.add(flags[i]);
+        }
+        createFabs();
+    }
+    private void createFabs()
+    {
+        for(int i=0;i<names.size();i++)
         {
             FloatingActionButton fab = new  FloatingActionButton(this);
             TextView text = new TextView(this);
-            text.setText(friends[i]);
+            text.setText(names.get(i));
+            texts.add(text);
             fab.setId(i);
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     ((FloatingActionButton)view).setRippleColor(Color.GREEN);
                     deleteFromFile(view.getId());
+                    view.setEnabled(false);
+                    ((FloatingActionButton) view).hide();
                 }
             });
-            //Todo: change icon if its a group
-            fab.setImageResource(R.drawable.ic_person);
+            if(flags.get(i).equals("g"))
+                fab.setImageResource(R.drawable.ic_people);
+            else
+                fab.setImageResource(R.drawable.ic_person);
             LinearLayout layout;
             if(i%4==0)
                 layout = (LinearLayout) findViewById(R.id.col1);
@@ -93,43 +120,80 @@ public class DeleteScreen extends AppCompatActivity {
     }
     private void deleteFromFile(int num)
     {
-        //Delete line that's passed
-        FileIO fileIO = new FileIO(getApplicationContext());
-        String newFileData = fileIO.removeFileLine(num);
-        fileSave(newFileData);
+        String fullString;
+        deleted = deleted+num+" ";
+        for(TextView text : texts)
+        {
+            if(text.getText().equals(names.get(num)))
+                text.setText("");
+        }
+
+        deleteFile();
+        for(int i=0;i<flags.size();i++) {
+
+                if(!deleted.contains(" "+i+" ")) {
+                    //Add data, flag and name
+                    fullString = planners.get(i) + "~" + flags.get(i) + "~" + names.get(i);
+                    //Save to file
+                    fileSave(fullString);
+                }
+
+        }
+
+
     }
-    private void fileSave(String saveString) {
+    private void deleteFile()
+    {
+        String fileName = "saveFile";
+        File file = new File(getApplicationContext().getFilesDir(), fileName);
+        file.delete();
+    }
+    private void fileSave(String saveString)
+    {
         //Save to personal file
         FileOutputStream fos = null;
         FileIO fileIO = new FileIO(getApplicationContext());
         String fileName = "saveFile";
         File file = new File(getApplicationContext().getFilesDir(), fileName);
         String fileSaveString;
-        try {
+        try
+        {
             //String that includes the contents for the whole file (new and old)
             Log.d("saveString", saveString);
-
-            fileSaveString = saveString;
-
+            if(file.length() == 0)
+            {
+                fileSaveString = saveString + "\n";
+            }
+            else
+            {
+                fileSaveString = saveString + "\n" + fileIO.getOldContents();
+            }
             Log.d("fileSaveString", fileSaveString);
             //Create file
             fos = openFileOutput("saveFile", Context.MODE_PRIVATE);
             //Write to file
             fos.write(fileSaveString.getBytes());
-            //Show user save was successful
-            Toast toast = Toast.makeText(getBaseContext(), "Schedule Saved", Toast.LENGTH_SHORT);
-            toast.show();
 
-        } catch (Exception e) {
+        }
+        catch(Exception e)
+        {
             e.printStackTrace();
-        } finally {
-            try {
-                if (fos != null) {
+        }
+        finally
+        {
+            try
+            {
+                if (fos != null)
+                {
                     fos.close();
                 }
-            } catch (IOException e) {
+            }
+            catch(IOException e)
+            {
                 e.printStackTrace();
             }
         }
     }
+
+
 }
