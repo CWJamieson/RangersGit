@@ -47,7 +47,7 @@ public class group extends AppCompatActivity {
         String [] friends = intent.getStringArrayExtra("PLANNERS");
         char[] intersection = new char[140];
         for(int i=0;i<140;i++)
-            intersection[i] = '1';
+            intersection[i] = '0';
         for(int i=0;i<friends.length;i++)
         {
             CheckBox chk = (CheckBox)findViewById(i);
@@ -55,8 +55,8 @@ public class group extends AppCompatActivity {
             {
                 for(int j=0;j<140;j++)
                 {
-                    if(!(intersection[j] == '1' && friends[i].charAt(j) == '1'))
-                        intersection[j] = '0';
+                    if(!(intersection[j] == '0' && friends[i].charAt(j) == '0'))
+                        intersection[j] = '1';
                 }
             }
         }

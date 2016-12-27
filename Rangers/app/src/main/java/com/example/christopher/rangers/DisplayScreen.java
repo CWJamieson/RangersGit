@@ -47,8 +47,10 @@ public class DisplayScreen extends AppCompatActivity {
         layout = (LinearLayout) findViewById(R.id.col1);
         for(int j=0;j<BUTTON_TEXTS.length;j++) {
             text = new TextView(this);
-            text.setText(BUTTON_TEXTS[j]);
-
+            if(getWindowManager().getDefaultDisplay().getWidth()>1080)
+                text.setText((BUTTON_TEXTS[j]+"m"));
+            else
+                text.setText((BUTTON_TEXTS[j]));
             layout.addView(text);
         }
         for(int i=1;i<6;i++)
@@ -75,7 +77,7 @@ public class DisplayScreen extends AppCompatActivity {
             for(int j=0;j<BUTTON_TEXTS.length;j++) {
                 text = new TextView(this);
                 text.setText(" ..... ");
-                if(planner.charAt((i-1)*28+j)=='1')
+                if(planner.charAt((i-1)*28+j)=='0')
                     text.setBackgroundColor(Color.GREEN);
                 else
                     text.setBackgroundColor(Color.WHITE);
@@ -156,34 +158,34 @@ public class DisplayScreen extends AppCompatActivity {
 
     }
     private static final String[] BUTTON_TEXTS = {
-            "8:00am",
-            "8:30am",
-            "9:00am",
-            "9:30am",
-            "10:00am",
-            "10:30am",
-            "11:00am",
-            "11:30am",
-            "12:00pm",
-            "12:30pm",
-            "1:00pm",
-            "1:30pm",
-            "2:00pm",
-            "2:30pm",
-            "3:00pm",
-            "3:30pm",
-            "4:00pm",
-            "4:30pm",
-            "5:00pm",
-            "5:30pm",
-            "6:00pm",
-            "6:30pm",
-            "7:00pm",
-            "7:30pm",
-            "8:00pm",
-            "8:30pm",
-            "9:00pm",
-            "9:30pm",
+            "8:00a",
+            "8:30a",
+            "9:00a",
+            "9:30a",
+            "10:00a",
+            "10:30a",
+            "11:00a",
+            "11:30a",
+            "12:00p",
+            "12:30p",
+            "1:00p",
+            "1:30p",
+            "2:00p",
+            "2:30p",
+            "3:00p",
+            "3:30p",
+            "4:00p",
+            "4:30p",
+            "5:00p",
+            "5:30p",
+            "6:00p",
+            "6:30p",
+            "7:00p",
+            "7:30p",
+            "8:00p",
+            "8:30p",
+            "9:00p",
+            "9:30p",
 
     };
 
