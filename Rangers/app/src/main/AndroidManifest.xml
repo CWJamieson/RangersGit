@@ -50,7 +50,7 @@
             android:theme="@style/zxing_CaptureTheme"
             android:windowSoftInputMode="stateAlwaysHidden">
     </activity>
-        <activity android:name=".ShareSelectScreen"></activity>
+        <activity android:name=".ShareSelectScreen"/>
     </application>
 
 </manifest>
