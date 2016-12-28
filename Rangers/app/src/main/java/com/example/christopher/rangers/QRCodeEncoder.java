@@ -19,7 +19,7 @@ import java.util.Map;
 /**
  * Created by Christopher on 12/21/2016.
  */
-
+//default zxing method, creds to stack overflow
 public class QRCodeEncoder {
         private static final int WHITE = 0xFFFFFFFF;
         private static final int BLACK = 0xFF000000;

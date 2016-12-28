@@ -14,12 +14,13 @@
     tools:context="com.example.christopher.rangers.SaveScreen"
     tools:showIn="@layout/activity_save_screen">
     <TextView android:id="@+id/display_message"
-        android:text="Enter your name:"
+        android:text="@string/enter_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <EditText android:id="@+id/edit_message"
         android:paddingTop="@dimen/activity_vertical_margin"
+        android:hint="@string/contact"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 </RelativeLayout>

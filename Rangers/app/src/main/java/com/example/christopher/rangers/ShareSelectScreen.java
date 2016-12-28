@@ -20,17 +20,27 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class ShareSelectScreen extends AppCompatActivity {
+
+    //texts: contact name textviews, names: name Strings, planners: binary planner strings, flags: flag strings, prefs: binary preference data
     ArrayList<TextView> texts = new ArrayList<TextView>();
     ArrayList<String> names = new ArrayList<String>();
     ArrayList<String> planners = new ArrayList<String>();
     ArrayList<String> flags = new ArrayList<String>();
     char [] prefs;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //default
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_share_select_screen);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        //set title and back button
         setTitle("Share a contact");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+        //read preferences
         prefs = getIntent().getCharArrayExtra("PREFS");
         boolean displayAlert = prefs[8]=='0';
         if(displayAlert) {
@@ -39,7 +49,7 @@ public class ShareSelectScreen extends AppCompatActivity {
             writePrefs(prefs);
         }
 
-
+        //set data
         String [] planners = this.getIntent().getStringArrayExtra("PLANNERS");
         String [] flags = this.getIntent().getStringArrayExtra("FLAGS");
         String [] friends = this.getIntent().getStringArrayExtra("FRIENDS");
@@ -49,8 +59,11 @@ public class ShareSelectScreen extends AppCompatActivity {
             this.planners.add(planners[i]);
             this.flags.add(flags[i]);
         }
+        //create contact icons
         createFabs();
     }
+
+    //refresh preferences
     private void writePrefs(char [] in)
     {
         //Save to personal file
@@ -93,6 +106,8 @@ public class ShareSelectScreen extends AppCompatActivity {
             }
         }
     }
+
+    //create contact icons
     private void createFabs()
     {
         for(int i=0;i<names.size();i++)
@@ -127,6 +142,8 @@ public class ShareSelectScreen extends AppCompatActivity {
 
         }
     }
+
+    //proceed to next screen
     private void share(int i)
     {
         Intent intent = new Intent(this, ShareScreen.class);
@@ -134,6 +151,8 @@ public class ShareSelectScreen extends AppCompatActivity {
         intent.putExtra("PLANNER", planners.get(i));
         startActivity(intent);
     }
+
+    //display help message
     private void alert()
     {
 
@@ -150,6 +169,8 @@ public class ShareSelectScreen extends AppCompatActivity {
         dlgAlert.setCancelable(true);
         dlgAlert.create().show();
     }
+
+    //create menu
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
 

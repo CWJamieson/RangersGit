@@ -13,4 +13,14 @@
     <string name="title_activity_read_screen">ReadScreen</string>
     <string name="title_activity_display_screen">DisplayScreen</string>
     <string name="title_activity_planner_output">PlannerOutput</string>
+    <string name="group_info">Selected the friends to include and press +</string>
+    <string name="enter_name">Enter your name:</string>
+    <string name="contact">contact name</string>
+    <string name="qr_des">Scan this to access this contact</string>
+    <string name="info">By MDEC</string>
+    <string name="input">Input Planner</string>
+    <string name="group">Create Group</string>
+    <string name="share">Share your planner</string>
+    <string name="read">Read a QR code</string>
+    <string name="help">Help</string>
 </resources>

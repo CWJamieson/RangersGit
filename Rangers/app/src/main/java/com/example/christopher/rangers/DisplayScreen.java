@@ -29,16 +29,17 @@ public class DisplayScreen extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //default
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_screen);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
         setSupportActionBar(toolbar);
-        setTitle(getIntent().getStringExtra("NAME"));
 
+        //set title and back button
+        setTitle(getIntent().getStringExtra("NAME"));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
+        //read preferences
         char [] prefs = getIntent().getCharArrayExtra("PREFS");
         boolean displayAlert = prefs[1]=='0';
         if(displayAlert) {
@@ -47,13 +48,16 @@ public class DisplayScreen extends AppCompatActivity {
             writePrefs(prefs);
         }
 
+        //ensure planner is correct length
         LinearLayout layout;
         String planner = getIntent().getStringExtra("PLANNER");
         while(planner.length()<140)
             planner = planner+"0";
-        TextView text = new TextView(this);
 
+        TextView text;
+        //add the column headers
         createHeaders();
+        //add the times
         layout = (LinearLayout) findViewById(R.id.col1);
         for(int j=0;j<BUTTON_TEXTS.length;j++) {
             text = new TextView(this);
@@ -63,6 +67,8 @@ public class DisplayScreen extends AppCompatActivity {
                 text.setText((BUTTON_TEXTS[j]));
             layout.addView(text);
         }
+
+        //add the schedule data
         for(int i=1;i<6;i++)
         {
             switch(i)
@@ -97,12 +103,31 @@ public class DisplayScreen extends AppCompatActivity {
         }
 
     }
+
+    //create menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.help_menu, menu);
         return true;
-    }private void writePrefs(char [] in)
+    }
+    public boolean onOptionsItemSelected(MenuItem item){
+        int id = item.getItemId();
+
+        if (id==android.R.id.home) {
+            Intent intent = new Intent(this, HomeScreen.class);
+            startActivity(intent);
+        }
+        else if (id==R.id.help)
+        {
+            alert();
+        }
+        return true;
+
+    }
+
+    //update preferences
+    private void writePrefs(char [] in)
     {
         //Save to personal file
         FileOutputStream fos = null;
@@ -144,6 +169,8 @@ public class DisplayScreen extends AppCompatActivity {
             }
         }
     }
+
+    //add the headers
     private void createHeaders()
     {
 
@@ -174,11 +201,8 @@ public class DisplayScreen extends AppCompatActivity {
         layout.addView(text2);
 
     }
-    private void returnToMain()
-    {
-        Intent i = new Intent(this, HomeScreen.class);
-        startActivity(i);
-    }
+
+    //help message
     private void alert()
     {
 
@@ -195,20 +219,9 @@ public class DisplayScreen extends AppCompatActivity {
         dlgAlert.setCancelable(true);
         dlgAlert.create().show();
     }
-    public boolean onOptionsItemSelected(MenuItem item){
-        int id = item.getItemId();
 
-        if (id==android.R.id.home) {
-            Intent intent = new Intent(this, HomeScreen.class);
-            startActivity(intent);
-        }
-        else if (id==R.id.help)
-        {
-            alert();
-        }
-        return true;
 
-    }
+    //default times
     private static final String[] BUTTON_TEXTS = {
             "8:00a",
             "8:30a",

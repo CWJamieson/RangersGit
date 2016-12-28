@@ -38,14 +38,18 @@ public class ShareScreen extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        //default
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_share_screen);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        //set title and back button
         setTitle("Share your planner");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
+        //read preferences
         char [] prefs = getIntent().getCharArrayExtra("PREFS");
         boolean displayAlert = prefs[7]=='0';
         if(displayAlert) {
@@ -53,6 +57,8 @@ public class ShareScreen extends AppCompatActivity {
             prefs[7]='1';
             writePrefs(prefs);
         }
+
+        //create qr image
         String qrData = getIntent().getStringExtra("PLANNER");
         int qrCodeDimention = 500;
         ImageView imageView = (ImageView) findViewById(R.id.qrCode);
@@ -65,13 +71,18 @@ public class ShareScreen extends AppCompatActivity {
         } catch (WriterException e) {
             e.printStackTrace();
         }
+
+
     }
+
+    //create menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.help_menu, menu);
         return true;
-    }public boolean onOptionsItemSelected(MenuItem item){
+    }
+    public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
 
         if (id==R.id.help)
@@ -84,7 +95,10 @@ public class ShareScreen extends AppCompatActivity {
         }
         return true;
 
-    }private void writePrefs(char [] in) {
+    }
+
+    //refresh preferences
+    private void writePrefs(char [] in) {
         //Save to personal file
         FileOutputStream fos = null;
         FileIO fileIO = new FileIO(getApplicationContext());
@@ -115,6 +129,8 @@ public class ShareScreen extends AppCompatActivity {
             }
         }
     }
+
+    //display help message
     private void alert()
     {
 
@@ -132,11 +148,8 @@ public class ShareScreen extends AppCompatActivity {
         dlgAlert.setCancelable(true);
         dlgAlert.create().show();
     }
-    private void returnToMain()
-    {
-        Intent i = new Intent(this, HomeScreen.class);
-        startActivity(i);
-    }
+
+    //default bitmap encoding method, creds to stackoverflow
     Bitmap encodeAsBitmap(String str) throws WriterException {
         BitMatrix result;
         int size = 250;

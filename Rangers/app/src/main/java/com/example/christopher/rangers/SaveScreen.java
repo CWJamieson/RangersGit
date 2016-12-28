@@ -31,13 +31,25 @@ public class SaveScreen extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        //default
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_save_screen);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        //set title
         setTitle("Choose a name");
+
+        //read prefs
         char [] prefs = getIntent().getCharArrayExtra("PREFS");
         boolean displayAlert = prefs[6]=='0';
+        if(displayAlert) {
+            alert();
+            prefs[6]='1';
+            writePrefs(prefs);
+        }
+
+        //add editText listener to respond to enter
         TextView.OnEditorActionListener enterListener = new TextView.OnEditorActionListener(){
             public boolean onEditorAction(TextView exampleView, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_NULL
@@ -49,11 +61,8 @@ public class SaveScreen extends AppCompatActivity
         };
         EditText edit = (EditText) findViewById(R.id.edit_message);
         edit.setOnEditorActionListener(enterListener);
-        if(displayAlert) {
-            alert();
-            prefs[6]='1';
-            writePrefs(prefs);
-        }
+
+        //create fab
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setImageResource(R.drawable.ic_add);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -61,37 +70,45 @@ public class SaveScreen extends AppCompatActivity
                 save();
             }
         });
-    }private void alert()
-{
+    }
 
-    AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);
-    dlgAlert.setMessage("You will be brought here whenever creating a contact or inputting your" +
-            " schedule. just choose a name for the planner and press + when you're ready");
-    dlgAlert.setTitle("Adding a contact");
-    dlgAlert.setPositiveButton("Ok",
-            new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    //write to never show again
-                }
-            });
-    dlgAlert.setCancelable(true);
-    dlgAlert.create().show();
-}
+    //display alert message
+    private void alert()
+    {
+
+        AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);
+        dlgAlert.setMessage("You will be brought here whenever creating a contact or inputting your" +
+                " schedule. just choose a name for the planner and press + when you're ready");
+        dlgAlert.setTitle("Adding a contact");
+        dlgAlert.setPositiveButton("Ok",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        //write to never show again
+                    }
+                });
+        dlgAlert.setCancelable(true);
+        dlgAlert.create().show();
+    }
+
+    //create menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.help_menu, menu);
         return true;
-    }public boolean onOptionsItemSelected(MenuItem item){
-    int id = item.getItemId();
-
-    if (id==R.id.help)
-    {
-        alert();
     }
-    return true;
+    public boolean onOptionsItemSelected(MenuItem item){
+            int id = item.getItemId();
 
-}
+        if (id==R.id.help)
+        {
+            alert();
+        }
+        return true;
+
+    }
+
+    //set save data
     private void save()
     {
         String name;
@@ -116,7 +133,7 @@ public class SaveScreen extends AppCompatActivity
             this.startActivity(intent);
         }
     }
-
+    //save to file
     private void fileSave(String saveString)
     {
         //Save to personal file
@@ -165,46 +182,49 @@ public class SaveScreen extends AppCompatActivity
                 e.printStackTrace();
             }
         }
-    }private void writePrefs(char [] in)
-{
-    //Save to personal file
-    FileOutputStream fos = null;
-    FileIO fileIO = new FileIO(getApplicationContext());
-    String fileName = "preferences";
-    File file = new File(getApplicationContext().getFilesDir(), fileName);
-    file.delete();
-    String fileSaveString = "";
-    for(int i=0;i<in.length;i++)
-    {
-        fileSaveString +=in[i];
     }
-    try
-    {
 
-        Log.d("fileSaveString", fileSaveString);
-        //Create file
-        fos = openFileOutput(fileName, Context.MODE_PRIVATE);
-        //Write to file
-        fos.write(fileSaveString.getBytes());
-
-    }
-    catch(Exception e)
+    //refresh preferences
+    private void writePrefs(char [] in)
     {
-        e.printStackTrace();
-    }
-    finally
-    {
+        //Save to personal file
+        FileOutputStream fos = null;
+        FileIO fileIO = new FileIO(getApplicationContext());
+        String fileName = "preferences";
+        File file = new File(getApplicationContext().getFilesDir(), fileName);
+        file.delete();
+        String fileSaveString = "";
+        for(int i=0;i<in.length;i++)
+        {
+            fileSaveString +=in[i];
+        }
         try
         {
-            if (fos != null)
-            {
-                fos.close();
-            }
+
+            Log.d("fileSaveString", fileSaveString);
+            //Create file
+            fos = openFileOutput(fileName, Context.MODE_PRIVATE);
+            //Write to file
+            fos.write(fileSaveString.getBytes());
+
         }
-        catch(IOException e)
+        catch(Exception e)
         {
             e.printStackTrace();
         }
+        finally
+        {
+            try
+            {
+                if (fos != null)
+                {
+                    fos.close();
+                }
+            }
+            catch(IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
     }
-}
 }

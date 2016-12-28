@@ -5,19 +5,19 @@
         <item
             android:id="@+id/nav_input"
             android:icon="@drawable/ic_add_person"
-            android:title="Input planner" />
+            android:title="@string/input" />
         <item
             android:id="@+id/nav_createGroup"
             android:icon="@drawable/ic_group"
-            android:title="Create Group" />
+            android:title="@string/group" />
         <item
             android:id="@+id/nav_share"
             android:icon="@drawable/ic_menu_share"
-            android:title="Share your planner" />
+            android:title="@string/share" />
         <item
             android:id="@+id/nav_read"
             android:icon="@drawable/ic_read"
-            android:title="Read a QR code" />
+            android:title="@string/read" />
     </group>
 
 </menu>

@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -24,16 +25,21 @@ import java.io.IOException;
 import static android.R.attr.id;
 
 public class group extends AppCompatActivity {
+    //prefs: binary preferences data
     char [] prefs;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //default
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //set back button and title
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setTitle("Create Group");
 
+        //read preferences
         prefs = getIntent().getCharArrayExtra("PREFS");
         boolean displayAlert = prefs[3]=='0';
         if(displayAlert) {
@@ -41,7 +47,8 @@ public class group extends AppCompatActivity {
             prefs[3]='1';
             writePrefs(prefs);
         }
-        setTitle("Create Group");
+
+        //create fab
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,8 +58,11 @@ public class group extends AppCompatActivity {
             }
         });
         fab.setImageResource(R.drawable.ic_add);
+
+
         displayFriends();
     }
+    //create group of selected contacts
     private void createGroup()
     {
         Intent intent = getIntent();
@@ -83,7 +93,6 @@ public class group extends AppCompatActivity {
             if(intersection[i]=='0')
                 flag=false;
         }
-        //Todo: check for empty or full
         if(count==0)
         {
             Toast.makeText(this, "You must select a contact or hit the back button", Toast.LENGTH_LONG).show();
@@ -100,6 +109,8 @@ public class group extends AppCompatActivity {
             startActivity(intent);
         }
     }
+
+    //create menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -121,6 +132,8 @@ public class group extends AppCompatActivity {
         return true;
 
     }
+
+    //update preferences
     private void writePrefs(char [] in)
     {
         //Save to personal file
@@ -163,6 +176,8 @@ public class group extends AppCompatActivity {
             }
         }
     }
+
+    //display help message
     private void alert()
     {
 
@@ -179,6 +194,8 @@ public class group extends AppCompatActivity {
         dlgAlert.setCancelable(true);
         dlgAlert.create().show();
     }
+
+    //create contact checkboxes
     protected void displayFriends()
     {
         Intent intent = getIntent();
@@ -188,7 +205,7 @@ public class group extends AppCompatActivity {
             CheckBox chk = new CheckBox(this);
             chk.setText(friends[i]);
             chk.setId(i);
-            LinearLayout layout = (LinearLayout) findViewById(R.id.content_group);
+            LinearLayout layout = (LinearLayout) findViewById(R.id.line1);
             layout.addView(chk);
         }
     }

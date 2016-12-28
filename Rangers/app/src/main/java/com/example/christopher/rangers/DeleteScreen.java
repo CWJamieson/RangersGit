@@ -26,18 +26,25 @@ import java.util.ArrayList;
 
 public class DeleteScreen extends AppCompatActivity {
 
+    //globals for contact data
     ArrayList<TextView> texts = new ArrayList<TextView>();
     ArrayList<String> names = new ArrayList<String>();
     ArrayList<String> planners = new ArrayList<String>();
     ArrayList<String> flags = new ArrayList<String>();
     String deleted;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //default
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delete_screen);
 
+        //add back button & title
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("Delete contacts");
+
+        //read preferences and display help message
         char [] prefs = getIntent().getCharArrayExtra("PREFS");
         boolean displayAlert = prefs[0]=='0';
         if(displayAlert) {
@@ -46,7 +53,7 @@ public class DeleteScreen extends AppCompatActivity {
             writePrefs(prefs);
         }
 
-
+        //read contact data
         String [] planners = this.getIntent().getStringArrayExtra("PLANNERS");
         String [] flags = this.getIntent().getStringArrayExtra("FLAGS");
         String [] friends = this.getIntent().getStringArrayExtra("FRIENDS");
@@ -57,19 +64,41 @@ public class DeleteScreen extends AppCompatActivity {
             this.planners.add(planners[i]);
             this.flags.add(flags[i]);
         }
+
+        //create contact buttons
         createFabs();
     }
+
+    //create menu methods
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.help_menu, menu);
         return true;
     }
+    public boolean onOptionsItemSelected(MenuItem item){
+        int id = item.getItemId();
+
+        //back button
+        if (id==android.R.id.home) {
+            Intent intent = new Intent(this, HomeScreen.class);
+            startActivity(intent);
+        }
+        //hamburger helper
+        else if(id==R.id.help)
+        {
+            alert();
+        }
+        return true;
+
+    }
+
+
+    //update preferences file
     private void writePrefs(char [] in)
     {
         //Save to personal file
         FileOutputStream fos = null;
-        FileIO fileIO = new FileIO(getApplicationContext());
         String fileName = "preferences";
         File file = new File(getApplicationContext().getFilesDir(), fileName);
         file.delete();
@@ -107,10 +136,14 @@ public class DeleteScreen extends AppCompatActivity {
             }
         }
     }
+
+    //create contact buttons
     private void createFabs()
     {
+        //cycle through data
         for(int i=0;i<names.size();i++)
         {
+            //create button set info and text
             FloatingActionButton fab = new  FloatingActionButton(this);
             TextView text = new TextView(this);
             text.setText(names.get(i));
@@ -125,10 +158,14 @@ public class DeleteScreen extends AppCompatActivity {
                     ((FloatingActionButton) view).hide();
                 }
             });
+
+            //choose icon
             if(flags.get(i).equals("g"))
                 fab.setImageResource(R.drawable.ic_people);
             else
                 fab.setImageResource(R.drawable.ic_person);
+
+            //select column
             LinearLayout layout;
             if(i%4==0)
                 layout = (LinearLayout) findViewById(R.id.col1);
@@ -143,6 +180,8 @@ public class DeleteScreen extends AppCompatActivity {
 
         }
     }
+
+    //help messsage box
     private void alert()
     {
 
@@ -160,20 +199,9 @@ public class DeleteScreen extends AppCompatActivity {
         dlgAlert.setCancelable(true);
         dlgAlert.create().show();
     }
-    public boolean onOptionsItemSelected(MenuItem item){
-        int id = item.getItemId();
 
-        if (id==android.R.id.home) {
-            Intent intent = new Intent(this, HomeScreen.class);
-            startActivity(intent);
-        }
-        else if(id==R.id.help)
-        {
-            alert();
-        }
-        return true;
 
-    }
+    //delete methods
     private void deleteFromFile(int num)
     {
         String fullString;

@@ -37,18 +37,23 @@ import static com.example.christopher.rangers.R.drawable.ic_check;
 
 public class HomeScreen extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    //friends: array of friends names, planners: binary array of planner data, flags: contact flags, prefs: binary array of preference data
     String [] friends;
     String [] planners;
     String [] flags;
     char[] prefs;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //default
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        //set title
         setTitle("Plannit");
 
+        //uncomment to delete files
         //deleteFiles();
 
         //Read input from save file
@@ -63,7 +68,7 @@ public class HomeScreen extends AppCompatActivity
         String [] flag = string.get(1).toArray(new String[string.get(1).size()]);
 
 
-
+        //display help message
         boolean displayAlert = prefs[4]=='0';
         if(displayAlert) {
             alert();
@@ -71,9 +76,12 @@ public class HomeScreen extends AppCompatActivity
             writePrefs(prefs);
         }
 
+        //set globals
         this.friends = friends;
         this.planners = planners;
         this.flags = flag;
+
+        //create contact icons
         for(int i=0;i<friends.length;i++)
         {
             FloatingActionButton fab = new  FloatingActionButton(this);
@@ -101,7 +109,7 @@ public class HomeScreen extends AppCompatActivity
 
         }
 
-
+        //create navigation drawer
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -111,6 +119,8 @@ public class HomeScreen extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
+
+    //create help message
     private void alert()
     {
 
@@ -129,6 +139,7 @@ public class HomeScreen extends AppCompatActivity
         dlgAlert.setCancelable(true);
         dlgAlert.create().show();
     }
+
     //Back button is pressed
     @Override
     public void onBackPressed() {
@@ -140,13 +151,13 @@ public class HomeScreen extends AppCompatActivity
         }
     }
 
+    //create menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.home_screen, menu);
         return true;
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -172,6 +183,7 @@ public class HomeScreen extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    //drawer listener
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -199,6 +211,8 @@ public class HomeScreen extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    //read contact data
     private void read()
     {
 
@@ -242,68 +256,7 @@ public class HomeScreen extends AppCompatActivity
             startActivity(intent);
         }
     }
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case 1: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    Intent intent = new Intent(this, ReadScreen.class);
-                    intent.putExtra("PREFS", prefs);
-                    startActivity(intent);
-
-                } else {
-
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                }
-                return;
-            }
-
-            // other 'case' lines to check for other
-            // permissions this app might request
-        }
-    }
-    private void shareSelect()
-    {
-        Intent intent = new Intent(this, ShareSelectScreen.class);
-        intent.putExtra("PREFS", prefs);
-        intent.putExtra("FRIENDS", friends);
-        intent.putExtra("PLANNERS", planners);
-        intent.putExtra("FLAGS", flags);
-        startActivity(intent);
-    }
-    private void getInput()
-    {
-        Intent intent = new Intent(this, EnterSchedule.class);
-        intent.putExtra("PREFS", prefs);
-        startActivity(intent);
-    }
-
-    private void createGroup()
-    {
-        Intent intent = new Intent(this, group.class);
-
-        intent.putExtra("PREFS", prefs);
-        intent.putExtra("FRIENDS", friends);
-        intent.putExtra("PLANNERS", planners);
-        startActivity(intent);
-    }
-    private void deleteFiles()
-    {
-        String fileName = "saveFile";
-        File file = new File(getApplicationContext().getFilesDir(), fileName);
-        file.delete();
-        fileName = "preferences";
-        file = new File(getApplicationContext().getFilesDir(), fileName);
-        file.delete();
-        Toast.makeText(this, "deleted", Toast.LENGTH_LONG).show();
-
-    }
-
+    //read contact info
     protected ArrayList<ArrayList<String>> readFile()
     {
         //Create double Arraylist (0 for data, 1 for names)
@@ -363,6 +316,76 @@ public class HomeScreen extends AppCompatActivity
         //Return parsed data
         return string;
     }
+
+
+    //request camera permission
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 1: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    Intent intent = new Intent(this, ReadScreen.class);
+                    intent.putExtra("PREFS", prefs);
+                    startActivity(intent);
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
+
+    //drawer run methods
+    private void shareSelect()
+    {
+        Intent intent = new Intent(this, ShareSelectScreen.class);
+        intent.putExtra("PREFS", prefs);
+        intent.putExtra("FRIENDS", friends);
+        intent.putExtra("PLANNERS", planners);
+        intent.putExtra("FLAGS", flags);
+        startActivity(intent);
+    }
+    private void getInput()
+    {
+        Intent intent = new Intent(this, EnterSchedule.class);
+        intent.putExtra("PREFS", prefs);
+        startActivity(intent);
+    }
+
+    private void createGroup()
+    {
+        Intent intent = new Intent(this, group.class);
+
+        intent.putExtra("PREFS", prefs);
+        intent.putExtra("FRIENDS", friends);
+        intent.putExtra("PLANNERS", planners);
+        startActivity(intent);
+    }
+
+    //delete files method
+    private void deleteFiles()
+    {
+        String fileName = "saveFile";
+        File file = new File(getApplicationContext().getFilesDir(), fileName);
+        file.delete();
+        fileName = "preferences";
+        file = new File(getApplicationContext().getFilesDir(), fileName);
+        file.delete();
+        Toast.makeText(this, "deleted", Toast.LENGTH_LONG).show();
+
+    }
+
+    //read preference data from file
     private char [] readPrefs()
     {
         //Create double Arraylist (0 for data, 1 for names)
@@ -446,6 +469,8 @@ public class HomeScreen extends AppCompatActivity
             return out;
         }
     }
+
+    //refresh preference file
     private void writePrefs(char [] in)
     {
         //Save to personal file

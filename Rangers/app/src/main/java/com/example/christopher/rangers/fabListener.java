@@ -13,13 +13,16 @@ import static java.security.AccessController.getContext;
  */
 
 public class fabListener implements View.OnClickListener {
-    int loc;
-    String [] planners;
+
+    //loc fab location, number in list, planners: array of binary planners. context: app context, friends: array of friend names, prefs: binary preference data
+    private int loc;
+    private String [] planners;
     Context context;
-    String [] friends;
+    private String [] friends;
     char [] prefs;
     public fabListener(int loc, String [] planners, String [] friends, char [] prefs, Context context)
     {
+        //set defaults
         this.loc = loc;
         this.planners = planners;
         this.context = context;

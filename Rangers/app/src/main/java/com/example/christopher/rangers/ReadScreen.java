@@ -23,17 +23,21 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class ReadScreen extends AppCompatActivity {
+    //prefs: binary preference data
     char [] prefs;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //default
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_read_screen);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
+        //set back button and title
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setTitle("Scan a plan code");
 
+        //read prefs
         prefs = getIntent().getCharArrayExtra("PREFS");
         boolean displayAlert = prefs[5]=='0';
         if(displayAlert) {
@@ -42,11 +46,14 @@ public class ReadScreen extends AppCompatActivity {
             writePrefs(prefs);
         }
 
-        setTitle("Scan a plan code");
+        //start camera read
         IntentIntegrator integrator = new IntentIntegrator(this);
         integrator.initiateScan();
 
-    }private void alert()
+    }
+
+    //display help message
+    private void alert()
     {
 
         AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);
@@ -61,7 +68,10 @@ public class ReadScreen extends AppCompatActivity {
                 });
         dlgAlert.setCancelable(true);
         dlgAlert.create().show();
-    }private void writePrefs(char [] in)
+    }
+
+    //refresh preferences
+    private void writePrefs(char [] in)
     {
         //Save to personal file
         FileOutputStream fos = null;
@@ -103,6 +113,8 @@ public class ReadScreen extends AppCompatActivity {
             }
         }
     }
+
+    //create menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -122,11 +134,8 @@ public class ReadScreen extends AppCompatActivity {
         return true;
 
     }
-    private void returnToMain()
-    {
-        Intent i = new Intent(this, HomeScreen.class);
-        startActivity(i);
-    }
+
+    //upon reading a code
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);

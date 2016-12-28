@@ -5,6 +5,7 @@ package com.example.christopher.rangers;
  */
 import android.provider.ContactsContract;
 
+//default class for zxing, creds to stackoverflow
     public final class Contents {
         private Contents() {
         }

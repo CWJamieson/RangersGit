@@ -5,13 +5,14 @@
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
+        android:icon="@drawable/ic_delete"
         android:title="@string/action_settings"
-        app:showAsAction="never" />
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/help"
         android:icon="@drawable/ic_help"
-        android:title="Help"
-        app:showAsAction="always"
+        android:title="@string/help"
+        app:showAsAction="ifRoom"
         android:orderInCategory="0"/>
 </menu>

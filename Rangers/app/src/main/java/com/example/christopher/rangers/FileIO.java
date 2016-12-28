@@ -10,7 +10,7 @@ import java.io.IOException;
 /**
  * Created by Bradley on 2016-12-22.
  */
-
+//bradley's file io class (ask him)
 public class FileIO
 {
     Context context;

@@ -34,7 +34,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EnterSchedule extends AppCompatActivity {
-
+    //fragment activity: I do not fully understand some boiler plate code myself, so sorry if some
+    //comments are inaccurate
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -52,13 +53,17 @@ public class EnterSchedule extends AppCompatActivity {
     char [] prefs;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //default
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enter_schedule);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        //set title
         setTitle("Input a planner");
 
+        //display help message
         prefs = getIntent().getCharArrayExtra("PREFS");
         boolean displayAlert = prefs[2]=='0';
         if(displayAlert) {
@@ -66,7 +71,8 @@ public class EnterSchedule extends AppCompatActivity {
             prefs[2]='1';
             writePrefs(prefs);
         }
-        // Create the adapter that will return a fragment for each of the three
+
+        // Create the adapter that will return a fragment for each of the 5
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
@@ -75,24 +81,23 @@ public class EnterSchedule extends AppCompatActivity {
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         init(clicked);
-        Log.d("This shit jsut happend", "It refreshed");
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 save();
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
             }
         });
         fab.setImageResource(R.drawable.ic_check);
 
-    }private void writePrefs(char [] in)
+    }
+
+    //update preference file
+    private void writePrefs(char [] in)
     {
         //Save to personal file
         FileOutputStream fos = null;
-        FileIO fileIO = new FileIO(getApplicationContext());
         String fileName = "preferences";
         File file = new File(getApplicationContext().getFilesDir(), fileName);
         file.delete();
@@ -130,6 +135,8 @@ public class EnterSchedule extends AppCompatActivity {
             }
         }
     }
+
+    //display help message
     private void alert()
     {
 
@@ -147,6 +154,8 @@ public class EnterSchedule extends AppCompatActivity {
         dlgAlert.setCancelable(true);
         dlgAlert.create().show();
     }
+
+    //save to file via saveScreen
     public void save()
     {
         boolean flag = true, flag2 = true;
@@ -167,6 +176,7 @@ public class EnterSchedule extends AppCompatActivity {
                 flag2 = false;
             }
         }
+        //error check if all or no buttons are pressed
         if(flag)
         {
             Toast.makeText(this, "You select at least one time to be busy", Toast.LENGTH_LONG).show();
@@ -175,6 +185,7 @@ public class EnterSchedule extends AppCompatActivity {
         {
             Toast.makeText(this, "You cannot be busy all the time", Toast.LENGTH_LONG).show();
         }
+        //proceed to next screen
         else {
             Intent intent = new Intent(this, SaveScreen.class);
             intent.putExtra("PREFS", prefs);
@@ -183,13 +194,14 @@ public class EnterSchedule extends AppCompatActivity {
             startActivity(intent);
         }
     }
+
+    //create menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_enter_schedule, menu);
         return true;
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -208,6 +220,8 @@ public class EnterSchedule extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    //default button times
     private static final String[] BUTTON_TEXTS = {
             "8:00am",
             "8:30am",
@@ -240,6 +254,7 @@ public class EnterSchedule extends AppCompatActivity {
 
     };
 
+    //default button ids
     private static final int[] BUTTON_IDS = {
             R.id.Button1,
             R.id.Button2,
@@ -271,6 +286,8 @@ public class EnterSchedule extends AppCompatActivity {
             R.id.Button28,
 
     };
+
+    //clicked array initializer
     boolean clicked[] = new boolean[140];
     public void init(boolean clicked[])
     {
@@ -310,6 +327,7 @@ public class EnterSchedule extends AppCompatActivity {
             return fragment;
         }
 
+        //local fragment variables
         protected Button button;
         protected List<Button> buttons = new ArrayList<Button>();
         protected int count;
@@ -317,6 +335,8 @@ public class EnterSchedule extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_enter_schedule, container, false);
+
+            //set buttons and colours
             count=0;
 
             buttons = new ArrayList<Button>();
