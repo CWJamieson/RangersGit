@@ -136,8 +136,7 @@ public class ShareScreen extends AppCompatActivity {
 
         AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);
         dlgAlert.setMessage("To give your friends a copy of your planner, have them scan this symbol with the " +
-                "\"read\" option on the home screen. It will always share the top left planer in your home screen" +
-                " so ensure that's the correct one.");
+                "\"read\" option on the home screen.");
         dlgAlert.setTitle("Sharing Your Schedule");
         dlgAlert.setPositiveButton("Ok",
                 new DialogInterface.OnClickListener() {
