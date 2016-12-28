@@ -225,6 +225,13 @@ public class HomeScreen extends AppCompatActivity
                 }
             }
         }
+        else
+        {
+
+            Intent intent = new Intent(this, ReadScreen.class);
+            intent.putExtra("PREFS", prefs);
+            startActivity(intent);
+        }
     }
     @Override
     public void onRequestPermissionsResult(int requestCode,
