@@ -199,7 +199,8 @@ public class DisplayScreen extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id==android.R.id.home) {
-            finish();
+            Intent intent = new Intent(this, HomeScreen.class);
+            startActivity(intent);
         }
         else if (id==R.id.help)
         {

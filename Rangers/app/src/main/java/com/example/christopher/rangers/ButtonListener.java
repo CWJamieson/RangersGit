@@ -36,7 +36,7 @@ public class ButtonListener  implements View.OnClickListener{
         else
         {
             clicked[count + ((page - 1) * 28)] = false;
-            ((Button) v).getBackground().setColorFilter(Color.RED, PorterDuff.Mode.MULTIPLY);
+            ((Button) v).getBackground().setColorFilter(Color.LTGRAY, PorterDuff.Mode.MULTIPLY);
         }
         /*
         switch (page)
