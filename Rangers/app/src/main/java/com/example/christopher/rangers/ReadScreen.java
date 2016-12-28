@@ -46,8 +46,12 @@ public class ReadScreen extends AppCompatActivity {
             writePrefs(prefs);
         }
 
+
+
         //start camera read
         IntentIntegrator integrator = new IntentIntegrator(this);
+        integrator.setCaptureActivity(CaptureActivityPortrait.class);
+        integrator.setOrientationLocked(true);
         integrator.initiateScan();
 
     }
