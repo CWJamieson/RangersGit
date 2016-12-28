@@ -44,7 +44,7 @@ public class ShareScreen extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setTitle("Share your planner");
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         char [] prefs = getIntent().getCharArrayExtra("PREFS");
         boolean displayAlert = prefs[7]=='0';
@@ -53,14 +53,6 @@ public class ShareScreen extends AppCompatActivity {
             prefs[7]='1';
             writePrefs(prefs);
         }
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                returnToMain();
-            }
-        });
-        fab.setImageResource(R.drawable.ic_check);
         String qrData = getIntent().getStringExtra("PLANNER");
         int qrCodeDimention = 500;
         ImageView imageView = (ImageView) findViewById(R.id.qrCode);
@@ -86,10 +78,13 @@ public class ShareScreen extends AppCompatActivity {
         {
             alert();
         }
+
+        if (id==android.R.id.home) {
+            finish();
+        }
         return true;
 
-    }private void writePrefs(char [] in)
-    {
+    }private void writePrefs(char [] in) {
         //Save to personal file
         FileOutputStream fos = null;
         FileIO fileIO = new FileIO(getApplicationContext());
@@ -97,12 +92,10 @@ public class ShareScreen extends AppCompatActivity {
         File file = new File(getApplicationContext().getFilesDir(), fileName);
         file.delete();
         String fileSaveString = "";
-        for(int i=0;i<in.length;i++)
-        {
-            fileSaveString +=in[i];
+        for (int i = 0; i < in.length; i++) {
+            fileSaveString += in[i];
         }
-        try
-        {
+        try {
 
             Log.d("fileSaveString", fileSaveString);
             //Create file
@@ -110,22 +103,14 @@ public class ShareScreen extends AppCompatActivity {
             //Write to file
             fos.write(fileSaveString.getBytes());
 
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
-        }
-        finally
-        {
-            try
-            {
-                if (fos != null)
-                {
+        } finally {
+            try {
+                if (fos != null) {
                     fos.close();
                 }
-            }
-            catch(IOException e)
-            {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
@@ -175,5 +160,4 @@ public class ShareScreen extends AppCompatActivity {
         bitmap.setPixels(pixels, 0, width, 0, 0, w, h);
         return bitmap;
     }
-
 }

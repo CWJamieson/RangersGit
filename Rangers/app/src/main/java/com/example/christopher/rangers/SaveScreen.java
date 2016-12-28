@@ -10,10 +10,13 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -35,6 +38,17 @@ public class SaveScreen extends AppCompatActivity
         setTitle("Choose a name");
         char [] prefs = getIntent().getCharArrayExtra("PREFS");
         boolean displayAlert = prefs[6]=='0';
+        TextView.OnEditorActionListener enterListener = new TextView.OnEditorActionListener(){
+            public boolean onEditorAction(TextView exampleView, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_NULL
+                        && event.getAction() == KeyEvent.ACTION_DOWN) {
+                    save();
+                }
+                return true;
+            }
+        };
+        EditText edit = (EditText) findViewById(R.id.edit_message);
+        edit.setOnEditorActionListener(enterListener);
         if(displayAlert) {
             alert();
             prefs[6]='1';
@@ -80,19 +94,27 @@ public class SaveScreen extends AppCompatActivity
 }
     private void save()
     {
+        String name;
         //Fetch boolean array clicked from schedule
         String saveString = this.getIntent().getStringExtra("BUTTON_STATUS");
         String flagString = this.getIntent().getStringExtra("FLAG");
 
         //Retrieve string from input and add to saveString
         EditText nameView = (EditText) findViewById(R.id.edit_message);
-        //Add data, flag and name
-        saveString = saveString + "~" + flagString + "~" + nameView.getText().toString();
-        //Save to file
-        fileSave(saveString);
-        //Return to home screen
-        Intent intent = new Intent(this, HomeScreen.class);
-        this.startActivity(intent);
+        name = nameView.getText().toString();
+        if(name.equals(""))
+        {
+            Toast.makeText(this, "You must enter a name", Toast.LENGTH_LONG).show();
+        }
+        else {
+            //Add data, flag and name
+            saveString = saveString + "~" + flagString + "~" + name;
+            //Save to file
+            fileSave(saveString);
+            //Return to home screen
+            Intent intent = new Intent(this, HomeScreen.class);
+            this.startActivity(intent);
+        }
     }
 
     private void fileSave(String saveString)

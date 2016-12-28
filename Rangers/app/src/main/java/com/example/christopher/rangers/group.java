@@ -32,6 +32,8 @@ public class group extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         prefs = getIntent().getCharArrayExtra("PREFS");
         boolean displayAlert = prefs[3]=='0';
         if(displayAlert) {
@@ -56,6 +58,8 @@ public class group extends AppCompatActivity {
         Intent intent = getIntent();
         String [] friends = intent.getStringArrayExtra("PLANNERS");
         char[] intersection = new char[140];
+        boolean flag = true;
+        int count=0;
         for(int i=0;i<140;i++)
             intersection[i] = '0';
         for(int i=0;i<friends.length;i++)
@@ -63,6 +67,7 @@ public class group extends AppCompatActivity {
             CheckBox chk = (CheckBox)findViewById(i);
             if(chk.isChecked())
             {
+                count++;
                 for(int j=0;j<140;j++)
                 {
                     if(!(intersection[j] == '0' && friends[i].charAt(j) == '0'))
@@ -71,32 +76,52 @@ public class group extends AppCompatActivity {
             }
         }
         String out = "";
+
         for(int i=0;i<140;i++)
         {
             out+=intersection[i];
+            if(intersection[i]=='0')
+                flag=false;
         }
         //Todo: check for empty or full
-        intent = new Intent(this, SaveScreen.class);
-        intent.putExtra("BUTTON_STATUS", out);
-        intent.putExtra("PREFS", prefs);
-        intent.putExtra("FLAG", "g");
-        startActivity(intent);
+        if(count==0)
+        {
+            Toast.makeText(this, "You must select a contact or hit the back button", Toast.LENGTH_LONG).show();
+        }
+        else if(flag)
+        {
+            Toast.makeText(this, "There is no overlap of free time in the selected group, sorry", Toast.LENGTH_LONG).show();
+        }
+        else {
+            intent = new Intent(this, SaveScreen.class);
+            intent.putExtra("BUTTON_STATUS", out);
+            intent.putExtra("PREFS", prefs);
+            intent.putExtra("FLAG", "g");
+            startActivity(intent);
+        }
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.help_menu, menu);
         return true;
-    }public boolean onOptionsItemSelected(MenuItem item){
+    }
+    public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
 
         if (id==R.id.help)
         {
             alert();
         }
+
+        else if (id==android.R.id.home) {
+            Intent intent = new Intent(this, HomeScreen.class);
+            startActivity(intent);
+        }
         return true;
 
-    }private void writePrefs(char [] in)
+    }
+    private void writePrefs(char [] in)
     {
         //Save to personal file
         FileOutputStream fos = null;

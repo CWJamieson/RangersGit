@@ -32,6 +32,8 @@ public class ReadScreen extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         prefs = getIntent().getCharArrayExtra("PREFS");
         boolean displayAlert = prefs[5]=='0';
         if(displayAlert) {
@@ -41,14 +43,6 @@ public class ReadScreen extends AppCompatActivity {
         }
 
         setTitle("Scan a plan code");
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                returnToMain();
-            }
-        });
-        fab.setImageResource(R.drawable.ic_check);
         IntentIntegrator integrator = new IntentIntegrator(this);
         integrator.initiateScan();
 
@@ -120,6 +114,10 @@ public class ReadScreen extends AppCompatActivity {
         if (id==R.id.help)
         {
             alert();
+        }
+        else if (id==android.R.id.home) {
+            Intent intent = new Intent(this, HomeScreen.class);
+            startActivity(intent);
         }
         return true;
 

@@ -49,6 +49,8 @@ public class HomeScreen extends AppCompatActivity
         setSupportActionBar(toolbar);
         setTitle("Plannit");
 
+        //deleteFiles();
+
         //Read input from save file
         ArrayList<ArrayList<String>> string = readFile();
         prefs = readPrefs();
@@ -179,9 +181,16 @@ public class HomeScreen extends AppCompatActivity
         if (id == R.id.nav_input) {
             getInput();
         } else if (id == R.id.nav_createGroup) {
-            createGroup();
+            if(friends.length>1)
+                createGroup();
+            else
+                Toast.makeText(this, "You do not have enough contacts to create a group", Toast.LENGTH_LONG).show();
         } else if (id == R.id.nav_share) {
-            share();
+            if(friends.length>0)
+                shareSelect();
+            else
+                Toast.makeText(this, "You have no contacts to share", Toast.LENGTH_LONG).show();
+
         } else if (id == R.id.nav_read) {
             read();
         }
@@ -197,7 +206,7 @@ public class HomeScreen extends AppCompatActivity
                 Manifest.permission.CAMERA);
         if(permissionCheck != getPackageManager().PERMISSION_GRANTED)
         {
-            // Here, thisActivity is the current activity
+            // Here, this is the current activity
             if (ContextCompat.checkSelfPermission(this,
                     Manifest.permission.CAMERA)
                     != PackageManager.PERMISSION_GRANTED) {
@@ -258,11 +267,13 @@ public class HomeScreen extends AppCompatActivity
             // permissions this app might request
         }
     }
-    private void share()
+    private void shareSelect()
     {
-        Intent intent = new Intent(this, ShareScreen.class);
+        Intent intent = new Intent(this, ShareSelectScreen.class);
         intent.putExtra("PREFS", prefs);
-        intent.putExtra("PLANNER", planners[0]);
+        intent.putExtra("FRIENDS", friends);
+        intent.putExtra("PLANNERS", planners);
+        intent.putExtra("FLAGS", flags);
         startActivity(intent);
     }
     private void getInput()
@@ -281,9 +292,15 @@ public class HomeScreen extends AppCompatActivity
         intent.putExtra("PLANNERS", planners);
         startActivity(intent);
     }
-    private void deleteContacts()
+    private void deleteFiles()
     {
-        Toast.makeText(this, "Test", Toast.LENGTH_LONG).show();
+        String fileName = "saveFile";
+        File file = new File(getApplicationContext().getFilesDir(), fileName);
+        file.delete();
+        fileName = "preferences";
+        file = new File(getApplicationContext().getFilesDir(), fileName);
+        file.delete();
+        Toast.makeText(this, "deleted", Toast.LENGTH_LONG).show();
 
     }
 
@@ -360,7 +377,7 @@ public class HomeScreen extends AppCompatActivity
             FileIO fileIO = new FileIO(getApplicationContext());
             file.delete();
             String fileSaveString = "";
-            for(int i=0;i<8;i++)
+            for(int i=0;i<9;i++)
             {
                 fileSaveString+="0";
             }

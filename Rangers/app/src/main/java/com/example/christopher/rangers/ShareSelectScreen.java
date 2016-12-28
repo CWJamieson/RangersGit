@@ -9,40 +9,33 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class DeleteScreen extends AppCompatActivity {
-
+public class ShareSelectScreen extends AppCompatActivity {
     ArrayList<TextView> texts = new ArrayList<TextView>();
     ArrayList<String> names = new ArrayList<String>();
     ArrayList<String> planners = new ArrayList<String>();
     ArrayList<String> flags = new ArrayList<String>();
-    String deleted;
+    char [] prefs;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_delete_screen);
-
+        setContentView(R.layout.activity_share_select_screen);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle("Delete contacts");
-        char [] prefs = getIntent().getCharArrayExtra("PREFS");
-        boolean displayAlert = prefs[0]=='0';
+        setTitle("Share a contact");
+        prefs = getIntent().getCharArrayExtra("PREFS");
+        boolean displayAlert = prefs[8]=='0';
         if(displayAlert) {
             alert();
-            prefs[0]='1';
+            prefs[8]='1';
             writePrefs(prefs);
         }
 
@@ -50,7 +43,6 @@ public class DeleteScreen extends AppCompatActivity {
         String [] planners = this.getIntent().getStringArrayExtra("PLANNERS");
         String [] flags = this.getIntent().getStringArrayExtra("FLAGS");
         String [] friends = this.getIntent().getStringArrayExtra("FRIENDS");
-        deleted = " ";
         for(int i=0;i<friends.length;i++)
         {
             names.add(friends[i]);
@@ -58,12 +50,6 @@ public class DeleteScreen extends AppCompatActivity {
             this.flags.add(flags[i]);
         }
         createFabs();
-    }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.help_menu, menu);
-        return true;
     }
     private void writePrefs(char [] in)
     {
@@ -120,9 +106,7 @@ public class DeleteScreen extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     ((FloatingActionButton)view).setRippleColor(Color.GREEN);
-                    deleteFromFile(view.getId());
-                    view.setEnabled(false);
-                    ((FloatingActionButton) view).hide();
+                    share(view.getId());
                 }
             });
             if(flags.get(i).equals("g"))
@@ -143,14 +127,20 @@ public class DeleteScreen extends AppCompatActivity {
 
         }
     }
+    private void share(int i)
+    {
+        Intent intent = new Intent(this, ShareScreen.class);
+        intent.putExtra("PREFS", prefs);
+        intent.putExtra("PLANNER", planners.get(i));
+        startActivity(intent);
+    }
     private void alert()
     {
 
         AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);
-        dlgAlert.setMessage("To delete contacts, simply click all contacts you wish to remove," +
-                " and press the arrow at the top to pernamently delete them. To cancel, press" +
-                " back on your device.");
-        dlgAlert.setTitle("Deleting contacts");
+        dlgAlert.setMessage("Here you can select a contact to share with friends, silmply tap an" +
+                " icon and follow the instructions on the next page");
+        dlgAlert.setTitle("Sharing contacts");
         dlgAlert.setPositiveButton("Ok",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
@@ -167,89 +157,7 @@ public class DeleteScreen extends AppCompatActivity {
             Intent intent = new Intent(this, HomeScreen.class);
             startActivity(intent);
         }
-        else if(id==R.id.help)
-        {
-            alert();
-        }
         return true;
 
     }
-    private void deleteFromFile(int num)
-    {
-        String fullString;
-        deleted = deleted+num+" ";
-        for(TextView text : texts)
-        {
-            if(text.getText().equals(names.get(num)))
-                text.setText("");
-        }
-
-        deleteFile();
-        for(int i=0;i<flags.size();i++) {
-
-                if(!deleted.contains(" "+i+" ")) {
-                    //Add data, flag and name
-                    fullString = planners.get(i) + "~" + flags.get(i) + "~" + names.get(i);
-                    //Save to file
-                    fileSave(fullString);
-                }
-
-        }
-
-
-    }
-    private void deleteFile()
-    {
-        String fileName = "saveFile";
-        File file = new File(getApplicationContext().getFilesDir(), fileName);
-        file.delete();
-    }
-    private void fileSave(String saveString)
-    {
-        //Save to personal file
-        FileOutputStream fos = null;
-        FileIO fileIO = new FileIO(getApplicationContext());
-        String fileName = "saveFile";
-        File file = new File(getApplicationContext().getFilesDir(), fileName);
-        String fileSaveString;
-        try
-        {
-            //String that includes the contents for the whole file (new and old)
-            Log.d("saveString", saveString);
-            if(file.length() == 0)
-            {
-                fileSaveString = saveString + "\n";
-            }
-            else
-            {
-                fileSaveString = saveString + "\n" + fileIO.getOldContents();
-            }
-            Log.d("fileSaveString", fileSaveString);
-            //Create file
-            fos = openFileOutput("saveFile", Context.MODE_PRIVATE);
-            //Write to file
-            fos.write(fileSaveString.getBytes());
-
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-        finally
-        {
-            try
-            {
-                if (fos != null)
-                {
-                    fos.close();
-                }
-            }
-            catch(IOException e)
-            {
-                e.printStackTrace();
-            }
-        }
-    }
-
-
 }

@@ -136,7 +136,7 @@ public class EnterSchedule extends AppCompatActivity {
         AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);
         dlgAlert.setMessage("This is where you input your own schedule. click the times you are busy, " +
                 "and swipe left and right to view different days of the week. Press the check when" +
-                "you are finished.");
+                " you are finished.");
         dlgAlert.setTitle("Entering your planner");
         dlgAlert.setPositiveButton("Ok",
                 new DialogInterface.OnClickListener() {
@@ -149,9 +149,7 @@ public class EnterSchedule extends AppCompatActivity {
     }
     public void save()
     {
-
-        Intent intent = new Intent(this, SaveScreen.class);
-        intent.putExtra("PREFS", prefs);
+        boolean flag = true, flag2 = true;
         String saveString = "";
         //Transform boolean array into a string of data for file saving
         for(boolean booleans : clicked)
@@ -160,23 +158,31 @@ public class EnterSchedule extends AppCompatActivity {
             if(booleans)
             {
                 saveString = saveString + "1";
+                flag = false;
             }
             //Button was not clicked
             else
             {
                 saveString = saveString + "0";
+                flag2 = false;
             }
         }
-        saveString = saveString;
-        intent.putExtra("BUTTON_STATUS", saveString);
-        intent.putExtra("FLAG", "m");
-        startActivity(intent);
+        if(flag)
+        {
+            Toast.makeText(this, "You select at least one time to be busy", Toast.LENGTH_LONG).show();
+        }
+        else if(flag2)
+        {
+            Toast.makeText(this, "You cannot be busy all the time", Toast.LENGTH_LONG).show();
+        }
+        else {
+            Intent intent = new Intent(this, SaveScreen.class);
+            intent.putExtra("PREFS", prefs);
+            intent.putExtra("BUTTON_STATUS", saveString);
+            intent.putExtra("FLAG", "m");
+            startActivity(intent);
+        }
     }
-   /* @Override
-    public void onPause()
-    {
-
-    }*/
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
