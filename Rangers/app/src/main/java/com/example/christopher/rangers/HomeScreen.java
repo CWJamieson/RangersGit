@@ -206,6 +206,9 @@ public class HomeScreen extends AppCompatActivity
         } else if (id == R.id.nav_read) {
             read();
         }
+        else if (id == R.id.nav_about) {
+            about();
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -369,6 +372,11 @@ public class HomeScreen extends AppCompatActivity
         intent.putExtra("PREFS", prefs);
         intent.putExtra("FRIENDS", friends);
         intent.putExtra("PLANNERS", planners);
+        startActivity(intent);
+    }
+    private void about()
+    {
+        Intent intent = new Intent(this, AboutScreen.class);
         startActivity(intent);
     }
 
