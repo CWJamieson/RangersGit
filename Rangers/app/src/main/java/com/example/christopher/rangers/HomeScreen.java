@@ -34,6 +34,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import static com.example.christopher.rangers.R.drawable.ic_check;
 
@@ -54,6 +55,22 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        c.set(Calendar.HOUR_OF_DAY, 20);
+        c.set(Calendar.MINUTE, 21);
+        int day = c.get(Calendar.DAY_OF_WEEK);
+        int hour = c.get(Calendar.HOUR_OF_DAY);
+        int min = c.get(Calendar.MINUTE);
+        int pos = -1;
+        if((day>=Calendar.MONDAY) && (day <= Calendar.FRIDAY))
+        {
+            if(hour>=8 && hour<=21)
+            {
+                pos = (28*(day-2))+(2*(hour-8))+(min/30);
+            }
+        }
         //set title
         setTitle("Plannit");
 
@@ -98,9 +115,14 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
 
             fabListener list = new fabListener(i, planners, friends, prefs, this);
             fab.setOnClickListener(list);
-
             //Set color of button
             buttonColorSet(fab, colors, i);
+
+            if(planners[i].charAt(pos)=='0')
+                fab.setColorFilter(Color.GREEN);
+            else
+                fab.setColorFilter(Color.WHITE);
+
 
             //Set icon based on flag
             if(flag[i].equals("g"))

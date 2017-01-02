@@ -21,12 +21,14 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static android.R.attr.id;
 
 public class group extends AppCompatActivity {
     //prefs: binary preferences data
     char [] prefs;
+    ArrayList<Integer> ids = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //default
@@ -47,7 +49,7 @@ public class group extends AppCompatActivity {
             prefs[3]='1';
             writePrefs(prefs);
         }
-
+        String [] friends = getIntent().getStringArrayExtra("PLANNERS");
         //create fab
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -74,7 +76,7 @@ public class group extends AppCompatActivity {
             intersection[i] = '0';
         for(int i=0;i<friends.length;i++)
         {
-            CheckBox chk = (CheckBox)findViewById(i);
+            CheckBox chk = (CheckBox)findViewById(ids.get(i));
             if(chk.isChecked())
             {
                 count++;
@@ -204,9 +206,11 @@ public class group extends AppCompatActivity {
         {
             CheckBox chk = new CheckBox(this);
             chk.setText(friends[i]);
-            chk.setId(i);
+
             LinearLayout layout = (LinearLayout) findViewById(R.id.line1);
             layout.addView(chk);
+            chk.setId(i);
+            ids.add(chk.getId());
         }
     }
 
