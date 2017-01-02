@@ -26,7 +26,7 @@
     <string name="about">About us</string>
     <string name="infoText">\n\nMDEC is a student run club at the University of Guelph with no affliliation to the university itself. We make apps for students everywhere, and only publish free apps that never have ads\n</string>
     <string name="contactText">\nWant to join? like us on facebook: https://www.facebook.com/GuelphMDEC/?fref=ts\n</string>
-    <string name="credsText">\nHead Developer: Christopher Jamieson\nProgrammers: Bradley Leonard, Christopher Jamieson\nConcept: Geoff\nDesigned by all of us here at MDEC</string>
+    <string name="credsText">\nHead Developer: Christopher Jamieson\nProgrammers: Bradley Leonard, Christopher Jamieson\nConcept: Geoffrey Singer\nDesigned by all of us here at MDEC</string>
     <string name="colorLabel">Pick a color:</string>
 
-    </resources>
+</resources>

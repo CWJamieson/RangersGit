@@ -67,7 +67,7 @@ public class ReadScreen extends AppCompatActivity {
         dlgAlert.setPositiveButton("Ok",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        //write to never show again
+                        finish();
                     }
                 });
         dlgAlert.setCancelable(true);
