@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -15,18 +14,23 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemSelectedListener;
+
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class SaveScreen extends AppCompatActivity
+public class SaveScreen extends AppCompatActivity implements OnItemSelectedListener
 {
+    protected String item;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -50,11 +54,14 @@ public class SaveScreen extends AppCompatActivity
         }
 
         //add editText listener to respond to enter
-        TextView.OnEditorActionListener enterListener = new TextView.OnEditorActionListener(){
-            public boolean onEditorAction(TextView exampleView, int actionId, KeyEvent event) {
+        TextView.OnEditorActionListener enterListener = new TextView.OnEditorActionListener()
+        {
+            public boolean onEditorAction(TextView exampleView, int actionId, KeyEvent event)
+            {
                 if (actionId == EditorInfo.IME_NULL
-                        && event.getAction() == KeyEvent.ACTION_DOWN) {
-                    save();
+                        && event.getAction() == KeyEvent.ACTION_DOWN)
+                {
+                    save(item);
                 }
                 return true;
             }
@@ -62,14 +69,37 @@ public class SaveScreen extends AppCompatActivity
         EditText edit = (EditText) findViewById(R.id.edit_message);
         edit.setOnEditorActionListener(enterListener);
 
+        //Create spinner and its listener
+        Spinner spinner = (Spinner) findViewById(R.id.colorSpinner);
+        spinner.setOnItemSelectedListener(this);
+
+        //Create list for spinner
+        ArrayList<String> colorList = new ArrayList<>();
+        colorList.add("Blue");
+        colorList.add("Cyan");
+        colorList.add("Dark Grey");
+        colorList.add("Light Grey");
+        colorList.add("Grey");
+        colorList.add("Green");
+        colorList.add("Magenta");
+        colorList.add("Red");
+        colorList.add("Yellow");
+        colorList.add("Black");
+
+        //Put list into spinner
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, colorList);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(dataAdapter);
+
         //create fab
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setImageResource(R.drawable.ic_add);
         fab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                save();
+                save(item);
             }
         });
+
     }
 
     //display alert message
@@ -109,12 +139,47 @@ public class SaveScreen extends AppCompatActivity
     }
 
     //set save data
-    private void save()
-    {
+    private void save(String color) {
         String name;
         //Fetch boolean array clicked from schedule
         String saveString = this.getIntent().getStringExtra("BUTTON_STATUS");
         String flagString = this.getIntent().getStringExtra("FLAG");
+        String colorString = "";
+
+        switch (color)
+        {
+            case "Blue":
+                colorString = "b";
+                break;
+            case "Cyan":
+                colorString = "c";
+                break;
+            case "Dark Grey":
+                colorString = "d";
+                break;
+            case "Light Grey":
+                colorString = "l";
+                break;
+            case "Grey":
+                colorString = "e";
+                break;
+            case "Green":
+                colorString = "g";
+                break;
+            case "Magenta":
+                colorString = "m";
+                break;
+            case "Red":
+                colorString = "r";
+                break;
+            case "Yellow":
+                colorString = "y";
+                break;
+            default:
+                colorString = "k";
+                break;
+
+        }
 
         //Retrieve string from input and add to saveString
         EditText nameView = (EditText) findViewById(R.id.edit_message);
@@ -123,9 +188,10 @@ public class SaveScreen extends AppCompatActivity
         {
             Toast.makeText(this, "You must enter a name", Toast.LENGTH_LONG).show();
         }
-        else {
+        else
+        {
             //Add data, flag and name
-            saveString = saveString + "~" + flagString + "~" + name;
+            saveString = saveString + "~" + flagString + "~" + colorString + "~" + name;
             //Save to file
             fileSave(saveString);
             //Return to home screen
@@ -226,5 +292,17 @@ public class SaveScreen extends AppCompatActivity
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+    {
+        item = parent.getItemAtPosition(position).toString();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent)
+    {
+
     }
 }

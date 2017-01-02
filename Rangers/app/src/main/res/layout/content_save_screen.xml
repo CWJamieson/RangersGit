@@ -13,14 +13,33 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.christopher.rangers.SaveScreen"
     tools:showIn="@layout/activity_save_screen">
-    <TextView android:id="@+id/display_message"
-        android:text="@string/enter_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 
-    <EditText android:id="@+id/edit_message"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        android:hint="@string/contact"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent">
+
+        <TextView android:id="@+id/display_message"
+            android:text="@string/enter_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <EditText android:id="@+id/edit_message"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:hint="@string/contact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView android:id="@+id/color_label"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:text="@string/colorLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Spinner
+            android:id="@+id/colorSpinner"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
 </RelativeLayout>

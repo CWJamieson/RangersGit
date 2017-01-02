@@ -21,11 +21,13 @@ import java.util.ArrayList;
 
 public class ShareSelectScreen extends AppCompatActivity {
 
-    //texts: contact name textviews, names: name Strings, planners: binary planner strings, flags: flag strings, prefs: binary preference data
+    //texts: contact name textviews, names: name Strings, planners: binary planner strings, flags: flag strings, colors: color choice, prefs: binary preference data
     ArrayList<TextView> texts = new ArrayList<TextView>();
     ArrayList<String> names = new ArrayList<String>();
     ArrayList<String> planners = new ArrayList<String>();
     ArrayList<String> flags = new ArrayList<String>();
+    String [] colors;
+
     char [] prefs;
 
 
@@ -53,11 +55,13 @@ public class ShareSelectScreen extends AppCompatActivity {
         String [] planners = this.getIntent().getStringArrayExtra("PLANNERS");
         String [] flags = this.getIntent().getStringArrayExtra("FLAGS");
         String [] friends = this.getIntent().getStringArrayExtra("FRIENDS");
+        String [] colors = this.getIntent().getStringArrayExtra("COLORS");
         for(int i=0;i<friends.length;i++)
         {
             names.add(friends[i]);
             this.planners.add(planners[i]);
             this.flags.add(flags[i]);
+            this.colors = colors;
         }
         //create contact icons
         createFabs();
@@ -116,6 +120,7 @@ public class ShareSelectScreen extends AppCompatActivity {
             TextView text = new TextView(this);
             text.setText(names.get(i));
             texts.add(text);
+            HomeScreen.buttonColorSet(fab, colors, i);
             fab.setId(i);
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override

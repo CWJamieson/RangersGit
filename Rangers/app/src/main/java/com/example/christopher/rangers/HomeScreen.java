@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -35,13 +37,15 @@ import java.util.ArrayList;
 
 import static com.example.christopher.rangers.R.drawable.ic_check;
 
-public class HomeScreen extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class HomeScreen extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
+{
     //friends: array of friends names, planners: binary array of planner data, flags: contact flags, prefs: binary array of preference data
     String [] friends;
     String [] planners;
     String [] flags;
+    String [] colors;
     char[] prefs;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //default
@@ -61,16 +65,18 @@ public class HomeScreen extends AppCompatActivity
         prefs = readPrefs();
         //Parallel arrays for each line
         //Name
-        String [] friends = string.get(2).toArray(new String[string.get(2).size()]);
+        String [] friends = string.get(3).toArray(new String[string.get(3).size()]);
         //Data
         String [] planners = string.get(0).toArray(new String[string.get(0).size()]);
         //Flag(type)
         String [] flag = string.get(1).toArray(new String[string.get(1).size()]);
-
+        //Color choice
+        String [] colors = string.get(2).toArray(new String[string.get(2).size()]);
 
         //display help message
         boolean displayAlert = prefs[4]=='0';
-        if(displayAlert) {
+        if(displayAlert)
+        {
             alert();
             prefs[4]='1';
             writePrefs(prefs);
@@ -80,6 +86,7 @@ public class HomeScreen extends AppCompatActivity
         this.friends = friends;
         this.planners = planners;
         this.flags = flag;
+        this.colors = colors;
 
         //create contact icons
         for(int i=0;i<friends.length;i++)
@@ -91,6 +98,11 @@ public class HomeScreen extends AppCompatActivity
 
             fabListener list = new fabListener(i, planners, friends, prefs, this);
             fab.setOnClickListener(list);
+
+            //Set color of button
+            buttonColorSet(fab, colors, i);
+
+            //Set icon based on flag
             if(flag[i].equals("g"))
                 fab.setImageResource(R.drawable.ic_people);
             else
@@ -106,7 +118,6 @@ public class HomeScreen extends AppCompatActivity
                 layout = (LinearLayout) findViewById(R.id.col4);
             layout.addView(fab);
             layout.addView(text);
-
         }
 
         //create navigation drawer
@@ -142,35 +153,43 @@ public class HomeScreen extends AppCompatActivity
 
     //Back button is pressed
     @Override
-    public void onBackPressed() {
+    public void onBackPressed()
+    {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
+        if (drawer.isDrawerOpen(GravityCompat.START))
+        {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
+        }
+        else
+        {
             super.onBackPressed();
         }
     }
 
     //create menu
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.home_screen, menu);
         return true;
     }
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_settings)
+        {
             Intent intent = new Intent(this, DeleteScreen.class);
             intent.putExtra("FRIENDS",friends);
             intent.putExtra("FLAGS", flags);
             intent.putExtra("PLANNERS", planners);
+            intent.putExtra("COLORS", colors);
             intent.putExtra("PREFS", prefs);
             startActivity(intent);
             return true;
@@ -179,7 +198,6 @@ public class HomeScreen extends AppCompatActivity
         {
             alert();
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -218,7 +236,6 @@ public class HomeScreen extends AppCompatActivity
     //read contact data
     private void read()
     {
-
         int permissionCheck = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.CAMERA);
         if(permissionCheck != getPackageManager().PERMISSION_GRANTED)
@@ -253,7 +270,6 @@ public class HomeScreen extends AppCompatActivity
         }
         else
         {
-
             Intent intent = new Intent(this, ReadScreen.class);
             intent.putExtra("PREFS", prefs);
             startActivity(intent);
@@ -262,8 +278,9 @@ public class HomeScreen extends AppCompatActivity
     //read contact info
     protected ArrayList<ArrayList<String>> readFile()
     {
-        //Create double Arraylist (0 for data, 1 for names)
+        //Create double Arraylist (0 for data, 1 for flag, 2 for color, 3 for names)
         ArrayList<ArrayList<String>> string = new ArrayList<>();
+        string.add(new ArrayList<String>());
         string.add(new ArrayList<String>());
         string.add(new ArrayList<String>());
         string.add(new ArrayList<String>());
@@ -286,8 +303,10 @@ public class HomeScreen extends AppCompatActivity
                     string.get(0).add(temp[0]);
                     //Store flag
                     string.get(1).add(temp[1]);
-                    //Store name
+                    //Store color choice
                     string.get(2).add(temp[2]);
+                    //Store name
+                    string.get(3).add(temp[3]);
                     //Reset line
                     lineString = "";
                 }
@@ -324,25 +343,26 @@ public class HomeScreen extends AppCompatActivity
     //request camera permission
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        switch (requestCode) {
+                                           String permissions[], int[] grantResults)
+    {
+        switch (requestCode)
+        {
             case 1: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                {
                     Intent intent = new Intent(this, ReadScreen.class);
                     intent.putExtra("PREFS", prefs);
                     startActivity(intent);
-
-                } else {
-
+                }
+                else
+                {
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                 }
                 return;
             }
-
             // other 'case' lines to check for other
             // permissions this app might request
         }
@@ -356,6 +376,7 @@ public class HomeScreen extends AppCompatActivity
         intent.putExtra("FRIENDS", friends);
         intent.putExtra("PLANNERS", planners);
         intent.putExtra("FLAGS", flags);
+        intent.putExtra("COLORS", colors);
         startActivity(intent);
     }
     private void getInput()
@@ -447,28 +468,41 @@ public class HomeScreen extends AppCompatActivity
             return fileSaveString.toCharArray();
 
         }
-        else {
+        else
+        {
             FileInputStream fin = null;
             int character;
-            try {
+            try
+            {
                 fin = new FileInputStream(file);
                 while ((character = fin.read()) != -1) {
                     //When it hits end of line flush
-                    if (Character.toString((char) character).equals("\n")) {
+                    if (Character.toString((char) character).equals("\n"))
+                    {
                         break;
-                    } else {
+                    }
+                    else
+                    {
                         //Add character to line
                         lineString = lineString + Character.toString((char) character);
                     }
                 }
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 e.printStackTrace();
-            } finally {
-                try {
-                    if (fin != null) {
+            }
+            finally
+            {
+                try
+                {
+                    if (fin != null)
+                    {
                         fin.close();
                     }
-                } catch (IOException e) {
+                }
+                catch (IOException e)
+                {
                     e.printStackTrace();
                 }
             }
@@ -495,13 +529,11 @@ public class HomeScreen extends AppCompatActivity
 
         try
         {
-
             Log.d("fileSaveString", fileSaveString);
             //Create file
             fos = openFileOutput(fileName, Context.MODE_PRIVATE);
             //Write to file
             fos.write(fileSaveString.getBytes());
-
         }
         catch(Exception e)
         {
@@ -520,6 +552,51 @@ public class HomeScreen extends AppCompatActivity
             {
                 e.printStackTrace();
             }
+        }
+    }
+
+    protected static void buttonColorSet(FloatingActionButton fab, String [] colors, int i)
+    {
+        //Set color of button
+        if(colors[i].equals("b"))
+        {
+            fab.setBackgroundTintList(ColorStateList.valueOf(Color.BLUE));
+        }
+        else if(colors[i].equals("c"))
+        {
+            fab.setBackgroundTintList(ColorStateList.valueOf(Color.CYAN));
+        }
+        else if(colors[i].equals("d"))
+        {
+            fab.setBackgroundTintList(ColorStateList.valueOf(Color.DKGRAY));
+        }
+        else if(colors[i].equals("l"))
+        {
+            fab.setBackgroundTintList(ColorStateList.valueOf(Color.LTGRAY));
+        }
+        else if(colors[i].equals("e"))
+        {
+            fab.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
+        }
+        else if(colors[i].equals("g"))
+        {
+            fab.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
+        }
+        else if(colors[i].equals("m"))
+        {
+            fab.setBackgroundTintList(ColorStateList.valueOf(Color.MAGENTA));
+        }
+        else if(colors[i].equals("r"))
+        {
+            fab.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
+        }
+        else if(colors[i].equals("y"))
+        {
+            fab.setBackgroundTintList(ColorStateList.valueOf(Color.YELLOW));
+        }
+        else
+        {
+            fab.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
         }
     }
 }

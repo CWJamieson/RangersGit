@@ -31,6 +31,7 @@ public class DeleteScreen extends AppCompatActivity {
     ArrayList<String> names = new ArrayList<String>();
     ArrayList<String> planners = new ArrayList<String>();
     ArrayList<String> flags = new ArrayList<String>();
+    String [] colors;
     String deleted;
 
 
@@ -57,12 +58,14 @@ public class DeleteScreen extends AppCompatActivity {
         String [] planners = this.getIntent().getStringArrayExtra("PLANNERS");
         String [] flags = this.getIntent().getStringArrayExtra("FLAGS");
         String [] friends = this.getIntent().getStringArrayExtra("FRIENDS");
+        String [] colors = this.getIntent().getStringArrayExtra("COLORS");
         deleted = " ";
         for(int i=0;i<friends.length;i++)
         {
             names.add(friends[i]);
             this.planners.add(planners[i]);
             this.flags.add(flags[i]);
+            this.colors = colors;
         }
 
         //create contact buttons
@@ -92,7 +95,6 @@ public class DeleteScreen extends AppCompatActivity {
         return true;
 
     }
-
 
     //update preferences file
     private void writePrefs(char [] in)
@@ -148,6 +150,7 @@ public class DeleteScreen extends AppCompatActivity {
             TextView text = new TextView(this);
             text.setText(names.get(i));
             texts.add(text);
+            HomeScreen.buttonColorSet(fab, colors, i);
             fab.setId(i);
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -215,23 +218,23 @@ public class DeleteScreen extends AppCompatActivity {
         deleteFile();
         for(int i=0;i<flags.size();i++) {
 
-                if(!deleted.contains(" "+i+" ")) {
-                    //Add data, flag and name
-                    fullString = planners.get(i) + "~" + flags.get(i) + "~" + names.get(i);
-                    //Save to file
-                    fileSave(fullString);
-                }
-
+            if(!deleted.contains(" " + i + " "))
+            {
+                //Add data, flag and name
+                fullString = planners.get(i) + "~" + flags.get(i) + "~" + colors[i] + "~" + names.get(i);
+                //Save to file
+                fileSave(fullString);
+            }
         }
-
-
     }
+
     private void deleteFile()
     {
         String fileName = "saveFile";
         File file = new File(getApplicationContext().getFilesDir(), fileName);
         file.delete();
     }
+
     private void fileSave(String saveString)
     {
         //Save to personal file
@@ -278,6 +281,4 @@ public class DeleteScreen extends AppCompatActivity {
             }
         }
     }
-
-
 }
