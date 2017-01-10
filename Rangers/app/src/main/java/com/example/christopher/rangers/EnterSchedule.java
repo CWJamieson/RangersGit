@@ -81,7 +81,7 @@ public class EnterSchedule extends AppCompatActivity {
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         init(clicked);
-
+        clicked = getIntent().getBooleanArrayExtra("PLANNER");
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

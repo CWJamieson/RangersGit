@@ -46,7 +46,7 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
     String [] flags;
     String [] colors;
     char[] prefs;
-
+    final int pref = 10;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //default
@@ -80,6 +80,7 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
         //Read input from save file
         ArrayList<ArrayList<String>> string = readFile();
         prefs = readPrefs();
+
         //Parallel arrays for each line
         //Name
         String [] friends = string.get(3).toArray(new String[string.get(3).size()]);
@@ -208,6 +209,17 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
         if (id == R.id.action_settings)
         {
             Intent intent = new Intent(this, DeleteScreen.class);
+            intent.putExtra("FRIENDS",friends);
+            intent.putExtra("FLAGS", flags);
+            intent.putExtra("PLANNERS", planners);
+            intent.putExtra("COLORS", colors);
+            intent.putExtra("PREFS", prefs);
+            startActivity(intent);
+            return true;
+        }
+        else if(id == R.id.edit)
+        {
+            Intent intent = new Intent(this, EditScreen.class);
             intent.putExtra("FRIENDS",friends);
             intent.putExtra("FLAGS", flags);
             intent.putExtra("PLANNERS", planners);
@@ -401,9 +413,20 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
         intent.putExtra("COLORS", colors);
         startActivity(intent);
     }
+    public void init(boolean clicked[])
+    {
+
+        for(int i=0;i<140;i++)
+        {
+            clicked[i] = false;
+        }
+    }
     private void getInput()
     {
+        boolean [] clicked = new boolean [140];
+        init(clicked);
         Intent intent = new Intent(this, EnterSchedule.class);
+        intent.putExtra("PLANNER", clicked);
         intent.putExtra("PREFS", prefs);
         startActivity(intent);
     }
@@ -451,7 +474,7 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
             FileIO fileIO = new FileIO(getApplicationContext());
             file.delete();
             String fileSaveString = "";
-            for(int i=0;i<9;i++)
+            for(int i=0;i<pref;i++)
             {
                 fileSaveString+="0";
             }
@@ -528,6 +551,8 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
                     e.printStackTrace();
                 }
             }
+            while(lineString.length()<pref)
+                lineString= lineString +'0';
             out = lineString.toCharArray();
             //Return parsed data
             return out;

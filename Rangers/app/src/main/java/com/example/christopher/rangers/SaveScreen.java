@@ -42,6 +42,7 @@ public class SaveScreen extends AppCompatActivity implements OnItemSelectedListe
         setSupportActionBar(toolbar);
 
         //set title
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("Choose a name");
 
         //read prefs
@@ -80,7 +81,7 @@ public class SaveScreen extends AppCompatActivity implements OnItemSelectedListe
         colorList.add("Dark Grey");
         colorList.add("Light Grey");
         colorList.add("Grey");
-        colorList.add("Green");
+        //colorList.add("Green");
         colorList.add("Magenta");
         colorList.add("Red");
         colorList.add("Yellow");
@@ -108,7 +109,8 @@ public class SaveScreen extends AppCompatActivity implements OnItemSelectedListe
 
         AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);
         dlgAlert.setMessage("You will be brought here whenever creating a contact or inputting your" +
-                " schedule. just choose a name for the planner and press + when you're ready");
+                " schedule. just choose a name for the planner and press + when you're ready\n\nAfter" +
+                "saving, you can share it using the \"share your planner\" option on the home screen");
         dlgAlert.setTitle("Adding a contact");
         dlgAlert.setPositiveButton("Ok",
                 new DialogInterface.OnClickListener() {
@@ -130,7 +132,11 @@ public class SaveScreen extends AppCompatActivity implements OnItemSelectedListe
     public boolean onOptionsItemSelected(MenuItem item){
             int id = item.getItemId();
 
-        if (id==R.id.help)
+        //back button
+        if (id==android.R.id.home) {
+            finish();
+        }
+        else if (id==R.id.help)
         {
             alert();
         }
