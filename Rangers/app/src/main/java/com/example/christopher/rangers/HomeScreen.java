@@ -334,6 +334,7 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
                     //Splits line at name and data
                     String temp[] = lineString.split("~");
                     //Store data
+                    //Add if get decoding work string.get(0).add(FileIO.decrypt(temp[0]));
                     string.get(0).add(temp[0]);
                     //Store flag
                     string.get(1).add(temp[1]);

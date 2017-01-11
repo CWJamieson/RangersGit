@@ -106,7 +106,6 @@ public class SaveScreen extends AppCompatActivity implements OnItemSelectedListe
     //display alert message
     private void alert()
     {
-
         AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);
         dlgAlert.setMessage("You will be brought here whenever creating a contact or inputting your" +
                 " schedule. just choose a name for the planner and press + when you're ready\n\nAfter" +
@@ -130,7 +129,7 @@ public class SaveScreen extends AppCompatActivity implements OnItemSelectedListe
         return true;
     }
     public boolean onOptionsItemSelected(MenuItem item){
-            int id = item.getItemId();
+        int id = item.getItemId();
 
         //back button
         if (id==android.R.id.home) {
@@ -194,6 +193,10 @@ public class SaveScreen extends AppCompatActivity implements OnItemSelectedListe
         {
             Toast.makeText(this, "You must enter a name", Toast.LENGTH_LONG).show();
         }
+        if(name.length() > 20)
+        {
+            Toast.makeText(this, "Please enter a name 20 characters or less", Toast.LENGTH_LONG).show();
+        }
         else
         {
             //Add data, flag and name
@@ -230,6 +233,7 @@ public class SaveScreen extends AppCompatActivity implements OnItemSelectedListe
             //Create file
             fos = openFileOutput("saveFile", Context.MODE_PRIVATE);
             //Write to file
+            // Add if encrypt works fos.write(FileIO.encrypt(fileSaveString).getBytes());
             fos.write(fileSaveString.getBytes());
             //Show user save was successful
             Toast toast = Toast.makeText(getBaseContext(),"Schedule Saved",Toast.LENGTH_SHORT);

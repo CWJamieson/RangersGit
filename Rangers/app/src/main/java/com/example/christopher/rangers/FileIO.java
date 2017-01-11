@@ -1,6 +1,7 @@
 package com.example.christopher.rangers;
 
 import android.content.Context;
+import android.util.Base64;
 import android.util.Log;
 
 import java.io.File;
@@ -13,6 +14,7 @@ import java.io.IOException;
 //bradley's file io class (ask him)
 public class FileIO
 {
+    //The context from activity we came from
     Context context;
 
     public FileIO(Context context)
@@ -20,6 +22,10 @@ public class FileIO
         this.context = context;
     }
 
+    /**
+     * Gets the old contents of the save file
+     * @return returns the string of contents from the old file
+     */
     protected String getOldContents()
     {
         String oldString = "";
@@ -58,6 +64,11 @@ public class FileIO
         return oldString;
     }
 
+    /**
+     * Removes the contact from the save file
+     * @param removeLineNum number of the line to remove
+     * @return a string containing the contents of the file with line rmoved
+     */
     protected String removeFileLine(int removeLineNum)
     {
         int counter = 0;
@@ -113,8 +124,26 @@ public class FileIO
             }
         }
         return  fileString;
-
-
     }
 
+    /**
+     * Encrypts the data to save space in save file
+     */
+ /*   public static String encrypt(String toEncrypt)
+    {
+        toEncrypt = Base64.encodeToString(toEncrypt.getBytes(), Base64.DEFAULT);
+        Log.d("ENCRYPTED", toEncrypt);
+        return toEncrypt;
+    }
+*/
+    /**
+     * Decrypts the data thats already encrypted
+     */
+ /*   public static String decrypt(String toDecrypt)
+    {
+        toDecrypt = new String(Base64.decode(toDecrypt, Base64.DEFAULT));
+        Log.d("DECRYPTED", toDecrypt);
+        return toDecrypt;
+    }
+*/
 }
