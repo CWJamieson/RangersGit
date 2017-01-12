@@ -1,4 +1,4 @@
-package com.example.christopher.rangers;
+package com.mdec.mdec.plannit;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,25 +12,22 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class DeleteScreen extends AppCompatActivity {
+public class EditScreen extends AppCompatActivity {
 
     //globals for contact data
     ArrayList<TextView> texts = new ArrayList<TextView>();
     ArrayList<String> names = new ArrayList<String>();
     ArrayList<String> planners = new ArrayList<String>();
     ArrayList<String> flags = new ArrayList<String>();
+    char prefs [];
     String [] colors;
     String deleted;
 
@@ -39,7 +36,7 @@ public class DeleteScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         //default
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_delete_screen);
+        setContentView(R.layout.activity_edit_screen);
 
         //add back button & title
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -47,10 +44,11 @@ public class DeleteScreen extends AppCompatActivity {
 
         //read preferences and display help message
         char [] prefs = getIntent().getCharArrayExtra("PREFS");
-        boolean displayAlert = prefs[0]=='0';
+        this.prefs = prefs;
+        boolean displayAlert = prefs[9]=='0';
         if(displayAlert) {
             alert();
-            prefs[0]='1';
+            prefs[9]='1';
             writePrefs(prefs);
         }
 
@@ -156,7 +154,7 @@ public class DeleteScreen extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     ((FloatingActionButton)view).setRippleColor(Color.GREEN);
-                    warning(names.get(view.getId()), view.getId());
+                    edit(view.getId());
                 }
             });
 
@@ -180,7 +178,6 @@ public class DeleteScreen extends AppCompatActivity {
             layout.addView(text);
 
         }
-
         if(names.size() == 0)
         {
             LinearLayout layout = (LinearLayout) findViewById(R.id.col1);
@@ -188,38 +185,37 @@ public class DeleteScreen extends AppCompatActivity {
             text.setText(R.string.nocontacts);
             layout.addView(text);
         }
+
     }
-    private void warning(String s, final int n)
+
+    public void init(boolean clicked[], String s)
     {
-        AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);
-        dlgAlert.setMessage("Are you sure you wish to delete "+s+"? this cannot be undone");
-        dlgAlert.setTitle("Deleting "+s);
-        dlgAlert.setPositiveButton("Delete",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        deleteFromFile(n);
 
-                    }
-                });
-        dlgAlert.setNegativeButton("Cancel",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
+        for(int i=0;i<140;i++)
+        {
 
-
-                    }
-                });
-        dlgAlert.setCancelable(true);
-        dlgAlert.create().show();
+            clicked[i] = (s.charAt(i)=='1');
+        }
     }
+    private void edit(int num)
+    {
+        boolean clicked [] = new boolean [140];
+        String s = planners.get(num);
+        init(clicked, s);
+        Intent intent = new Intent(this, EnterSchedule.class);
+        intent.putExtra("PLANNER", clicked);
+        intent.putExtra("PREFS", prefs);
+        startActivity(intent);
+    }
+
 
     //help messsage box
     private void alert()
     {
 
         AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);
-        dlgAlert.setMessage("To delete contacts, simply click all contacts you wish to remove," +
-                " and press the arrow at the top to pernamently delete them. To cancel, press" +
-                " back on your device.");
+        dlgAlert.setMessage("To re-edit a schedule, click any name to change and re-save it. It will create a new contact," +
+                "so the old one will need to be deleted manually");
         dlgAlert.setTitle("Deleting contacts");
         dlgAlert.setPositiveButton("Ok",
                 new DialogInterface.OnClickListener() {
@@ -232,39 +228,6 @@ public class DeleteScreen extends AppCompatActivity {
     }
 
 
-    //delete methods
-    private void deleteFromFile(int num)
-    {
-
-        findViewById(num).setEnabled(false);
-        ((FloatingActionButton) findViewById(num)).hide();
-        String fullString;
-        deleted = deleted+num+" ";
-        for(TextView text : texts)
-        {
-            if(text.getText().equals(names.get(num)))
-                text.setText("");
-        }
-
-        deleteFile();
-        for(int i=0;i<flags.size();i++) {
-
-            if(!deleted.contains(" " + i + " "))
-            {
-                //Add data, flag and name
-                fullString = planners.get(i) + "~" + flags.get(i) + "~" + colors[i] + "~" + names.get(i);
-                //Save to file
-                fileSave(fullString);
-            }
-        }
-    }
-
-    private void deleteFile()
-    {
-        String fileName = "saveFile";
-        File file = new File(getApplicationContext().getFilesDir(), fileName);
-        file.delete();
-    }
 
     private void fileSave(String saveString)
     {

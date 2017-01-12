@@ -1,7 +1,6 @@
-package com.example.christopher.rangers;
+package com.mdec.mdec.plannit;
 
 import android.content.Context;
-import android.util.Base64;
 import android.util.Log;
 
 import java.io.File;

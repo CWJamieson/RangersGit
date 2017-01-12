@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.christopher.rangers">
+    package="com.mdec.mdec.plannit">
 
     <application
         android:allowBackup="true"
@@ -9,7 +9,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".HomeScreen"
+            android:name="com.mdec.mdec.plannit.HomeScreen"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -19,39 +19,39 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".EnterSchedule"
+            android:name="com.mdec.mdec.plannit.EnterSchedule"
             android:label="@string/title_activity_enter_schedule"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".SaveScreen"
+            android:name="com.mdec.mdec.plannit.SaveScreen"
             android:label="@string/title_activity_save_screen"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".group"
+            android:name="com.mdec.mdec.plannit.group"
             android:label="@string/title_activity_group"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ShareScreen"
+            android:name="com.mdec.mdec.plannit.ShareScreen"
             android:label="@string/title_activity_share_screen"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ReadScreen"
+            android:name="com.mdec.mdec.plannit.ReadScreen"
             android:label="@string/title_activity_read_screen"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".DisplayScreen"
+            android:name="com.mdec.mdec.plannit.DisplayScreen"
             android:label="@string/title_activity_display_screen"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".DeleteScreen" />
+        <activity android:name="com.mdec.mdec.plannit.DeleteScreen" />
         <activity
-            android:name=".CaptureActivityPortrait"
+            android:name="com.mdec.mdec.plannit.CaptureActivityPortrait"
             android:screenOrientation="portrait"
             android:stateNotNeeded="true"
             android:theme="@style/zxing_CaptureTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity android:name=".ShareSelectScreen" />
-        <activity android:name=".AboutScreen" />
-        <activity android:name=".EditScreen"></activity>
+        <activity android:name="com.mdec.mdec.plannit.ShareSelectScreen" />
+        <activity android:name="com.mdec.mdec.plannit.AboutScreen" />
+        <activity android:name="com.mdec.mdec.plannit.EditScreen"></activity>
     </application>
 
 </manifest>

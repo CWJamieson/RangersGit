@@ -1,4 +1,4 @@
-package com.example.christopher.rangers;
+package com.mdec.mdec.plannit;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.example.christopher.rangers", appContext.getPackageName());
+        assertEquals("com.mdec.mdec.com.mdec.plannit", appContext.getPackageName());
     }
 }

@@ -1,4 +1,4 @@
-package com.example.christopher.rangers;
+package com.mdec.mdec.plannit;
 
 /**
  * Created by Christopher on 12/21/2016.

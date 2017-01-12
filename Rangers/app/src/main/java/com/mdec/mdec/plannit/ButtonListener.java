@@ -1,14 +1,9 @@
-package com.example.christopher.rangers;
+package com.mdec.mdec.plannit;
 
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
-
-import static java.security.AccessController.getContext;
 
 /**
  * Created by Christopher on 12/22/2016.

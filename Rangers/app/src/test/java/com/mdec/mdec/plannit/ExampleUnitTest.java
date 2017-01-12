@@ -1,4 +1,4 @@
-package com.example.christopher.rangers;
+package com.mdec.mdec.plannit;
 
 import org.junit.Test;
 

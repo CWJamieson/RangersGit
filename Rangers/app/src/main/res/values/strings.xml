@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:https="http://schemas.android.com/tools">
     <string name="app_name">Plannit</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -25,8 +25,8 @@
     <string name="help">Help</string>
     <string name="about">About us</string>
     <string name="infoText">\n\nMDEC is a student run club at the University of Guelph with no affliliation to the university itself. We make apps for students everywhere, and only publish free apps that never have ads\n</string>
-    <string name="contactText">\nWant to join? like us on facebook: https://www.facebook.com/GuelphMDEC/?fref=ts\n</string>
-    <string name="credsText">\nHead Developer: Christopher Jamieson\nProgrammers: Bradley Leonard, Christopher Jamieson\nConcept: Geoffrey Singer\nDesigned by all of us here at MDEC</string>
+    <string name="contactText">\nWant to join? like us on facebook: <a href="https://www.facebook.com/GuelphMDEC/?fref=ts">https://www.facebook.com/GuelphMDEC/?fref=ts</a></string>
+    <string name="credsText">\n\nHead Developer: Christopher Jamieson\nProgrammers: Bradley Leonard, Christopher Jamieson\nConcept: Geoffrey Singer\nDesigned by all of us here at MDEC</string>
     <string name="colorLabel">Pick a color:</string>
     <string name="nocontacts">No contacts... yet</string>
 

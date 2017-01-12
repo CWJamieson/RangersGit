@@ -11,7 +11,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.christopher.rangers.group"
+    tools:context="com.mdec.mdec.plannit.group"
     tools:showIn="@layout/activity_group">
     <LinearLayout
         android:id="@+id/line1"

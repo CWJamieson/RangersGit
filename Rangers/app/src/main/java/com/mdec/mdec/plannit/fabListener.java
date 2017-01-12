@@ -1,12 +1,10 @@
-package com.example.christopher.rangers;
+package com.mdec.mdec.plannit;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
 import android.view.View;
-
-import static java.security.AccessController.getContext;
 
 /**
  * Created by Christopher on 12/22/2016.
