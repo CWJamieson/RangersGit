@@ -182,6 +182,14 @@ public class EditScreen extends AppCompatActivity {
             layout.addView(text);
 
         }
+        if(names.size() == 0)
+        {
+            LinearLayout layout = (LinearLayout) findViewById(R.id.col1);
+            TextView text = new TextView(this);
+            text.setText(R.string.nocontacts);
+            layout.addView(text);
+        }
+
     }
 
     public void init(boolean clicked[], String s)

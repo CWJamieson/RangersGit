@@ -28,5 +28,6 @@
     <string name="contactText">\nWant to join? like us on facebook: https://www.facebook.com/GuelphMDEC/?fref=ts\n</string>
     <string name="credsText">\nHead Developer: Christopher Jamieson\nProgrammers: Bradley Leonard, Christopher Jamieson\nConcept: Geoffrey Singer\nDesigned by all of us here at MDEC</string>
     <string name="colorLabel">Pick a color:</string>
+    <string name="nocontacts">No contacts... yet</string>
 
 </resources>

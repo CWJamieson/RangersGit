@@ -57,9 +57,6 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
 
 
         Calendar c = Calendar.getInstance();
-        c.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-        c.set(Calendar.HOUR_OF_DAY, 20);
-        c.set(Calendar.MINUTE, 21);
         int day = c.get(Calendar.DAY_OF_WEEK);
         int hour = c.get(Calendar.HOUR_OF_DAY);
         int min = c.get(Calendar.MINUTE);
@@ -143,6 +140,13 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
             layout.addView(text);
         }
 
+        if(friends.length == 0)
+        {
+            LinearLayout layout = (LinearLayout) findViewById(R.id.col1);
+            TextView text = new TextView(this);
+            text.setText(R.string.nocontacts);
+            layout.addView(text);
+        }
         //create navigation drawer
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

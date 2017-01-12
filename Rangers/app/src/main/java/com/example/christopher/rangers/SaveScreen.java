@@ -64,11 +64,13 @@ public class SaveScreen extends AppCompatActivity implements OnItemSelectedListe
                 {
                     save(item);
                 }
+
                 return true;
             }
         };
         EditText edit = (EditText) findViewById(R.id.edit_message);
         edit.setOnEditorActionListener(enterListener);
+
 
         //Create spinner and its listener
         Spinner spinner = (Spinner) findViewById(R.id.colorSpinner);

@@ -28,7 +28,8 @@
             android:paddingTop="@dimen/activity_vertical_margin"
             android:hint="@string/contact"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:maxLength="20"/>
 
         <TextView android:id="@+id/color_label"
             android:paddingTop="@dimen/activity_vertical_margin"
