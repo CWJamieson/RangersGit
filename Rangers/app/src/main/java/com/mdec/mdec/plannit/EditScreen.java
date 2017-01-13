@@ -214,9 +214,9 @@ public class EditScreen extends AppCompatActivity {
     {
 
         AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);
-        dlgAlert.setMessage("To re-edit a schedule, click any name to change and re-save it. It will create a new contact," +
+        dlgAlert.setMessage("To re-edit a schedule, click any name to change and re-save it. It will create a new contact, " +
                 "so the old one will need to be deleted manually");
-        dlgAlert.setTitle("Deleting contacts");
+        dlgAlert.setTitle("Editing contacts");
         dlgAlert.setPositiveButton("Ok",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {

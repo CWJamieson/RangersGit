@@ -143,6 +143,7 @@ public class ReadScreen extends AppCompatActivity {
         if(result != null) {
             if(result.getContents() == null) {
                 Log.d("MainActivity", "Cancelled scan");
+                finish();
                 Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
             } else {
                 Intent intent = new Intent(this, SaveScreen.class);
