@@ -109,8 +109,9 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
             fab.setOnClickListener(list);
             //Set color of button
             buttonColorSet(fab, colors, i);
-
-            if(planners[i].charAt(pos)=='0')
+            if(pos==-1)
+                fab.setColorFilter(Color.WHITE);
+            else if(planners[i].charAt(pos)=='0')
                 fab.setColorFilter(Color.GREEN);
             else
                 fab.setColorFilter(Color.WHITE);
