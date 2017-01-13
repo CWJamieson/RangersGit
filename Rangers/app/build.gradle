@@ -7,8 +7,8 @@ android {
         applicationId "com.mdec.mdec.plannit"
         minSdkVersion 18
         targetSdkVersion 24
-        versionCode 2
-        versionName "0.99"
+        versionCode 3
+        versionName "0.991"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
