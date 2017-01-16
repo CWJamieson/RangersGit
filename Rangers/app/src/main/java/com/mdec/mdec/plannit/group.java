@@ -181,7 +181,7 @@ public class group extends AppCompatActivity {
 
         AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);
         dlgAlert.setMessage("To create a group, select the contacts or groups you wish to include," +
-                " and press the check when you are finished.");
+                " and press the + when you are finished.");
         dlgAlert.setTitle("Creating a group");
         dlgAlert.setPositiveButton("Ok",
                 new DialogInterface.OnClickListener() {
