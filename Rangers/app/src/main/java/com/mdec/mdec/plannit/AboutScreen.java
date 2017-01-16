@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class AboutScreen extends AppCompatActivity {
@@ -19,7 +20,8 @@ public class AboutScreen extends AppCompatActivity {
         setTitle("About us");
         TextView info = (TextView) findViewById(R.id.info);
         TextView contact = (TextView) findViewById(R.id.contact);
-
+        ImageView image = (ImageView) findViewById(R.id.logo);
+        image.setImageResource(R.mipmap.ic_launcher);
         //TextView contact2 = (TextView) findViewById(R.id.contact2);
         TextView creds = (TextView) findViewById(R.id.credits);
 

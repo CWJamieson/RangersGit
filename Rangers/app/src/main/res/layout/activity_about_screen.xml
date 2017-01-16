@@ -12,7 +12,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.mdec.mdec.plannit.AboutScreen">
     <ImageView
-        android:id="@+id/Logo"
+        android:id="@+id/logo"
         android:contentDescription="@string/info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

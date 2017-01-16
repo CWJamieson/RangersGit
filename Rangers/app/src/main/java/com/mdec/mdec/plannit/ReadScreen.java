@@ -146,11 +146,37 @@ public class ReadScreen extends AppCompatActivity {
                 finish();
                 Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
             } else {
-                Intent intent = new Intent(this, SaveScreen.class);
-                intent.putExtra("BUTTON_STATUS", result.getContents());
-                intent.putExtra("PREFS", prefs);
-                intent.putExtra("FLAG", "f");
-                startActivity(intent);
+                String res = result.getContents();
+                //error check
+                if(res.length()!=140)
+                {
+
+                    Toast.makeText(this, "That is not a Plannit Code", Toast.LENGTH_LONG).show();
+                    finish();
+                    return;
+                }
+                for(int i=0;i<res.length();i++)
+                {
+                    if(res.charAt(i)!='0' && res.charAt(i)!='1')
+                    {
+                        Toast.makeText(this, "That is not a Plannit Code", Toast.LENGTH_LONG).show();
+                        finish();
+                        return;
+                    }
+                }
+                try {
+                    //Integer.parseInt(result.getContents());
+                    Intent intent = new Intent(this, SaveScreen.class);
+                    intent.putExtra("BUTTON_STATUS", res);
+                    intent.putExtra("PREFS", prefs);
+                    intent.putExtra("FLAG", "f");
+                    startActivity(intent);
+                }
+                catch(Exception e)
+                {
+
+                    Toast.makeText(this, "That is not a Plannit Code", Toast.LENGTH_LONG).show();
+                }
             }
         } else {
             // This is important, otherwise the result will not be passed to the fragment

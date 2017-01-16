@@ -37,7 +37,7 @@ public class ShareScreen extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         //set title and back button
-        setTitle("Share your planner");
+        setTitle(getIntent().getStringExtra("NAME"));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 

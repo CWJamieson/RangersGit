@@ -162,6 +162,7 @@ public class ShareSelectScreen extends AppCompatActivity {
         Intent intent = new Intent(this, ShareScreen.class);
         intent.putExtra("PREFS", prefs);
         intent.putExtra("PLANNER", planners.get(i));
+        intent.putExtra("NAME", names.get(i));
         startActivity(intent);
     }
 
