@@ -3,6 +3,7 @@ package com.mdec.mdec.plannit;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -100,6 +101,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
 
         //Set name
         holder.name.setText(friends[position]);
+
         //Set color of button
         if(colors[position].equals("b"))
         {
@@ -141,6 +143,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
         {
             holder.cardView.setCardBackgroundColor(ColorStateList.valueOf(Color.BLACK));
         }
+
         //Set listener
         RecycleListener list = new RecycleListener(position, planners, friends, prefs, context, comeFrom);
         holder.cardView.setOnClickListener(list);

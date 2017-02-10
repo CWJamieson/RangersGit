@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="64dp"
+    android:focusable="true"
+    android:clickable="true"
+    app:cardUseCompatPadding="true"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/contact_icon"
+        android:layout_gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="32dp" />
+
+    <TextView
+        android:id="@+id/contact_name"
+        android:layout_gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minLines="2"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"/>
+
+</android.support.v7.widget.CardView>

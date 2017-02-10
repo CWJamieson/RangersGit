@@ -12,6 +12,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -30,7 +32,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class HomeScreen extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {
@@ -41,6 +42,7 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
     String [] colors;
     char[] prefs;
     final int pref = 10;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //default
@@ -48,12 +50,6 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
         setContentView(R.layout.activity_home_screen);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        //set title
-        setTitle("Plannit");
-
-        //uncomment to delete files
-        //deleteFiles();
 
         //Read input from save file
         ArrayList<ArrayList<String>> string = readFile();
@@ -69,6 +65,26 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
         //Color choice
         String [] colors = string.get(2).toArray(new String[string.get(2).size()]);
 
+        //set globals
+        this.friends = friends;
+        this.planners = planners;
+        this.flags = flag;
+        this.colors = colors;
+
+        //RecyclerView
+        RecyclerView recycleView = (RecyclerView)findViewById(R.id.content_home_screen);
+        recycleView.setHasFixedSize(true);
+        //RecyclerView layout manager
+        recycleView.setLayoutManager(new LinearLayoutManager(this));
+        //RecyclerView adapter
+        recycleView.setAdapter(new ContactAdapter(friends, planners, flags, colors, prefs, this, "HOME"));
+
+        //set title
+        setTitle("Plannit");
+
+        //uncomment to delete files
+        //deleteFiles();
+
         //display help message
         boolean displayAlert = prefs[4]=='0';
         if(displayAlert)
@@ -77,12 +93,6 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
             prefs[4]='1';
             writePrefs(prefs);
         }
-
-        //set globals
-        this.friends = friends;
-        this.planners = planners;
-        this.flags = flag;
-        this.colors = colors;
 
 
         if(friends.length == 0) {
