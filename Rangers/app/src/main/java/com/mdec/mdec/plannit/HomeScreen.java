@@ -49,19 +49,6 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
-        Calendar c = Calendar.getInstance();
-        int day = c.get(Calendar.DAY_OF_WEEK);
-        int hour = c.get(Calendar.HOUR_OF_DAY);
-        int min = c.get(Calendar.MINUTE);
-        int pos = -1;
-        if((day>=Calendar.MONDAY) && (day <= Calendar.FRIDAY))
-        {
-            if(hour>=8 && hour<=21)
-            {
-                pos = (28*(day-2))+(2*(hour-8))+(min/30);
-            }
-        }
         //set title
         setTitle("Plannit");
 
@@ -97,50 +84,10 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
         this.flags = flag;
         this.colors = colors;
 
-        //create contact icons
-        for(int i=0;i<friends.length;i++)
-        {
-            FloatingActionButton fab = new  FloatingActionButton(this);
-            TextView text = new TextView(this);
-            text.setMinLines(2);
-            text.setText(friends[i]);
 
-            fabListener list = new fabListener(i, planners, friends, prefs, this);
-            fab.setOnClickListener(list);
-            //Set color of button
-            buttonColorSet(fab, colors, i);
-            if(pos==-1)
-                fab.setColorFilter(Color.WHITE);
-            else if(planners[i].charAt(pos)=='0')
-                fab.setColorFilter(Color.GREEN);
-            else
-                fab.setColorFilter(Color.WHITE);
-
-
-            //Set icon based on flag
-            if(flag[i].equals("g"))
-                fab.setImageResource(R.drawable.ic_people);
-            else
-                fab.setImageResource(R.drawable.ic_person);
-            LinearLayout layout;
-            if(i%4==0)
-                layout = (LinearLayout) findViewById(R.id.col1);
-            else if(i%4==1)
-                layout = (LinearLayout) findViewById(R.id.col2);
-            else if(i%4==2)
-                layout = (LinearLayout) findViewById(R.id.col3);
-            else
-                layout = (LinearLayout) findViewById(R.id.col4);
-            layout.addView(fab);
-            layout.addView(text);
-        }
-
-        if(friends.length == 0)
-        {
+        if(friends.length == 0) {
             LinearLayout layout = (LinearLayout) findViewById(R.id.col1);
             TextView text = new TextView(this);
-            text.setText(R.string.nocontacts);
-            layout.addView(text);
         }
         //create navigation drawer
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
