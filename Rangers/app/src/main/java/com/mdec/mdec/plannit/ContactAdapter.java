@@ -5,6 +5,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,16 +13,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import java.util.ArrayList;
 import java.util.Calendar;
+
+import static android.R.attr.right;
 
 public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHolder>
 {
 
-    private String [] friends;
-    private String [] planners;
-    private String [] flags;
-    private String [] colors;
-    private char [] prefs;
+    ArrayList<ContactObj> contacts = new ArrayList<>();
+    char [] prefs;
     private Context context;
     private String comeFrom;
 
@@ -37,15 +38,13 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
             cardView = (CardView)itemView.findViewById(R.id.card_view);
             name = (TextView) v.findViewById(R.id.contact_name);
             icon = (ImageView) v.findViewById(R.id.contact_icon);
+            icon.setScaleType(ImageView.ScaleType.FIT_END);
         }
     }
 
-    public ContactAdapter(String[] friends, String [] planners, String[] flags, String[] colors, char[] prefs, Context context, String comeFrom)
+    public ContactAdapter( ArrayList<ContactObj> contacts, char [] prefs, Context context, String comeFrom)
     {
-        this.friends = friends;
-        this.planners = planners;
-        this.flags = flags;
-        this.colors = colors;
+        this.contacts = contacts;
         this.prefs = prefs;
         this.context = context;
         this.comeFrom = comeFrom;
@@ -81,7 +80,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
         }
 
         //Set icon based on flag
-        if (flags[position].equals("g"))
+        if (contacts.get(position).getFlag().equals("g"))
         {
             holder.icon.setImageResource(R.drawable.ic_people);
         }
@@ -90,7 +89,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
             holder.icon.setImageResource(R.drawable.ic_person);
         }
         //Set icon color
-        if(planners[position].charAt(pos) == '0')
+        if(contacts.get(position).getPlanner().charAt(pos) == '0')
         {
             holder.icon.setColorFilter(Color.GREEN);
         }
@@ -100,42 +99,42 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
         }
 
         //Set name
-        holder.name.setText(friends[position]);
+        holder.name.setText(contacts.get(position).getName());
 
         //Set color of button
-        if(colors[position].equals("b"))
+        if(contacts.get(position).getColor().equals("b"))
         {
             holder.cardView.setCardBackgroundColor(ColorStateList.valueOf(Color.BLUE));
         }
-        else if(colors[position].equals("c"))
+        else if(contacts.get(position).getColor().equals("c"))
         {
             holder.cardView.setCardBackgroundColor(ColorStateList.valueOf(Color.CYAN));
         }
-        else if(colors[position].equals("d"))
+        else if(contacts.get(position).getColor().equals("d"))
         {
             holder.cardView.setCardBackgroundColor(ColorStateList.valueOf(Color.DKGRAY));
         }
-        else if(colors[position].equals("l"))
+        else if(contacts.get(position).getColor().equals("l"))
         {
             holder.cardView.setCardBackgroundColor(ColorStateList.valueOf(Color.LTGRAY));
         }
-        else if(colors[position].equals("e"))
+        else if(contacts.get(position).getColor().equals("e"))
         {
             holder.cardView.setCardBackgroundColor(ColorStateList.valueOf(Color.GRAY));
         }
-        else if(colors[position].equals("g"))
+        else if(contacts.get(position).getColor().equals("g"))
         {
             holder.cardView.setCardBackgroundColor(ColorStateList.valueOf(Color.GREEN));
         }
-        else if(colors[position].equals("m"))
+        else if(contacts.get(position).getColor().equals("m"))
         {
             holder.cardView.setCardBackgroundColor(ColorStateList.valueOf(Color.MAGENTA));
         }
-        else if(colors[position].equals("r"))
+        else if(contacts.get(position).getColor().equals("r"))
         {
             holder.cardView.setCardBackgroundColor(ColorStateList.valueOf(Color.RED));
         }
-        else if(colors[position].equals("y"))
+        else if(contacts.get(position).getColor().equals("y"))
         {
             holder.cardView.setCardBackgroundColor(ColorStateList.valueOf(Color.YELLOW));
         }
@@ -145,13 +144,14 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
         }
 
         //Set listener
-        RecycleListener list = new RecycleListener(position, planners, friends, prefs, context, comeFrom);
+
+        RecycleListener list = new RecycleListener(position, contacts, prefs, context, comeFrom, this);
         holder.cardView.setOnClickListener(list);
     }
 
     @Override
     public int getItemCount()
     {
-        return friends.length;
+        return contacts.size();
     }
 }
