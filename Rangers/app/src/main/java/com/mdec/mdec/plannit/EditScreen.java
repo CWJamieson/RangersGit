@@ -8,6 +8,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,12 +25,9 @@ import java.util.ArrayList;
 public class EditScreen extends AppCompatActivity {
 
     //globals for contact data
-    ArrayList<TextView> texts = new ArrayList<TextView>();
-    ArrayList<String> names = new ArrayList<String>();
-    ArrayList<String> planners = new ArrayList<String>();
-    ArrayList<String> flags = new ArrayList<String>();
-    char prefs [];
-    String [] colors;
+    ArrayList<ContactObj> contacts = new ArrayList<ContactObj>();
+    char [] prefs;
+    ArrayList<String> colors = new ArrayList<String>();
     String deleted;
 
 
@@ -40,11 +39,11 @@ public class EditScreen extends AppCompatActivity {
 
         //add back button & title
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle("Delete contacts");
+        setTitle("Edit Contacts");
 
         //read preferences and display help message
-        char [] prefs = getIntent().getCharArrayExtra("PREFS");
-        this.prefs = prefs;
+        prefs = getIntent().getCharArrayExtra("PREFS");
+
         boolean displayAlert = prefs[9]=='0';
         if(displayAlert) {
             alert();
@@ -53,21 +52,18 @@ public class EditScreen extends AppCompatActivity {
         }
 
         //read contact data
-        String [] planners = this.getIntent().getStringArrayExtra("PLANNERS");
-        String [] flags = this.getIntent().getStringArrayExtra("FLAGS");
-        String [] friends = this.getIntent().getStringArrayExtra("FRIENDS");
-        String [] colors = this.getIntent().getStringArrayExtra("COLORS");
+        Bundle b = this.getIntent().getExtras();
+        contacts = (ArrayList<ContactObj>)b.getSerializable("CONTACTS");
         deleted = " ";
-        for(int i=0;i<friends.length;i++)
-        {
-            names.add(friends[i]);
-            this.planners.add(planners[i]);
-            this.flags.add(flags[i]);
-            this.colors = colors;
-        }
-
+        //RecyclerView
+        RecyclerView recycleView = (RecyclerView)findViewById(R.id.activity_edit_screen);
+        recycleView.setHasFixedSize(true);
+        //RecyclerView layout manager
+        recycleView.setLayoutManager(new LinearLayoutManager(this));
+        //RecyclerView adapter
+        recycleView.setAdapter(new ContactAdapter(this.contacts, this.prefs, this, "EDIT"));
         //create contact buttons
-        createFabs();
+        //createFabs();
     }
 
     //create menu methods
@@ -137,56 +133,6 @@ public class EditScreen extends AppCompatActivity {
         }
     }
 
-    //create contact buttons
-    private void createFabs()
-    {
-        //cycle through data
-        for(int i=0;i<names.size();i++)
-        {
-            //create button set info and text
-            FloatingActionButton fab = new  FloatingActionButton(this);
-            TextView text = new TextView(this);
-            text.setText(names.get(i));
-            texts.add(text);
-            HomeScreen.buttonColorSet(fab, colors, i);
-            fab.setId(i);
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ((FloatingActionButton)view).setRippleColor(Color.GREEN);
-                    edit(view.getId());
-                }
-            });
-
-            //choose icon
-            if(flags.get(i).equals("g"))
-                fab.setImageResource(R.drawable.ic_people);
-            else
-                fab.setImageResource(R.drawable.ic_person);
-
-            //select column
-            LinearLayout layout;
-            if(i%4==0)
-                layout = (LinearLayout) findViewById(R.id.col1);
-            else if(i%4==1)
-                layout = (LinearLayout) findViewById(R.id.col2);
-            else if(i%4==2)
-                layout = (LinearLayout) findViewById(R.id.col3);
-            else
-                layout = (LinearLayout) findViewById(R.id.col4);
-            layout.addView(fab);
-            layout.addView(text);
-
-        }
-        if(names.size() == 0)
-        {
-            LinearLayout layout = (LinearLayout) findViewById(R.id.col1);
-            TextView text = new TextView(this);
-            text.setText(R.string.nocontacts);
-            layout.addView(text);
-        }
-
-    }
 
     public void init(boolean clicked[], String s)
     {
@@ -200,7 +146,7 @@ public class EditScreen extends AppCompatActivity {
     private void edit(int num)
     {
         boolean clicked [] = new boolean [140];
-        String s = planners.get(num);
+        String s = contacts.get(num).getPlanner();
         init(clicked, s);
         Intent intent = new Intent(this, EnterSchedule.class);
         intent.putExtra("PLANNER", clicked);

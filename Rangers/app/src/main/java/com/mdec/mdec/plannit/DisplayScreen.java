@@ -34,6 +34,8 @@ public class DisplayScreen extends AppCompatActivity {
 
         //read preferences
         char [] prefs = getIntent().getCharArrayExtra("PREFS");
+
+
         boolean displayAlert = prefs[1]=='0';
         if(displayAlert) {
             alert();

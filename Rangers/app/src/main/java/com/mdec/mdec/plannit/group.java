@@ -63,14 +63,17 @@ public class group extends AppCompatActivity {
     //create group of selected contacts
     private void createGroup()
     {
+        ArrayList<ContactObj> contacts = new ArrayList<ContactObj>();
         Intent intent = getIntent();
-        String [] friends = intent.getStringArrayExtra("PLANNERS");
+        Bundle b = this.getIntent().getExtras();
+        contacts = (ArrayList<ContactObj>)b.getSerializable("CONTACTS");
+
         char[] intersection = new char[140];
         boolean flag = true;
         int count=0;
         for(int i=0;i<140;i++)
             intersection[i] = '0';
-        for(int i=0;i<friends.length;i++)
+        for(int i=0;i<contacts.size();i++)
         {
             CheckBox chk = (CheckBox)findViewById(ids.get(i));
             if(chk.isChecked())
@@ -78,7 +81,7 @@ public class group extends AppCompatActivity {
                 count++;
                 for(int j=0;j<140;j++)
                 {
-                    if(!(intersection[j] == '0' && friends[i].charAt(j) == '0'))
+                    if(!(intersection[j] == '0' && contacts.get(i).getPlanner().charAt(j) == '0'))
                         intersection[j] = '1';
                 }
             }
@@ -196,12 +199,14 @@ public class group extends AppCompatActivity {
     //create contact checkboxes
     protected void displayFriends()
     {
+        ArrayList<ContactObj> contacts = new ArrayList<ContactObj>();
         Intent intent = getIntent();
-        String [] friends = intent.getStringArrayExtra("FRIENDS");
-        for(int i=0;i<friends.length;i++)
+        Bundle b = this.getIntent().getExtras();
+        contacts = (ArrayList<ContactObj>)b.getSerializable("CONTACTS");
+        for(int i=0;i<contacts.size();i++)
         {
             CheckBox chk = new CheckBox(this);
-            chk.setText(friends[i]);
+            chk.setText(contacts.get(i).getName());
 
             LinearLayout layout = (LinearLayout) findViewById(R.id.line1);
             layout.addView(chk);

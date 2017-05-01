@@ -8,6 +8,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,15 +21,14 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class DeleteScreen extends AppCompatActivity {
 
     //globals for contact data
-    ArrayList<TextView> texts = new ArrayList<TextView>();
-    ArrayList<String> names = new ArrayList<String>();
-    ArrayList<String> planners = new ArrayList<String>();
-    ArrayList<String> flags = new ArrayList<String>();
-    String [] colors;
+    private ArrayList<TextView> texts = new ArrayList<TextView>();
+    ArrayList<ContactObj> contacts = new ArrayList<ContactObj>();
+    private char [] prefs;
     String deleted;
 
 
@@ -39,10 +40,15 @@ public class DeleteScreen extends AppCompatActivity {
 
         //add back button & title
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle("Delete contacts");
+        setTitle("Delete Contacts");
+
+        //read contact data
+        Bundle b = this.getIntent().getExtras();
+        contacts = (ArrayList<ContactObj>)b.getSerializable("CONTACTS");
+
 
         //read preferences and display help message
-        char [] prefs = getIntent().getCharArrayExtra("PREFS");
+        prefs = (char [])b.getSerializable("PREFS");
         boolean displayAlert = prefs[0]=='0';
         if(displayAlert) {
             alert();
@@ -50,22 +56,16 @@ public class DeleteScreen extends AppCompatActivity {
             writePrefs(prefs);
         }
 
-        //read contact data
-        String [] planners = this.getIntent().getStringArrayExtra("PLANNERS");
-        String [] flags = this.getIntent().getStringArrayExtra("FLAGS");
-        String [] friends = this.getIntent().getStringArrayExtra("FRIENDS");
-        String [] colors = this.getIntent().getStringArrayExtra("COLORS");
         deleted = " ";
-        for(int i=0;i<friends.length;i++)
-        {
-            names.add(friends[i]);
-            this.planners.add(planners[i]);
-            this.flags.add(flags[i]);
-            this.colors = colors;
-        }
-
+        //RecyclerView
+        RecyclerView recycleView = (RecyclerView)findViewById(R.id.activity_delete_screen);
+        recycleView.setHasFixedSize(true);
+        //RecyclerView layout manager
+        recycleView.setLayoutManager(new LinearLayoutManager(this));
+        //RecyclerView adapter
+        recycleView.setAdapter(new ContactAdapter(this.contacts, this.prefs, this, "DELETE"));
         //create contact buttons
-        createFabs();
+        //createFabs();
     }
 
     //create menu methods
@@ -135,56 +135,6 @@ public class DeleteScreen extends AppCompatActivity {
         }
     }
 
-    //create contact buttons
-    private void createFabs()
-    {
-        //cycle through data
-        for(int i=0;i<names.size();i++)
-        {
-            //create button set info and text
-            FloatingActionButton fab = new  FloatingActionButton(this);
-            TextView text = new TextView(this);
-            text.setText(names.get(i));
-            texts.add(text);
-            HomeScreen.buttonColorSet(fab, colors, i);
-            fab.setId(i);
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ((FloatingActionButton)view).setRippleColor(Color.GREEN);
-                    warning(names.get(view.getId()), view.getId());
-                }
-            });
-
-            //choose icon
-            if(flags.get(i).equals("g"))
-                fab.setImageResource(R.drawable.ic_people);
-            else
-                fab.setImageResource(R.drawable.ic_person);
-
-            //select column
-            LinearLayout layout;
-            if(i%4==0)
-                layout = (LinearLayout) findViewById(R.id.col1);
-            else if(i%4==1)
-                layout = (LinearLayout) findViewById(R.id.col2);
-            else if(i%4==2)
-                layout = (LinearLayout) findViewById(R.id.col3);
-            else
-                layout = (LinearLayout) findViewById(R.id.col4);
-            layout.addView(fab);
-            layout.addView(text);
-
-        }
-
-        if(names.size() == 0)
-        {
-            LinearLayout layout = (LinearLayout) findViewById(R.id.col1);
-            TextView text = new TextView(this);
-            text.setText(R.string.nocontacts);
-            layout.addView(text);
-        }
-    }
     private void warning(String s, final int n)
     {
         AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);
@@ -194,7 +144,6 @@ public class DeleteScreen extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         deleteFromFile(n);
-
                     }
                 });
         dlgAlert.setNegativeButton("Cancel",
@@ -238,17 +187,17 @@ public class DeleteScreen extends AppCompatActivity {
         deleted = deleted+num+" ";
         for(TextView text : texts)
         {
-            if(text.getText().equals(names.get(num)))
+            if(text.getText().equals(contacts.get(num).getName()))
                 text.setText("");
         }
 
         deleteFile();
-        for(int i=0;i<flags.size();i++) {
+        for(int i=0;i<contacts.size();i++) {
 
             if(!deleted.contains(" " + i + " "))
             {
                 //Add data, flag and name
-                fullString = planners.get(i) + "~" + flags.get(i) + "~" + colors[i] + "~" + names.get(i);
+                fullString = contacts.get(i).getPlanner() + "~" + contacts.get(i).getFlag() + "~" + contacts.get(i).getColor() + "~" + contacts.get(i).getName();
                 //Save to file
                 fileSave(fullString);
             }

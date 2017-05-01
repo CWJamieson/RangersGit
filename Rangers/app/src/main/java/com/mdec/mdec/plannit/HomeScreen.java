@@ -36,11 +36,9 @@ import java.util.ArrayList;
 public class HomeScreen extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {
     //friends: array of friends names, planners: binary array of planner data, flags: contact flags, prefs: binary array of preference data
-    String [] friends;
-    String [] planners;
-    String [] flags;
-    String [] colors;
-    char[] prefs;
+    ArrayList<ContactObj> contacts = new ArrayList<ContactObj>();
+    char [] prefs;
+
     final int pref = 10;
 
     @Override
@@ -66,10 +64,10 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
         String [] colors = string.get(2).toArray(new String[string.get(2).size()]);
 
         //set globals
-        this.friends = friends;
-        this.planners = planners;
-        this.flags = flag;
-        this.colors = colors;
+        for(int i=0;i<friends.length;i++)
+        {
+            contacts.add(new ContactObj(friends[i], planners[i], flag[i], colors[i]));
+        }
 
         //RecyclerView
         RecyclerView recycleView = (RecyclerView)findViewById(R.id.content_home_screen);
@@ -77,7 +75,7 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
         //RecyclerView layout manager
         recycleView.setLayoutManager(new LinearLayoutManager(this));
         //RecyclerView adapter
-        recycleView.setAdapter(new ContactAdapter(friends, planners, flags, colors, prefs, this, "HOME"));
+        recycleView.setAdapter(new ContactAdapter(contacts, this.prefs, this, "HOME"));
 
         //set title
         setTitle("Plannit");
@@ -165,21 +163,19 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
         if (id == R.id.action_settings)
         {
             Intent intent = new Intent(this, DeleteScreen.class);
-            intent.putExtra("FRIENDS",friends);
-            intent.putExtra("FLAGS", flags);
-            intent.putExtra("PLANNERS", planners);
-            intent.putExtra("COLORS", colors);
-            intent.putExtra("PREFS", prefs);
+            Bundle b = new Bundle();
+            b.putSerializable("CONTACTS", contacts);
+            b.putSerializable("PREFS", prefs);
+            intent.putExtras(b);
             startActivity(intent);
             return true;
         }
         else if(id == R.id.edit)
         {
             Intent intent = new Intent(this, EditScreen.class);
-            intent.putExtra("FRIENDS",friends);
-            intent.putExtra("FLAGS", flags);
-            intent.putExtra("PLANNERS", planners);
-            intent.putExtra("COLORS", colors);
+            Bundle b = new Bundle();
+            b.putSerializable("CONTACTS", contacts);
+            intent.putExtras(b);
             intent.putExtra("PREFS", prefs);
             startActivity(intent);
             return true;
@@ -201,12 +197,12 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
         if (id == R.id.nav_input) {
             getInput();
         } else if (id == R.id.nav_createGroup) {
-            if(friends.length>1)
+            if(contacts.size()>1)
                 createGroup();
             else
                 Toast.makeText(this, "You do not have enough contacts to create a group", Toast.LENGTH_LONG).show();
         } else if (id == R.id.nav_share) {
-            if(friends.length>0)
+            if(contacts.size()>0)
                 shareSelect();
             else
                 Toast.makeText(this, "You have no contacts to share", Toast.LENGTH_LONG).show();
@@ -364,10 +360,9 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
     {
         Intent intent = new Intent(this, ShareSelectScreen.class);
         intent.putExtra("PREFS", prefs);
-        intent.putExtra("FRIENDS", friends);
-        intent.putExtra("PLANNERS", planners);
-        intent.putExtra("FLAGS", flags);
-        intent.putExtra("COLORS", colors);
+        Bundle b = new Bundle();
+        b.putSerializable("CONTACTS", contacts);
+        intent.putExtras(b);
         startActivity(intent);
     }
     public void init(boolean clicked[])
@@ -393,8 +388,9 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
         Intent intent = new Intent(this, group.class);
 
         intent.putExtra("PREFS", prefs);
-        intent.putExtra("FRIENDS", friends);
-        intent.putExtra("PLANNERS", planners);
+        Bundle b = new Bundle();
+        b.putSerializable("CONTACTS", contacts);
+        intent.putExtras(b);
         startActivity(intent);
     }
     private void about()

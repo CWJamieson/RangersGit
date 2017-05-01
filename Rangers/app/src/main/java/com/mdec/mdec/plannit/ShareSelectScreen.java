@@ -8,6 +8,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,13 +25,8 @@ public class ShareSelectScreen extends AppCompatActivity {
 
     //texts: contact name textviews, names: name Strings, planners: binary planner strings, flags: flag strings, colors: color choice, prefs: binary preference data
     ArrayList<TextView> texts = new ArrayList<TextView>();
-    ArrayList<String> names = new ArrayList<String>();
-    ArrayList<String> planners = new ArrayList<String>();
-    ArrayList<String> flags = new ArrayList<String>();
-    String [] colors;
-
+    ArrayList<ContactObj> contacts = new ArrayList<ContactObj>();
     char [] prefs;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +39,7 @@ public class ShareSelectScreen extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
+
         //read preferences
         prefs = getIntent().getCharArrayExtra("PREFS");
         boolean displayAlert = prefs[8]=='0';
@@ -52,19 +50,17 @@ public class ShareSelectScreen extends AppCompatActivity {
         }
 
         //set data
-        String [] planners = this.getIntent().getStringArrayExtra("PLANNERS");
-        String [] flags = this.getIntent().getStringArrayExtra("FLAGS");
-        String [] friends = this.getIntent().getStringArrayExtra("FRIENDS");
-        String [] colors = this.getIntent().getStringArrayExtra("COLORS");
-        for(int i=0;i<friends.length;i++)
-        {
-            names.add(friends[i]);
-            this.planners.add(planners[i]);
-            this.flags.add(flags[i]);
-            this.colors = colors;
-        }
+        Bundle b = this.getIntent().getExtras();
+        contacts = (ArrayList<ContactObj>)b.getSerializable("CONTACTS");
+        //RecyclerView
+        RecyclerView recycleView = (RecyclerView)findViewById(R.id.activity_share_select_screen);
+        recycleView.setHasFixedSize(true);
+        //RecyclerView layout manager
+        recycleView.setLayoutManager(new LinearLayoutManager(this));
+        //RecyclerView adapter
+        recycleView.setAdapter(new ContactAdapter(this.contacts, this.prefs, this, "SHARE"));
         //create contact icons
-        createFabs();
+        //createFabs();
     }
 
     //refresh preferences
@@ -110,7 +106,7 @@ public class ShareSelectScreen extends AppCompatActivity {
             }
         }
     }
-
+/*
     //create contact icons
     private void createFabs()
     {
@@ -155,14 +151,14 @@ public class ShareSelectScreen extends AppCompatActivity {
             layout.addView(text);
         }
     }
-
+*/
     //proceed to next screen
     private void share(int i)
     {
         Intent intent = new Intent(this, ShareScreen.class);
         intent.putExtra("PREFS", prefs);
-        intent.putExtra("PLANNER", planners.get(i));
-        intent.putExtra("NAME", names.get(i));
+        intent.putExtra("PLANNER", contacts.get(i).getPlanner());
+        intent.putExtra("NAME", contacts.get(i).getName());
         startActivity(intent);
     }
 
