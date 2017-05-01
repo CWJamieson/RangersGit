@@ -195,7 +195,7 @@ public class SaveScreen extends AppCompatActivity implements OnItemSelectedListe
         {
             Toast.makeText(this, "You must enter a name", Toast.LENGTH_LONG).show();
         }
-        if(name.length() > 20)
+        else if(name.length() > 20)
         {
             Toast.makeText(this, "Please enter a name 20 characters or less", Toast.LENGTH_LONG).show();
         }
